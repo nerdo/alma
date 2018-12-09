@@ -40,9 +40,10 @@ export class EngineInterface {
 
   /**
    * Resets the engine.
+   * @param {Object} [data=undefined] - Data to reset the engine's model with.
    * @returns {EngineInterface} this
    */
-  reset () { throw new Error('Not Yet Implemented') }
+  reset (data = {}) { throw new Error('Not Yet Implemented') }
 
   /**
    * Starts the engine.

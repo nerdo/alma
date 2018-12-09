@@ -70,11 +70,12 @@ export class Engine {
 
   /**
    * Resets the engine.
+   * @param {Object} [data=undefined] - Data to reset the engine's model with.
    * @returns {EngineInterface} this
    */
-  reset () {
+  reset (data = {}) {
     this.initialize()
-    this.model.reset()
+    this.model.reset(data)
     return this
   }
 

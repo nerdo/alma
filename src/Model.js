@@ -92,9 +92,10 @@ export class Model {
 
   /**
    * Resets the data and all operatives.
+   * @param {Object} [data=undefined] - Data to reset the model with.
    */
-  reset () {
-    this.data = {}
+  reset (data = {}) {
+    this.data = data
     workLeafNodes(this.opTree, (path, op) => op.reset())
   }
 

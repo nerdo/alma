@@ -57,8 +57,9 @@ export class ModelInterface {
 
   /**
    * Resets the data and all operatives.
+   * @param {Object} [data=undefined] - Data to reset the model with.
    */
-  reset () { throw new Error('Not Yet Implemented') }
+  reset (data = {}) { throw new Error('Not Yet Implemented') }
 
   /**
    * Calls nextAction on all operatives.
