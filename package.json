@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "the-git-repo"
+    "url": "https://github.com/nerdo/alma.git"
   },
   "keywords": [
     "alma",
@@ -24,7 +24,7 @@
     "reuse"
   ],
   "author": "Dannel Albert",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
