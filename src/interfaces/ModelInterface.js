@@ -2,6 +2,7 @@ export class ModelInterface {
   /**
    * Sets the supervisor.
    * @param {SupervisorInterface} supervisor
+   * @returns {ModelInterface} this
    */
   setSupervisor (supervisor) { throw new Error('Not Yet Implemented') }
 
@@ -14,6 +15,7 @@ export class ModelInterface {
   /**
    * Sets the mutator.
    * @param {MutatorInterface} mutator
+   * @returns {ModelInterface} this
    */
   setMutator (mutator) { throw new Error('Not Yet Implemented') }
 
@@ -42,6 +44,7 @@ export class ModelInterface {
   /**
    * Sets the operative tree.
    * @param {Object} tree - A tree with Operative instances representing the system.
+   * @returns {ModelInterface} this
    */
   setOpTree (tree) { throw new Error('Not Yet Implemented') }
 

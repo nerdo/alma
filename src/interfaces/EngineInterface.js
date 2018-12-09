@@ -2,18 +2,21 @@ export class EngineInterface {
   /**
    * Sets the presenter.
    * @param {PresenterInterface} presenter
+   * @returns {EngineInterface} this
    */
   setPresenter (presenter) { throw new Error('Not Yet Implemented') }
 
   /**
    * Sets the supervisor.
    * @param {SupervisorInterface} supervisor
+   * @returns {EngineInterface} this
    */
   setSupervisor (supervisor) { throw new Error('Not Yet Implemented') }
 
   /**
    * Sets the model.
    * @param {ModelInterface} model
+   * @returns {EngineInterface} this
    */
   setModel (model) { throw new Error('Not Yet Implemented') }
 
@@ -37,11 +40,13 @@ export class EngineInterface {
 
   /**
    * Resets the engine.
+   * @returns {EngineInterface} this
    */
   reset () { throw new Error('Not Yet Implemented') }
 
   /**
    * Starts the engine.
+   * @returns {EngineInterface} this
    */
   start () { throw new Error('Not Yet Implemented') }
 }

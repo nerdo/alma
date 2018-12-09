@@ -17,25 +17,31 @@ export class Engine {
   /**
    * Sets the presenter.
    * @param {PresenterInterface} presenter
+   * @returns {EngineInterface} this
    */
   setPresenter (presenter) {
     this.presenter = presenter
+    return this
   }
 
   /**
    * Sets the supervisor.
    * @param {SupervisorInterface} supervisor
+   * @returns {EngineInterface} this
    */
   setSupervisor (supervisor) {
     this.supervisor = supervisor
+    return this
   }
 
   /**
    * Sets the model.
    * @param {ModelInterface} model
+   * @returns {EngineInterface} this
    */
   setModel (model) {
     this.model = model
+    return this
   }
 
   /**
@@ -64,18 +70,22 @@ export class Engine {
 
   /**
    * Resets the engine.
+   * @returns {EngineInterface} this
    */
   reset () {
     this.initialize()
     this.model.reset()
+    return this
   }
 
   /**
    * Starts the engine.
+   * @returns {EngineInterface} this
    */
   start () {
     this.initialize()
     this.supervisor.process(this.model)
+    return this
   }
 
   initialize () {

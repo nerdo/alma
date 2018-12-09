@@ -2,6 +2,7 @@ export class SupervisorInterface {
   /**
    * Sets the presenter.
    * @param {PresenterInterface} presenter
+   * @returns {SupervisorInterface} this
    */
   setPresenter (presenter) { throw new Error('Not Yet Implemented') }
 
@@ -15,6 +16,7 @@ export class SupervisorInterface {
    * Sets the function called when nextAction is invoked.
    * @param {Function} before - Called before operative next actions.
    * @param {Function} after - Called after operative next actions.
+   * @returns {SupervisorInterface} this
    */
   setNextActionDelegates (before, after) { throw new Error('Not Yet Implemented') }
 

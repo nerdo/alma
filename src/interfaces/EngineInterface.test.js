@@ -2,10 +2,11 @@
 import { setupCustomMatchers } from '../helpers/jest'
 import { EngineInterface } from './EngineInterface'
 import { Engine } from '../Engine'
+import { TestPresenter } from '../adapters/TestPresenter'
 
 setupCustomMatchers(expect)
 
-const newEngine = () => new Engine()
+const newEngine = () => new Engine(new TestPresenter())
 
 describe('EngineInterface conformance of', () => {
   test.each`
@@ -15,13 +16,27 @@ describe('EngineInterface conformance of', () => {
     const engine = newInstance()
     expect(engine).toImplement(EngineInterface)
 
-    expect(() => engine.setPresenter(null)).not.toThrow()
+    let resetResult
+    expect(() => resetResult = engine.reset()).not.toThrow()
+    expect(resetResult).toBe(engine)
+
+    let startResult
+    expect(() => startResult = engine.start()).not.toThrow()
+    expect(startResult).toBe(engine)
+
+    let setPresenterResult
+    expect(() => setPresenterResult = engine.setPresenter(null)).not.toThrow()
+    expect(setPresenterResult).toBe(engine)
     expect(engine.getPresenter()).toBe(null)
 
-    expect(() => engine.setSupervisor(null)).not.toThrow()
+    let setSupervisorResult
+    expect(() => setSupervisorResult = engine.setSupervisor(null)).not.toThrow()
+    expect(setSupervisorResult).toBe(engine)
     expect(engine.getSupervisor()).toBe(null)
 
-    expect(() => engine.setModel(null)).not.toThrow()
+    let setModelResult
+    expect(() => setModelResult = engine.setModel(null)).not.toThrow()
+    expect(setModelResult).toBe(engine)
     expect(engine.getModel()).toBe(null)
   })
 })

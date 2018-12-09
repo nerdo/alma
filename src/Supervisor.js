@@ -2,9 +2,11 @@ export class Supervisor {
   /**
    * Sets the presenter.
    * @param {PresenterInterface} presenter
+   * @returns {SupervisorInterface} this
    */
   setPresenter (presenter) {
     this.presenter = presenter
+    return this
   }
 
   /**
@@ -19,10 +21,12 @@ export class Supervisor {
    * Sets the function called when nextAction is invoked.
    * @param {Function} before - Called before operative next actions.
    * @param {Function} after - Called after operative next actions.
+   * @returns {SupervisorInterface} this
    */
   setNextActionDelegates (before, after) {
     this.nextActionDelegateBefore = before
     this.nextActionDelegateAfter = after
+    return this
   }
 
   /**

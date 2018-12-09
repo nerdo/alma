@@ -18,9 +18,11 @@ export class Model {
   /**
    * Sets the supervisor.
    * @param {SupervisorInterface} supervisor
+   * @returns {ModelInterface} this
    */
   setSupervisor (supervisor) {
     this.supervisor = supervisor
+    return this
   }
 
   /**
@@ -34,9 +36,11 @@ export class Model {
   /**
    * Sets the mutator.
    * @param {MutatorInterface} mutator
+   * @returns {ModelInterface} this
    */
   setMutator (mutator) {
     this.mutator = mutator
+    return this
   }
 
   /**
@@ -70,9 +74,11 @@ export class Model {
   /**
    * Sets the operative tree.
    * @param {Object} tree - A tree with Operative instances representing the system.
+   * @returns {ModelInterface} this
    */
   setOpTree (tree) {
     workLeafNodes(tree, (path, op) => op.mount(this, path))
+    return this
   }
 
   /**

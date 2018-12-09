@@ -15,13 +15,19 @@ describe('ModelInterface conformance of', () => {
       const model = newInstance()
       expect(model).toImplement(ModelInterface)
 
-      expect(() => model.setSupervisor(null)).not.toThrow()
+      let setSupervisorResult
+      expect(() => setSupervisorResult = model.setSupervisor(null)).not.toThrow()
+      expect(setSupervisorResult).toBe(model)
       expect(model.getSupervisor()).toBe(null)
 
-      expect(() => model.setMutator(null)).not.toThrow()
+      let setMutatorResult
+      expect(() => setMutatorResult = model.setMutator(null)).not.toThrow()
+      expect(setMutatorResult).toBe(model)
       expect(model.getMutator()).toBe(null)
 
-      expect(() => model.setOpTree({})).not.toThrow()
+      let setOpTreeResult
+      expect(() => setOpTreeResult = model.setOpTree({})).not.toThrow()
+      expect(setOpTreeResult).toBe(model)
       expect(model.getOpTree()).toMatchObject({})
 
       expect(() => model.reset()).not.toThrow()
