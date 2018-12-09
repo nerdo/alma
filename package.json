@@ -6,7 +6,7 @@
   "module": "dist/alma.es.js",
   "scripts": {
     "test": "jest",
-    "build": "rollup -c",
+    "build": "rollup -c && rollup -c conformance-tests.rollup.config.js",
     "start": "rollup -c -w",
     "prepublish": "npm run build"
   },
