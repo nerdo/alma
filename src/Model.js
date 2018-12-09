@@ -69,6 +69,7 @@ export class Model {
    */
   set (path, value) {
     this.data = this.mutator.set(this.data, path, value)
+    return this
   }
 
   /**

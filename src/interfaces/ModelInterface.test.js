@@ -15,6 +15,9 @@ describe('ModelInterface conformance of', () => {
       const model = newInstance()
       expect(model).toImplement(ModelInterface)
 
+      const setResult = model.set([], {})
+      expect(setResult).toBe(model)
+
       let setSupervisorResult
       expect(() => setSupervisorResult = model.setSupervisor(null)).not.toThrow()
       expect(setSupervisorResult).toBe(model)
