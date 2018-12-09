@@ -73,8 +73,8 @@ export class Model {
   }
 
   /**
-   * Sets the operative tree.
-   * @param {Object} tree - A tree with Operative instances representing the system.
+   * Sets the operator tree.
+   * @param {Object} tree - A tree with Operator instances representing the system.
    * @returns {ModelInterface} this
    */
   setOpTree (tree) {
@@ -83,7 +83,7 @@ export class Model {
   }
 
   /**
-   * Gets the operative tree.
+   * Gets the operator tree.
    * @param {*[]} path  - The path (list of keys) to pull the value from.
    * @returns {*} the subtree at path, or the entire tree if no path is defined.
    */
@@ -92,7 +92,7 @@ export class Model {
   }
 
   /**
-   * Resets the data and all operatives.
+   * Resets the data and all operators.
    * @param {Object} [data=undefined] - Data to reset the model with.
    */
   reset (data = {}) {
@@ -101,7 +101,7 @@ export class Model {
   }
 
   /**
-   * Calls nextAction on all operatives.
+   * Calls nextAction on all operators.
    */
   nextAction () {
     workLeafNodes(this.opTree, (path, op) => op.nextAction ? op.nextAction() : null)

@@ -19,8 +19,8 @@ export class Supervisor {
 
   /**
    * Sets the function called when nextAction is invoked.
-   * @param {Function} before - Called before operative next actions.
-   * @param {Function} after - Called after operative next actions.
+   * @param {Function} before - Called before operator next actions.
+   * @param {Function} after - Called after operator next actions.
    * @returns {SupervisorInterface} this
    */
   setNextActionDelegates (before, after) {
@@ -66,7 +66,7 @@ export class Supervisor {
       this.beforeOps(model)
     }
 
-    // Allow operatives to tap into next actions through the model.
+    // Allow operators to tap into next actions through the model.
     model.nextAction()
 
     if (afterOps) {

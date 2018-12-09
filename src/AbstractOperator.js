@@ -5,10 +5,10 @@ import { defaults } from './functions/defaults';
 const normalMutatorSingleton = new NormalMutator()
 
 /**
- * Base class for operatives.
+ * Base class for operators.
  * @class
  */
-export class AbstractOperative {
+export class AbstractOperator {
   mount (model, path) {
     /**
      * @type {ModelInstance}

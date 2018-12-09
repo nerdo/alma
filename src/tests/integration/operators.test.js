@@ -1,13 +1,13 @@
 /* global describe, test, expect */
 import { Engine } from '../../Engine'
 import { TestPresenter } from '../../adapters/TestPresenter'
-import { CounterOperative } from './CounterOperative'
-import { conformanceTests } from '../../interfaces/OperativeInterface.conformanceTests'
+import { CounterOperator } from './CounterOperator'
+import { conformanceTests } from '../../interfaces/OperatorInterface.conformanceTests'
 
-describe('operatives', () => {
+describe('operators', () => {
   conformanceTests(
     {
-      CounterOperative: () => new CounterOperative()
+      CounterOperator: () => new CounterOperator()
     },
     describe,
     test,
@@ -17,7 +17,7 @@ describe('operatives', () => {
   test('simple counter', () => {
     const presenter = new TestPresenter()
     const engine = new Engine(presenter)
-    const counter = new CounterOperative()
+    const counter = new CounterOperator()
 
     engine.getModel().setOpTree({ counter })
     engine.reset().start()

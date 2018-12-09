@@ -1,6 +1,6 @@
 /**
  * Triggers an action.
- * @param {OperativeInterface} op - The operative this action is being performed through.
+ * @param {OperatorInterface} op - The operator this action is being performed through.
  * @param {ModelInterface} model - The model the action will submit a proposal to.
  * @param {ActionProcessorInterface} processor - The action processor.
  * @param {Object} args - Structured arguments for the action.

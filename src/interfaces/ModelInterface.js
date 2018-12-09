@@ -42,27 +42,27 @@ export class ModelInterface {
   set (path, value) { throw new Error('Not Yet Implemented') }
 
   /**
-   * Sets the operative tree.
-   * @param {Object} tree - A tree with Operative instances representing the system.
+   * Sets the operator tree.
+   * @param {Object} tree - A tree with Operator instances representing the system.
    * @returns {ModelInterface} this
    */
   setOpTree (tree) { throw new Error('Not Yet Implemented') }
 
   /**
-   * Gets the operative tree.
+   * Gets the operator tree.
    * @param {*[]} path  - The path (list of keys) to pull the value from.
    * @returns {*} the subtree at path, or the entire tree if no path is defined.
    */
   getOpTree (path) { throw new Error('Not Yet Implemented') }
 
   /**
-   * Resets the data and all operatives.
+   * Resets the data and all operators.
    * @param {Object} [data=undefined] - Data to reset the model with.
    */
   reset (data = {}) { throw new Error('Not Yet Implemented') }
 
   /**
-   * Calls nextAction on all operatives.
+   * Calls nextAction on all operators.
    */
   nextAction () { throw new Error('Not Yet Implemented') }
 }

@@ -14,8 +14,8 @@ export class SupervisorInterface {
 
   /**
    * Sets the function called when nextAction is invoked.
-   * @param {Function} before - Called before operative next actions.
-   * @param {Function} after - Called after operative next actions.
+   * @param {Function} before - Called before operator next actions.
+   * @param {Function} after - Called after operator next actions.
    * @returns {SupervisorInterface} this
    */
   setNextActionDelegates (before, after) { throw new Error('Not Yet Implemented') }

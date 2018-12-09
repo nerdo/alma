@@ -1,7 +1,7 @@
-import { AbstractOperative } from '../../AbstractOperative';
+import { AbstractOperator } from '../../AbstractOperator';
 import { action } from '../../functions/action'
 
-export class CounterOperative extends AbstractOperative {
+export class CounterOperator extends AbstractOperator {
   reset () {
     this.setValue()
   }

@@ -1,13 +1,13 @@
 /* global describe, expect, test */
 import { Engine } from './Engine'
 import { TestPresenter } from './adapters/TestPresenter'
-import { CounterOperative, setValue } from './tests/integration/CounterOperative'
+import { CounterOperator, setValue } from './tests/integration/CounterOperator'
 
-describe('AbstractOperative', () => {
+describe('AbstractOperator', () => {
   describe('getModelData', () => {
     test('getting default data', () => {
       const engine = new Engine(new TestPresenter())
-      const counter = new CounterOperative()
+      const counter = new CounterOperator()
 
       engine.getModel().setOpTree({ counter })
       engine.start()
