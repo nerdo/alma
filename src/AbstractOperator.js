@@ -64,4 +64,13 @@ export class AbstractOperator {
     }
     return data
   }
+
+  pathBelongsToOp (path) {
+    return (this.path || [])
+      .map((part, index) => `${part}` === `${path[index]}`)
+      .reduce(
+        (result, current) => result && current,
+        true
+      )
+  }
 }
