@@ -81,7 +81,7 @@ describe('workLeafNodes', () => {
     }
 
     const isLeaf = function (path, node) {
-      if (path[0] === 'a' || path[0] === 'b') {
+      if (path.length === 0 || path[0] === 'a' || path[0] === 'b') {
         return false
       }
       return true
@@ -92,5 +92,16 @@ describe('workLeafNodes', () => {
     expect(accepted).toMatchObject([
       [['c'], 3]
     ])
+  })
+
+  test('a leaf node as a tree', () => {
+    const fn = jest.fn()
+
+    const tree = 'not a tree'
+
+    expect(() => workLeafNodes(tree, fn)).not.toThrow()
+
+    fn.mock.calls//?
+    expect(fn).not.toHaveBeenCalled()
   })
 })

@@ -104,6 +104,16 @@ export class Model {
    * Calls nextAction on all operators.
    */
   nextAction () {
-    workLeafNodes(this.opTree, (path, op) => op.nextAction ? op.nextAction() : null)
+    workLeafNodes(
+      this.opTree,
+      (path, op) => op.nextAction ? op.nextAction() : null,
+      (path, op) => {
+        // Detect operators as leaf nodes by doing some pretty simple type checks on the OperatorInterface.
+        return op
+          && typeof op.mount === 'function'
+          && typeof op.getPath === 'function'
+          && typeof op.getModelData === 'function'
+      }
+    )
   }
 }

@@ -10,6 +10,9 @@ import isPlainObject from 'is-plain-object'
  *  isLeaf({*[]} path - list of keys to get to the node, {*} node)
  */
 export function workLeafNodes (tree, callback, isLeaf = defaultIsLeaf) {
+  if (isLeaf([], tree)) {
+    return
+  }
   recurse(tree, callback, [], isLeaf)
 }
 
