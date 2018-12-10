@@ -3,14 +3,14 @@ import { action } from '../../functions/action'
 import { integerSequence } from '../../helpers/integerSequence'
 import { next } from '../../helpers/next'
 
-export class ListOp extends AbstractOperator {
+export class List extends AbstractOperator {
   constructor () {
     super()
     this.idSequence = integerSequence()
     this.opMap = new WeakMap()
   }
 
-  getOpName () { return 'ListOp' }
+  getOpName () { return 'List' }
 
   reset () {
     this.clear()
@@ -68,8 +68,8 @@ export class ListOp extends AbstractOperator {
   }
 }
 
-ListOp.START = 0
-ListOp.END = Number.MAX_SAFE_INTEGER
+List.START = 0
+List.END = Number.MAX_SAFE_INTEGER
 
 export const clear = {
   getProposal (op, model, { } = {}) {

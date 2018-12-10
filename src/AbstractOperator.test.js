@@ -1,14 +1,14 @@
 /* global describe, expect, test */
 import { Engine } from './Engine'
 import { TestPresenter } from './adapters/TestPresenter'
-import { CounterOp, setValue } from './tests/integration/CounterOp'
+import { Counter, setValue } from './tests/integration/Counter'
 import { AbstractOperator } from './AbstractOperator';
 
 describe('AbstractOperator', () => {
   describe('getModelData', () => {
     test('getting default data', () => {
       const engine = new Engine(new TestPresenter())
-      const counter = new CounterOp()
+      const counter = new Counter()
 
       expect(counter).toBeInstanceOf(AbstractOperator)
 
@@ -25,7 +25,7 @@ describe('AbstractOperator', () => {
 
   describe('pathBelongsToOp', () => {
     const engine = new Engine(new TestPresenter())
-    const counter = new CounterOp()
+    const counter = new Counter()
 
     expect(counter).toBeInstanceOf(AbstractOperator)
 

@@ -2,13 +2,13 @@
 import { conformanceTests } from '../../interfaces/OperatorInterface.conformanceTests'
 import { Engine } from '../../Engine'
 import { TestPresenter } from '../../adapters/TestPresenter'
-import { ListOp } from './ListOp'
-import { CounterOp } from './CounterOp'
+import { List } from './List'
+import { Counter } from './Counter'
 
-describe('ListOp', () => {
+describe('List', () => {
   conformanceTests(
     {
-      ListOp: () => new ListOp()
+      List: () => new List()
     },
     describe,
     test,
@@ -22,15 +22,15 @@ describe('ListOp', () => {
       const model = engine.getModel()
       engine.start()
 
-      const list = new ListOp()
+      const list = new List()
       model.setOpTree({ list })
 
       list.reset()
       expect(model.data).toMatchObject({ list: { order: [], items: {}, opNames: {} } })
 
-      const c1 = new CounterOp()
-      const c2 = new CounterOp()
-      list.addItems(ListOp.END, [c1, c2], true)
+      const c1 = new Counter()
+      const c2 = new Counter()
+      list.addItems(List.END, [c1, c2], true)
 
       let id1
       expect(() => id1 = list.getIdFor(c1)).not.toThrow()
@@ -46,8 +46,8 @@ describe('ListOp', () => {
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2]))
 
       // Try to add items in the middle...
-      const c3 = new CounterOp()
-      const c4 = new CounterOp()
+      const c3 = new Counter()
+      const c4 = new Counter()
       list.addItems(1, [c3, c4], true)
 
       let id3
@@ -72,16 +72,16 @@ describe('ListOp', () => {
       const model = engine.getModel()
       engine.start()
 
-      const list = new ListOp()
-      const c1 = new CounterOp()
-      const c2 = new CounterOp()
-      const c3 = new CounterOp()
-      const c4 = new CounterOp()
-      const c5 = new CounterOp()
+      const list = new List()
+      const c1 = new Counter()
+      const c2 = new Counter()
+      const c3 = new Counter()
+      const c4 = new Counter()
+      const c5 = new Counter()
       model.setOpTree({ list })
 
       list.reset()
-      list.addItems(ListOp.END, [c1, c2, c3, c4, c5], true)
+      list.addItems(List.END, [c1, c2, c3, c4, c5], true)
 
       const originalItems = presenter.state.list.items
 
@@ -96,7 +96,7 @@ describe('ListOp', () => {
       list.moveItems([c3], 0)
       expect(presenter.state).toMatchObject({ list: { order: [id3, id1, id2, id4, id5] } })
 
-      list.moveItems([c3, c2, c5], ListOp.END)
+      list.moveItems([c3, c2, c5], List.END)
       expect(presenter.state).toMatchObject({ list: { order: [id1, id4, id3, id2, id5] } })
     })
   })
