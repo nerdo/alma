@@ -100,7 +100,7 @@ export const clear = {
 export const addItems = {
   getProposal (op, model, { index, ids, opNames, resetOps } = {}) {
     const order = model.get(op.getPath('order'), [])
-    const realIndex = Math.min(order.length - 1, Math.max(0, index))
+    const realIndex = Math.max(0, Math.min(order.length, index))
     order.splice(realIndex, 0, ...ids)
     const newOpNames = {
       ...model.get(op.getPath('opNames'), {}),

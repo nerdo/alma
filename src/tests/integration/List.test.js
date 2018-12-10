@@ -62,6 +62,32 @@ describe('List', () => {
         opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName()}
       }})
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4]))
+
+      const c5 = new Counter()
+      list.addItems(List.END, [c5], true)
+
+      let id5
+      expect(() => id5 = list.getIdFor(c5)).not.toThrow()
+      expect(id5).toBeDefined()
+
+      expect(presenter.state).toMatchObject({ list: {
+        order: [id1, id3, id4, id2, id5],
+        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName(), [id5]: c5.getOpName()}
+      }})
+      expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4, c5]))
+
+      const c6 = new Counter()
+      list.addItems(-1, [c6], true)
+
+      let id6
+      expect(() => id6 = list.getIdFor(c6)).not.toThrow()
+      expect(id6).toBeDefined()
+
+      expect(presenter.state).toMatchObject({ list: {
+        order: [id6, id1, id3, id4, id2, id5],
+        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName(), [id6]: c6.getOpName(), [id6]: c6.getOpName()}
+      }})
+      expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4, c5, c6]))
     })
   })
 
