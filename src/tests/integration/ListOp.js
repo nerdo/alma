@@ -21,27 +21,47 @@ export class ListOp extends AbstractOperator {
     action(this, this.model, clear)
   }
 
-  addItem (op) {
-    const id = next(this.idSequence)
-    this.opMap.set(op, id)
+  addItems (index, ops, resetOps = false) {
+    const args = ops
+      .map(op => [op, next(this.idSequence)] )
+      .map(([ op, id, opName ]) => {
+        this.opMap.set(op, id)
+        // op.mount(this.model, this.getPath('items', id), this)
+        return { id, opName: op.getOpName() }
+      })
+      .reduce(
+        function (result, { id, opName }) {
+          result.ids.push(id)
+          result.opNames[id] = opName
+          return result
+        },
+        { ids: [], opNames: {} }
+      )
 
-    // This should technically be a next action... but how would we detect it, and give it context (the path)???
-    // The reverse can also be said. It might be perfectly fine to do this but we should be able to respond
-    // to the rejected proposal by undoing our pre-emptive work... Just refactored to pass a "fullProposal"
-    // through to the nextAction() methods. TODO use path to find out if the proposal is for this op
-    op.mount(this.model, this.getPath('items', id), this)
-
-    action(this, this.model, addItem, { id, opName: op.getOpName() })
+    action(this, this.model, addItems, { index, ...args, resetOps })
   }
 
   getIdFor (op) {
     return this.opMap.get(op)
   }
 
-  // nextAction (fullProposal) {
-  //   console.log(fullProposal)
-  // }
+  getItemById (findId) {
+    return Array.from(this.opMap.entries())
+      .filter(([op, id]) => id === findId)
+      .map(([op]) => op)[0]
+  }
+
+  nextAction (predicate) {
+    if (predicate.proposal.$processor && this.pathBelongsToOp(predicate.path)) {
+      if (predicate.proposal.$processor.name === 'addItems') {
+        addItems.nextAction(this, this.model, predicate)
+      }
+    }
+  }
 }
+
+ListOp.START = 0
+ListOp.END = Number.MAX_SAFE_INTEGER
 
 export const clear = {
   getProposal (op, model, { } = {}) {
@@ -60,13 +80,41 @@ export const clear = {
   }
 }
 
-export const addItem = {
-  getProposal (op, model, { id, opName } = {}) {
-    return { order: model.get(op.getPath('order'), []).concat(id), opNames: {[id]: opName} }
+export const addItems = {
+  getProposal (op, model, { index, ids, opNames, resetOps } = {}) {
+    const order = model.get(op.getPath('order'), [])
+    const realIndex = Math.min(order.length - 1, Math.max(0, index))
+    order.splice(realIndex, 0, ...ids)
+    const newOpNames = {
+      ...model.get(op.getPath('opNames', {})),
+      ...opNames
+    }
+    const $processor = {
+      name: 'addItems', args: { ids, resetOps }
+    }
+    return { order, opNames: newOpNames, $processor }
   },
   digest (op, model, incoming) {
     if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') { return }
     model.set(op.getPath('order'), incoming.order)
     model.set(op.getPath('opNames'), incoming.opNames)
+  },
+  nextAction (op, model, predicate) {
+    const args = predicate.proposal.$processor.args
+    args.ids
+      .map(id => {
+        return { id, op: op.getItemById(id) }
+      })
+      .filter(item => item)
+      .map(item => {
+        item.op.mount(op.model, op.getPath('items', item.id), op)
+        return item
+      })
+      .map(item => {
+        if (args.resetOps) {
+          item.op.reset()
+        }
+        return item
+      })
   }
 }

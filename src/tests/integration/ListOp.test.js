@@ -15,31 +15,53 @@ describe('ListOp', () => {
     expect
   )
 
-  describe('addItem', () => {
-    test('adds an item to the list', () => {
-      const engine = new Engine(new TestPresenter())
+  describe('addItems', () => {
+    test('adds items to the list', () => {
+      const presenter = new TestPresenter()
+      const engine = new Engine(presenter)
       const model = engine.getModel()
       engine.start()
 
       const list = new ListOp()
-      const nested = new CounterOp()
       model.setOpTree({ list })
 
       list.reset()
       expect(model.data).toMatchObject({ list: { order: [], items: {}, opNames: {} } })
 
-      // TODO pass tag e.g. list.addItem(nested, 'CounterOp') and store it in the model data.
-      // To unserialize, ListOp will need to be given a function that returns a new instance of the op.
-      // TODO add another argument for index (ordering) so it can be added anywhere in the list.
-      list.addItem(nested)
-      nested.setValue()
+      const c1 = new CounterOp()
+      const c2 = new CounterOp()
+      list.addItems(ListOp.END, [c1, c2], true)
 
-      let nestedId
-      expect(() => nestedId = list.getIdFor(nested)).not.toThrow()
-      expect(nestedId).toBeDefined()
+      let id1
+      expect(() => id1 = list.getIdFor(c1)).not.toThrow()
+      expect(id1).toBeDefined()
+      let id2
+      expect(() => id2 = list.getIdFor(c2)).not.toThrow()
+      expect(id2).toBeDefined()
 
-      expect(model.data).toMatchObject({ list: { order: [nestedId], opNames: {[nestedId]: nested.getOpName()} } })
-      expect(list.getNestedOps()).toEqual(expect.arrayContaining([nested]))
+      expect(presenter.state).toMatchObject({ list: {
+        order: [id1, id2],
+        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName() }
+      }})
+      expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2]))
+
+      // Try to add items in the middle...
+      const c3 = new CounterOp()
+      const c4 = new CounterOp()
+      list.addItems(1, [c3, c4], true)
+
+      let id3
+      expect(() => id3 = list.getIdFor(c3)).not.toThrow()
+      expect(id3).toBeDefined()
+      let id4
+      expect(() => id4 = list.getIdFor(c4)).not.toThrow()
+      expect(id4).toBeDefined()
+
+      expect(presenter.state).toMatchObject({ list: {
+        order: [id1, id3, id4, id2],
+        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName()}
+      }})
+      expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4]))
     })
   })
 
