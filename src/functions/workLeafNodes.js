@@ -5,26 +5,30 @@ import isPlainObject from 'is-plain-object'
  * @param {Object} tree - The object to work.
  * @param {Function} callback - The callback function. It is called as:
  *  callback({*[]} path - list of keys to get to the node, {*} node)
+ * @param {Function} [isLeaf] - A function that test whether or not a node is a leaf node.
+ *  The default implementation returns true for all nodes that are not plain Javascript objects. It is called as:
+ *  isLeaf({*[]} path - list of keys to get to the node, {*} node)
  */
-export function workLeafNodes (tree, callback) {
-  recurse(tree, callback, [])
+export function workLeafNodes (tree, callback, isLeaf = defaultIsLeaf) {
+  recurse(tree, callback, [], isLeaf)
 }
 
-function recurse (tree, callback, path) {
+function recurse (tree, callback, path, isLeaf) {
   if (typeof tree === 'undefined') {
     return
   }
 
   for (const key of Object.getOwnPropertyNames(tree).concat(Object.getOwnPropertySymbols(tree))) {
     const node = tree[key]
-    if (isLeaf(node)) {
-      callback(path.concat(key), node)
+    const nodePath = path.concat(key)
+    if (isLeaf(nodePath, node)) {
+      callback(nodePath, node)
     } else {
-      recurse(node, callback, path.concat(key))
+      recurse(node, callback, nodePath, isLeaf)
     }
   }
 }
 
-function isLeaf (node) {
+function defaultIsLeaf (path, node) {
   return !isPlainObject(node)
 }

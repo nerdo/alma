@@ -67,4 +67,30 @@ describe('workLeafNodes', () => {
 
     // TODO check fn.mock.calls//?
   })
+
+  test('custom isLeaf function', () => {
+    const accepted = []
+    const fn = jest.fn((...args) => accepted.push(args))
+
+    const tree = {
+      a: 1,
+      b: {
+        foo: true
+      },
+      c: 3
+    }
+
+    const isLeaf = function (path, node) {
+      if (path[0] === 'a' || path[0] === 'b') {
+        return false
+      }
+      return true
+    }
+    workLeafNodes(tree, fn, isLeaf)
+
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(accepted).toMatchObject([
+      [['c'], 3]
+    ])
+  })
 })
