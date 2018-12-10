@@ -59,6 +59,14 @@ export class List extends Operator {
       .map(([op]) => op)[0]
   }
 
+  getOrder () {
+    return this.getModelData(['order']) || []
+  }
+
+  getOpNames () {
+    return this.getModelData(['opNames']) || []
+  }
+
   nextAction (predicate) {
     if (predicate.proposal.$processor && this.pathBelongsToOp(predicate.path)) {
       if (predicate.proposal.$processor.name === 'addItems') {
