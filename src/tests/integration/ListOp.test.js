@@ -55,4 +55,6 @@ describe('ListOp', () => {
   describe('getItems', () => {
   })
 
+  describe('mounting a list from data', () => {
+  })
 })
