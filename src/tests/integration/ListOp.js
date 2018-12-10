@@ -31,7 +31,7 @@ export class ListOp extends AbstractOperator {
     // through to the nextAction() methods. TODO use path to find out if the proposal is for this op
     op.mount(this.model, this.getPath('items', id), this)
 
-    action(this, this.model, addItem, { id })
+    action(this, this.model, addItem, { id, opName: op.getOpName() })
   }
 
   getIdFor (op) {
@@ -45,7 +45,7 @@ export class ListOp extends AbstractOperator {
 
 export const clear = {
   getProposal (op, model, { } = {}) {
-    return { order: [], items: {} }
+    return { order: [], items: {}, opNames: {} }
   },
   digest (op, model, incoming) {
     if (typeof incoming.order !== 'undefined') {
@@ -54,15 +54,19 @@ export const clear = {
     if (typeof incoming.items !== 'undefined') {
       model.set(op.getPath('items'), incoming.items)
     }
+    if (typeof incoming.opNames !== 'undefined') {
+      model.set(op.getPath('opNames'), incoming.opNames)
+    }
   }
 }
 
 export const addItem = {
-  getProposal (op, model, { id } = {}) {
-    return { order: model.get(op.getPath('order'), []).concat(id) }
+  getProposal (op, model, { id, opName } = {}) {
+    return { order: model.get(op.getPath('order'), []).concat(id), opNames: {[id]: opName} }
   },
   digest (op, model, incoming) {
-    if (typeof incoming.order === 'undefined') { return }
+    if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') { return }
     model.set(op.getPath('order'), incoming.order)
+    model.set(op.getPath('opNames'), incoming.opNames)
   }
 }

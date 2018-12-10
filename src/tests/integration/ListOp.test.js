@@ -26,7 +26,7 @@ describe('ListOp', () => {
       model.setOpTree({ list })
 
       list.reset()
-      expect(model.data).toMatchObject({ list: { order: [], items: {} } })
+      expect(model.data).toMatchObject({ list: { order: [], items: {}, opNames: {} } })
 
       // TODO pass tag e.g. list.addItem(nested, 'CounterOp') and store it in the model data.
       // To unserialize, ListOp will need to be given a function that returns a new instance of the op.
@@ -38,7 +38,7 @@ describe('ListOp', () => {
       expect(() => nestedId = list.getIdFor(nested)).not.toThrow()
       expect(nestedId).toBeDefined()
 
-      expect(model.data).toMatchObject({ list: { order: [nestedId] } })
+      expect(model.data).toMatchObject({ list: { order: [nestedId], opNames: {[nestedId]: nested.getOpName()} } })
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([nested]))
     })
   })
