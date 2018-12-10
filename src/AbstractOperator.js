@@ -24,7 +24,7 @@ export class AbstractOperator {
   getPath (...relative) { return (this.path || []).concat(relative) }
 
   /**
-   *
+   * Helper method for getting model data.
    * @param {*[]} relative  - The relative path (list of keys) to pull the value from.
    * @param {ActionProcessorInterface} actionProcessorForDefaults - The action processor to pull defaults from if
    *  the actual value turns out to be undefined.
