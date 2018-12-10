@@ -63,7 +63,7 @@ export class ModelInterface {
 
   /**
    * Calls nextAction on all operators.
-   * @param {Object} fullProposal - The full proposal that was processed by the model.
+   * @param {Object} predicate - The full proposal that was processed by the model.
    */
-  nextAction (fullProposal) { throw new Error('Not Yet Implemented') }
+  nextAction (predicate) { throw new Error('Not Yet Implemented') }
 }

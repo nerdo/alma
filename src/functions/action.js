@@ -8,6 +8,6 @@
 export function action (op, model, processor, args) {
   const proposal = processor.getProposal(op, model, args)
   processor.digest(op, model, proposal)
-  const fullProposal = { path: op.getPath(), proposal }
-  model.getSupervisor().process(model, fullProposal)
+  const predicate = { path: op.getPath(), proposal }
+  model.getSupervisor().process(model, predicate)
 }

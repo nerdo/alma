@@ -103,13 +103,13 @@ export class Model {
   /**
    * Calls nextAction on all operators.
    */
-  nextAction (fullProposal) {
+  nextAction (predicate) {
     workLeafNodes(
       this.opTree,
       (path, op) => {
         if (!op.nextAction) { return }
-        op.nextAction(fullProposal)
-        op.getNestedOps().map(nested => nested.nextAction ? nested.nextAction(fullProposal) : null)
+        op.nextAction(predicate)
+        op.getNestedOps().map(nested => nested.nextAction ? nested.nextAction(predicate) : null)
       },
       (path, op) => {
         // Detect operators as leaf nodes by doing some pretty simple type checks on the OperatorInterface.

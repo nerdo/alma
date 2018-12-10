@@ -29,9 +29,9 @@ export class SupervisorInterface {
   /**
    * Processes the model.
    * @param {ModelInterface} model
-   * @param {Object} fullProposal - The full proposal that was processed by the model.
+   * @param {Object} predicate - The full proposal that was processed by the model.
    */
-  process (model, fullProposal) { throw new Error('Not Yet Implemented') }
+  process (model, predicate) { throw new Error('Not Yet Implemented') }
 
   /**
    * Digests the model to be consumed by PresenterInterface.render().
@@ -42,7 +42,7 @@ export class SupervisorInterface {
   /**
    * Triggers actions after the model is digested.
    * @param {ModelInterface} model
-   * @param {Object} fullProposal - The full proposal that was processed by the model.
+   * @param {Object} predicate - The full proposal that was processed by the model.
    */
-  nextAction (model, fullProposal) { throw new Error('Not Yet Implemented') }
+  nextAction (model, predicate) { throw new Error('Not Yet Implemented') }
 }
