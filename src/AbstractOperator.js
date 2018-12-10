@@ -9,7 +9,7 @@ const normalMutatorSingleton = new NormalMutator()
  * @class
  */
 export class AbstractOperator {
-  mount (model, path) {
+  mount (model, path, parentOp) {
     /**
      * @type {ModelInstance}
      */
@@ -18,7 +18,35 @@ export class AbstractOperator {
      * @type {*[]}
      */
     this.path = path
-    mount(this, this.model, this.path)
+    mount(this, this.model, this.path, parentOp)
+  }
+
+  /**
+   * Nests an operator within this one.
+   * @param {OperatorInterface} op - The operator to add.
+   */
+  addNestedOp (op) {
+    this.nestedOps = this.nestedOps || new Set()
+    this.nestedOps.add(op)
+  }
+
+  /**
+   * Removes an op that was nested in this one.
+   * @param {OperatorInterface} op - The operator to add.
+   */
+  removeNestedOp (op) {
+    if (!this.nestedOps) { return }
+    this.nestedOps.delete(op)
+  }
+
+  /**
+   * Gets a list of operators nested within this one.
+   * @returns {[OperatorInterface]}
+   */
+  getNestedOps () {
+    return this.nestedOps
+      ? Array.from(this.nestedOps)
+      : []
   }
 
   getPath (...relative) { return (this.path || []).concat(relative) }

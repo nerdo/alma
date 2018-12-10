@@ -40,10 +40,11 @@ export class Supervisor {
   /**
    * Processes the model.
    * @param {ModelInterface} model
+   * @param {Object} fullProposal - The full proposal that was processed by the model.
    */
-  process (model) {
+  process (model, fullProposal) {
     this.digest(model)
-    this.nextAction(model)
+    this.nextAction(model, fullProposal)
   }
 
   /**
@@ -58,19 +59,20 @@ export class Supervisor {
   /**
    * Triggers actions after the model is digested.
    * @param {ModelInterface} model
+   * @param {Object} fullProposal - The full proposal that was processed by the model.
    */
-  nextAction (model) {
+  nextAction (model, fullProposal) {
     const [beforeOps, afterOps] = this.getNextActionDelegates()
 
     if (beforeOps) {
-      this.beforeOps(model)
+      this.beforeOps(model, fullProposal)
     }
 
     // Allow operators to tap into next actions through the model.
-    model.nextAction()
+    model.nextAction(fullProposal)
 
     if (afterOps) {
-      this.afterOps(model)
+      this.afterOps(model, fullProposal)
     }
   }
 }

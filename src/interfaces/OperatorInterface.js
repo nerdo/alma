@@ -5,12 +5,31 @@ export class OperatorInterface {
    * This will typically be:<pre><code>
    * this.model = model
    * this.path = path
-   * mount(this, this.model, this.path) // mount helper function, imported from alma
+   * mount(this, this.model, this.path, parentOp) // mount helper function, imported from alma
    * </code></pre>
    * @param {ModelInterface} model - The model to mount the operator to.
    * @param {*[]} path  - The path (list of keys) in the model data to mount the operator to.
+   * @param {OperatorInterface} [parentOp] - The op that is responsible for this operator.
    */
-  mount (model, path) { throw new Error('Not Yet Implemented') }
+  mount (model, path, parentOp) { throw new Error('Not Yet Implemented') }
+
+  /**
+   * Nests an operator within this one.
+   * @param {OperatorInterface} op - The operator to add.
+   */
+  addNestedOp (op) { throw new Error('Not Yet Implemented') }
+
+  /**
+   * Removes an op that was nested in this one.
+   * @param {OperatorInterface} op - The operator to add.
+   */
+  removeNestedOp (op) { throw new Error('Not Yet Implemented') }
+
+  /**
+   * Gets a list of operators nested within this one.
+   * @returns {[OperatorInterface]}
+   */
+  getNestedOps () { throw new Error('Not Yet Implemented') }
 
   /**
    * Gets the path to model data, relative to the operator's path.

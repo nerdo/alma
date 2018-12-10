@@ -1,8 +1,8 @@
 /* global describe, test, expect */
-import { setValue } from './CounterOperator'
+import { setValue } from './CounterOp'
 import { conformanceTests } from '../../interfaces/ActionProcessorInterface.conformanceTests'
 
-describe('CounterOperator', () => {
+describe('CounterOp', () => {
   conformanceTests(
     {
       setValue: () => setValue
