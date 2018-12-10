@@ -1,5 +1,11 @@
 export class OperatorInterface {
   /**
+   * Gets a unique name for all instances of the operation.
+   * @returns {string}
+   */
+  getOpName () { throw new Error('Not Yet Implemented') }
+
+  /**
    * Mounts an operator to the model.
    *
    * This will typically be:<pre><code>

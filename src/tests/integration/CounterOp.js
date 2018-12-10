@@ -2,6 +2,8 @@ import { AbstractOperator } from '../../AbstractOperator';
 import { action } from '../../functions/action'
 
 export class CounterOp extends AbstractOperator {
+  getOpName () { return 'CounterOp' }
+
   reset () {
     this.setValue()
   }

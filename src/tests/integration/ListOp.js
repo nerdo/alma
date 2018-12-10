@@ -10,6 +10,8 @@ export class ListOp extends AbstractOperator {
     this.opMap = new WeakMap()
   }
 
+  getOpName () { return 'ListOp' }
+
   reset () {
     this.clear()
   }
