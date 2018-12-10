@@ -68,6 +68,7 @@ export class List extends Operator {
   }
 
   nextAction (predicate) {
+    if (typeof predicate === 'undefined') { return }
     if (predicate.proposal.$processor && this.pathBelongsToOp(predicate.path)) {
       if (predicate.proposal.$processor.name === 'addItems') {
         addItems.nextAction(this, this.model, predicate)
