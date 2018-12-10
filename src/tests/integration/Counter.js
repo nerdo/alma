@@ -1,7 +1,7 @@
-import { AbstractOperator } from '../../AbstractOperator';
+import { Operator } from '../../Operator';
 import { action } from '../../functions/action'
 
-export class Counter extends AbstractOperator {
+export class Counter extends Operator {
   getOpName () { return 'Counter' }
 
   reset () {

@@ -8,7 +8,7 @@ const normalMutatorSingleton = new NormalMutator()
  * Base class for operators.
  * @class
  */
-export class AbstractOperator {
+export class Operator {
   mount (model, path, parentOp) {
     /**
      * @type {ModelInstance}

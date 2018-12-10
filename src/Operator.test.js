@@ -2,15 +2,15 @@
 import { Engine } from './Engine'
 import { TestPresenter } from './adapters/TestPresenter'
 import { Counter, setValue } from './tests/integration/Counter'
-import { AbstractOperator } from './AbstractOperator';
+import { Operator } from './Operator';
 
-describe('AbstractOperator', () => {
+describe('Operator', () => {
   describe('getModelData', () => {
     test('getting default data', () => {
       const engine = new Engine(new TestPresenter())
       const counter = new Counter()
 
-      expect(counter).toBeInstanceOf(AbstractOperator)
+      expect(counter).toBeInstanceOf(Operator)
 
       engine.getModel().setOpTree({ counter })
       engine.start()
@@ -27,7 +27,7 @@ describe('AbstractOperator', () => {
     const engine = new Engine(new TestPresenter())
     const counter = new Counter()
 
-    expect(counter).toBeInstanceOf(AbstractOperator)
+    expect(counter).toBeInstanceOf(Operator)
 
     engine.getModel().setOpTree({ foo: { bar: { counter } } })
     engine.start()

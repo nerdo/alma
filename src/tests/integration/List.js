@@ -1,9 +1,9 @@
-import { AbstractOperator } from '../../AbstractOperator'
+import { Operator } from '../../Operator'
 import { action } from '../../functions/action'
 import { integerSequence } from '../../helpers/integerSequence'
 import { next } from '../../helpers/next'
 
-export class List extends AbstractOperator {
+export class List extends Operator {
   constructor () {
     super()
     this.idSequence = integerSequence()
