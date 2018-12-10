@@ -1,6 +1,7 @@
 export * from './Engine'
 export * from './Model'
 export * from './Supervisor'
+export * from './AbstractOperator'
 export * from './adapters/NormalMutator'
 export * from './functions/action'
 export * from './functions/defaults'
