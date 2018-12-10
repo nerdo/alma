@@ -41,6 +41,14 @@ export class ListOp extends AbstractOperator {
     action(this, this.model, addItems, { index, ...args, resetOps })
   }
 
+  moveItems (ops, index) {
+    const ids = ops
+      .map(op => this.getIdFor(op))
+      .filter(op => op)
+
+    action(this, this.model, moveItems, { index, ids })
+  }
+
   getIdFor (op) {
     return this.opMap.get(op)
   }
@@ -86,7 +94,7 @@ export const addItems = {
     const realIndex = Math.min(order.length - 1, Math.max(0, index))
     order.splice(realIndex, 0, ...ids)
     const newOpNames = {
-      ...model.get(op.getPath('opNames', {})),
+      ...model.get(op.getPath('opNames'), {}),
       ...opNames
     }
     const $processor = {
@@ -116,5 +124,18 @@ export const addItems = {
         }
         return item
       })
+  }
+}
+
+export const moveItems = {
+  getProposal (op, model, { index, ids } = {}) {
+    const order = model.get(op.getPath('order'), [])
+      .filter(id => !ids.includes(id))
+    order.splice(index, 0, ...ids)
+    return { order }
+  },
+  digest (op, model, incoming) {
+    if (typeof incoming.order === 'undefined') { return }
+    model.set(op.getPath('order'), incoming.order)
   }
 }
