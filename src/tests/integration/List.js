@@ -6,7 +6,7 @@ import { next } from '../../helpers/next'
 export class List extends Operator {
   constructor () {
     super()
-    this.idSequence = integerSequence()
+    this.idSequence = integerSequence(1)
     this.opMap = new WeakMap()
   }
 
