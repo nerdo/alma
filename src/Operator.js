@@ -58,6 +58,7 @@ export class Operator {
    *  the actual value turns out to be undefined.
    */
   getModelData (relative, actionProcessorForDefaults = void 0) {
+    if (!this.model) { return void 0 }
     let data = this.model.get(this.getPath(...relative))
     if (typeof data === 'undefined' && actionProcessorForDefaults) {
       data = normalMutatorSingleton.get(defaults(this, this.model, actionProcessorForDefaults), relative)
