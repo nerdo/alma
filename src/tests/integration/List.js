@@ -3,6 +3,8 @@ import { action } from '../../functions/action'
 import { integerSequence } from '../../helpers/integerSequence'
 import { next } from '../../helpers/next'
 
+const EMPTY_ARRAY = []
+
 export class List extends Operator {
   constructor () {
     super()
@@ -60,11 +62,11 @@ export class List extends Operator {
   }
 
   getOrder () {
-    return this.getModelData(['order']) || []
+    return this.getModelData(['order']) || EMPTY_ARRAY
   }
 
   getOpNames () {
-    return this.getModelData(['opNames']) || []
+    return this.getModelData(['opNames']) || EMPTY_ARRAY
   }
 
   nextAction (predicate) {
