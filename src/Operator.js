@@ -65,6 +65,11 @@ export class Operator {
     return data
   }
 
+  /**
+   * Gets whether or not the path is on the operator's path.
+   * @param {Array} path
+   * @return {boolean}
+   */
   pathBelongsToOp (path) {
     return (this.path || [])
       .map((part, index) => `${part}` === `${path[index]}`)
@@ -72,5 +77,23 @@ export class Operator {
         (result, current) => result && current,
         true
       )
+  }
+
+  /**
+   * Returns an object that represents the change that can be applied to the model from the root.
+   * @param {*} data - The data, relative to the operator.
+   * @return {Object}
+   */
+  getAbsoluteChange (data) {
+    const change = {}
+    let current = change
+    const path = [].concat(this.getPath())
+    const lastKey = path.pop()
+    for (const key of path) {
+      current[key] = {}
+      current = current[key]
+    }
+    current[lastKey] = data
+    return change
   }
 }
