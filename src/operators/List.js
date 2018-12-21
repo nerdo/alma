@@ -69,6 +69,14 @@ export class List extends Operator {
     return this.getModelData(['opNames']) || EMPTY_ARRAY
   }
 
+  consider (data, sourceOperator, actionName) {
+    const incoming = this.getRelativeSlice(data)
+    if (typeof incoming === 'undefined') { return }
+
+    // TODO refactor actions
+    true
+  }
+
   nextAction (predicate) {
     if (typeof predicate === 'undefined') { return }
     if (predicate.proposal.$processor && this.pathBelongsToOp(predicate.path)) {
