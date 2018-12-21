@@ -4,6 +4,7 @@ import { Engine } from '../../Engine'
 import { TestPresenter } from '../../adapters/TestPresenter'
 import { List } from './List'
 import { Counter } from './Counter'
+import { TestEngine } from '../../helpers/TestEngine'
 
 describe('List', () => {
   conformanceTests(
@@ -17,13 +18,10 @@ describe('List', () => {
 
   describe('addItems', () => {
     test('adds items to the list', () => {
-      const presenter = new TestPresenter()
-      const engine = new Engine(presenter)
-      const model = engine.getModel()
-      engine.start()
-
       const list = new List()
-      model.setOpTree({ list })
+      const engine = TestEngine.start({ list })
+      const presenter = engine.getPresenter()
+      const model = engine.getModel()
 
       list.reset()
       expect(model.data).toMatchObject({ list: { order: [], items: {}, opNames: {} } })
@@ -42,7 +40,7 @@ describe('List', () => {
       expect(presenter.state).toMatchObject({ list: {
         order: [id1, id2],
         opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName() }
-      }})
+      } })
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2]))
 
       // Try to add items in the middle...
@@ -59,8 +57,8 @@ describe('List', () => {
 
       expect(presenter.state).toMatchObject({ list: {
         order: [id1, id3, id4, id2],
-        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName()}
-      }})
+        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName() }
+      } })
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4]))
 
       const c5 = new Counter()
@@ -72,8 +70,8 @@ describe('List', () => {
 
       expect(presenter.state).toMatchObject({ list: {
         order: [id1, id3, id4, id2, id5],
-        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName(), [id5]: c5.getOpName()}
-      }})
+        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName(), [id5]: c5.getOpName() }
+      } })
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4, c5]))
 
       const c6 = new Counter()
@@ -85,26 +83,23 @@ describe('List', () => {
 
       expect(presenter.state).toMatchObject({ list: {
         order: [id6, id1, id3, id4, id2, id5],
-        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName(), [id6]: c6.getOpName(), [id6]: c6.getOpName()}
-      }})
+        opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName(), [id6]: c6.getOpName(), [id6]: c6.getOpName() }
+      } })
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4, c5, c6]))
     })
   })
 
   describe('moveItems', () => {
     test('moving a single item', () => {
-      const presenter = new TestPresenter()
-      const engine = new Engine(presenter)
-      const model = engine.getModel()
-      engine.start()
-
       const list = new List()
       const c1 = new Counter()
       const c2 = new Counter()
       const c3 = new Counter()
       const c4 = new Counter()
       const c5 = new Counter()
-      model.setOpTree({ list })
+
+      const engine = TestEngine.start({ list })
+      const presenter = engine.getPresenter()
 
       list.reset()
       list.addItems(List.END, [c1, c2, c3, c4, c5], true)

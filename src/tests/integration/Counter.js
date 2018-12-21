@@ -1,4 +1,4 @@
-import { Operator } from '../../Operator';
+import { Operator } from '../../Operator'
 import { action } from '../../functions/action'
 
 export class Counter extends Operator {
