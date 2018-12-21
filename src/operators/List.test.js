@@ -1,7 +1,5 @@
 /* global describe, test, expect */
 import { conformanceTests } from '../interfaces/OperatorInterface.conformanceTests'
-import { Engine } from '../Engine'
-import { TestPresenter } from '../adapters/TestPresenter'
 import { List } from './List'
 import { Counter } from './Counter'
 import { TestEngine } from '../helpers/TestEngine'
@@ -31,10 +29,10 @@ describe('List', () => {
       list.addItems(List.END, [c1, c2], true)
 
       let id1
-      expect(() => id1 = list.getIdFor(c1)).not.toThrow()
+      expect(() => { id1 = list.getIdFor(c1) }).not.toThrow()
       expect(id1).toBeDefined()
       let id2
-      expect(() => id2 = list.getIdFor(c2)).not.toThrow()
+      expect(() => { id2 = list.getIdFor(c2) }).not.toThrow()
       expect(id2).toBeDefined()
 
       expect(presenter.state).toMatchObject({ list: {
@@ -49,10 +47,10 @@ describe('List', () => {
       list.addItems(1, [c3, c4], true)
 
       let id3
-      expect(() => id3 = list.getIdFor(c3)).not.toThrow()
+      expect(() => { id3 = list.getIdFor(c3) }).not.toThrow()
       expect(id3).toBeDefined()
       let id4
-      expect(() => id4 = list.getIdFor(c4)).not.toThrow()
+      expect(() => { id4 = list.getIdFor(c4) }).not.toThrow()
       expect(id4).toBeDefined()
 
       expect(presenter.state).toMatchObject({ list: {
@@ -65,7 +63,7 @@ describe('List', () => {
       list.addItems(List.END, [c5], true)
 
       let id5
-      expect(() => id5 = list.getIdFor(c5)).not.toThrow()
+      expect(() => { id5 = list.getIdFor(c5) }).not.toThrow()
       expect(id5).toBeDefined()
 
       expect(presenter.state).toMatchObject({ list: {
@@ -78,7 +76,7 @@ describe('List', () => {
       list.addItems(-1, [c6], true)
 
       let id6
-      expect(() => id6 = list.getIdFor(c6)).not.toThrow()
+      expect(() => { id6 = list.getIdFor(c6) }).not.toThrow()
       expect(id6).toBeDefined()
 
       expect(presenter.state).toMatchObject({ list: {
