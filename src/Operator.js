@@ -1,6 +1,6 @@
 import { mount } from './functions/mount'
 import { NormalMutator } from './adapters/NormalMutator'
-import { defaults } from './functions/defaults';
+import { defaults } from './functions/defaults'
 
 const normalMutatorSingleton = new NormalMutator()
 
@@ -54,14 +54,13 @@ export class Operator {
   /**
    * Helper method for getting model data.
    * @param {*[]} relative  - The relative path (list of keys) to pull the value from.
-   * @param {ActionProcessorInterface} actionProcessorForDefaults - The action processor to pull defaults from if
-   *  the actual value turns out to be undefined.
+   * @param {*} defaultValue - The value to return if the model data is undefined.
    */
-  getModelData (relative, actionProcessorForDefaults = void 0) {
+  getModelData (relative, defaultValue = void 0) {
     if (!this.model) { return void 0 }
     let data = this.model.get(this.getPath(...relative))
-    if (typeof data === 'undefined' && actionProcessorForDefaults) {
-      data = normalMutatorSingleton.get(defaults(this, this.model, actionProcessorForDefaults), relative)
+    if (typeof data === 'undefined') {
+      data = defaultValue
     }
     return data
   }
