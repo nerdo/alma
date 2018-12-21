@@ -96,4 +96,29 @@ export class Operator {
     current[lastKey] = data
     return change
   }
+
+  /*
+   * Gets the slice of data that belongs to the operator.
+   * @param {*} data The model data.
+   * @returns {*}
+   */
+  getRelativeSlice (data) {
+    return normalMutatorSingleton.get(data, this.getPath())
+  }
+
+  /**
+   * Proposes a change to the model.
+   * @param {string} actionName - the name of the action being proposed.
+   * @param {*} data - The data to propose to the model.
+   * @param {boolean} isDataRelative - Whether or not the data is relative to the current operator.
+   */
+  propose (actionName, data, isDataRelative = true) {
+    this.model.consider(
+      isDataRelative
+        ? this.getAbsoluteChange(data)
+        : data,
+      this,
+      actionName
+    )
+  }
 }
