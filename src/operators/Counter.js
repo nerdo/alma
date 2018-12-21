@@ -1,5 +1,4 @@
 import { Operator } from '../Operator'
-import { action } from '../functions/action'
 
 export class Counter extends Operator {
   getOpName () { return 'Counter' }
@@ -8,25 +7,23 @@ export class Counter extends Operator {
     this.setValue()
   }
 
-  setValue (value) {
-    action(this, this.model, setValue, { value })
+  setValue (value = 0) {
+    this.propose('setValue', { value })
   }
 
   increment () {
-    this.setValue(this.getModelData(['value'], setValue) + 1)
+    this.setValue(this.getModelData(['value'], 0) + 1)
   }
 
   decrement () {
-    this.setValue(this.getModelData(['value'], setValue) - 1)
+    this.setValue(this.getModelData(['value'], 0) - 1)
   }
-}
 
-export const setValue = {
-  getProposal (op, model, { value = 0 } = {}) {
-    return { value }
-  },
-  digest (op, model, incoming) {
-    if (typeof incoming.value === 'undefined') { return }
-    model.set(op.getPath('value'), incoming.value)
+  consider (data, sourceOperator, actionName) {
+    const incoming = this.getRelativeSlice(data)
+    if (typeof incoming === 'undefined') { return }
+    if (typeof incoming.value !== 'undefined') {
+      this.model.set(this.getPath('value'), incoming.value)
+    }
   }
 }
