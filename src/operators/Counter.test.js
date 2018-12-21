@@ -1,7 +1,7 @@
 /* global describe, test, expect */
 import { Counter } from './Counter'
-import { conformanceTests } from '../../interfaces/OperatorInterface.conformanceTests'
-import { TestEngine } from '../../helpers/TestEngine'
+import { conformanceTests } from '../interfaces/OperatorInterface.conformanceTests'
+import { TestEngine } from '../helpers/TestEngine'
 
 describe('Counter', () => {
   conformanceTests(

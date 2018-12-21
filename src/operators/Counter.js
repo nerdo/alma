@@ -1,5 +1,5 @@
-import { Operator } from '../../Operator'
-import { action } from '../../functions/action'
+import { Operator } from '../Operator'
+import { action } from '../functions/action'
 
 export class Counter extends Operator {
   getOpName () { return 'Counter' }

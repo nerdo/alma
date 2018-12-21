@@ -1,10 +1,10 @@
 /* global describe, test, expect */
-import { conformanceTests } from '../../interfaces/OperatorInterface.conformanceTests'
-import { Engine } from '../../Engine'
-import { TestPresenter } from '../../adapters/TestPresenter'
+import { conformanceTests } from '../interfaces/OperatorInterface.conformanceTests'
+import { Engine } from '../Engine'
+import { TestPresenter } from '../adapters/TestPresenter'
 import { List } from './List'
 import { Counter } from './Counter'
-import { TestEngine } from '../../helpers/TestEngine'
+import { TestEngine } from '../helpers/TestEngine'
 
 describe('List', () => {
   conformanceTests(

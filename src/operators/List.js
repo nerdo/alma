@@ -1,7 +1,7 @@
-import { Operator } from '../../Operator'
-import { action } from '../../functions/action'
-import { integerSequence } from '../../helpers/integerSequence'
-import { next } from '../../helpers/next'
+import { Operator } from '../Operator'
+import { action } from '../functions/action'
+import { integerSequence } from '../helpers/integerSequence'
+import { next } from '../helpers/next'
 
 const EMPTY_ARRAY = []
 
@@ -25,7 +25,7 @@ export class List extends Operator {
 
   addItems (index, ops, resetOps = false) {
     const args = ops
-      .map(op => [op, next(this.idSequence)] )
+      .map(op => [op, next(this.idSequence)])
       .map(([ op, id, opName ]) => {
         this.opMap.set(op, id)
         // op.mount(this.model, this.getPath('items', id), this)
