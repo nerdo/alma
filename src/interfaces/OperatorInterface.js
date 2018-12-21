@@ -56,6 +56,14 @@ export class OperatorInterface {
   reset () { throw new Error('Not Yet Implemented') }
 
   /**
+   * Considers data for acceptance.
+   * @param {*} data - The data to consider.
+   * @param {OperatorInterface} sourceOperator - The operator that initiated the change.
+   * @param {string} - The action the data is coming from.
+   */
+  consider (data, sourceOperator, actionName) { throw new Error('Not Yet Implemented') }
+
+  /**
    * Optional. Called to allow the operator to automatically trigger actions after an action has been processed.
    */
   // nextAction () { throw new Error('Not Yet Implemented') // }

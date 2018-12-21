@@ -50,10 +50,18 @@ export class ModelInterface {
 
   /**
    * Gets the operator tree.
-   * @param {*[]} path  - The path (list of keys) to pull the value from.
+   * @param {*[]} path - The path (list of keys) to pull the value from.
    * @returns {*} the subtree at path, or the entire tree if no path is defined.
    */
   getOpTree (path) { throw new Error('Not Yet Implemented') }
+
+  /**
+   * Considers data for acceptance.
+   * @param {*} data - The data to consider.
+   * @param {OperatorInterface} sourceOperator - The operator that initiated the change.
+   * @param {string} - The action the data is coming from.
+   */
+  consider (data, sourceOperator, actionName) { throw new Error('Not Yet Implemented') }
 
   /**
    * Resets the data and all operators.

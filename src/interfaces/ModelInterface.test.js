@@ -12,27 +12,27 @@ describe('ModelInterface conformance of', () => {
     concreteImplementationName | newInstance
     ${'Model'}               | ${newModel}
   `('$concreteImplementationName', ({ newInstance }) => {
-      const model = newInstance()
-      expect(model).toImplement(ModelInterface)
+  const model = newInstance()
+  expect(model).toImplement(ModelInterface)
 
-      const setResult = model.set([], {})
-      expect(setResult).toBe(model)
+  const setResult = model.set([], {})
+  expect(setResult).toBe(model)
 
-      let setSupervisorResult
-      expect(() => setSupervisorResult = model.setSupervisor(null)).not.toThrow()
-      expect(setSupervisorResult).toBe(model)
-      expect(model.getSupervisor()).toBe(null)
+  let setSupervisorResult
+  expect(() => { setSupervisorResult = model.setSupervisor(null) }).not.toThrow()
+  expect(setSupervisorResult).toBe(model)
+  expect(model.getSupervisor()).toBe(null)
 
-      let setMutatorResult
-      expect(() => setMutatorResult = model.setMutator(null)).not.toThrow()
-      expect(setMutatorResult).toBe(model)
-      expect(model.getMutator()).toBe(null)
+  let setMutatorResult
+  expect(() => { setMutatorResult = model.setMutator(null) }).not.toThrow()
+  expect(setMutatorResult).toBe(model)
+  expect(model.getMutator()).toBe(null)
 
-      let setOpTreeResult
-      expect(() => setOpTreeResult = model.setOpTree({})).not.toThrow()
-      expect(setOpTreeResult).toBe(model)
-      expect(model.getOpTree()).toMatchObject({})
+  let setOpTreeResult
+  expect(() => { setOpTreeResult = model.setOpTree({}) }).not.toThrow()
+  expect(setOpTreeResult).toBe(model)
+  expect(model.getOpTree()).toMatchObject({})
 
-      expect(() => model.reset()).not.toThrow()
-    })
+  expect(() => model.reset()).not.toThrow()
+})
 })

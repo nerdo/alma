@@ -101,6 +101,19 @@ export class Model {
   }
 
   /**
+   * Considers data for acceptance.
+   * @param {*} data - The data to consider.
+   * @param {OperatorInterface} sourceOperator - The operator that initiated the change.
+   * @param {string} - The action the data is coming from.
+   */
+  consider (data, sourceOperator, actionName) {
+    workLeafNodes(this.opTree, (path, op) => op.consider(data, sourceOperator, actionName))
+    // TODO
+    // const predicate = { path: op.getPath(), proposal }
+    // this.supervisor.process(model, predicate)
+  }
+
+  /**
    * Calls nextAction on all operators.
    */
   nextAction (predicate) {
@@ -113,10 +126,10 @@ export class Model {
       },
       (path, op) => {
         // Detect operators as leaf nodes by doing some pretty simple type checks on the OperatorInterface.
-        return op
-          && typeof op.mount === 'function'
-          && typeof op.getPath === 'function'
-          && typeof op.getModelData === 'function'
+        return op &&
+          typeof op.mount === 'function' &&
+          typeof op.getPath === 'function' &&
+          typeof op.getModelData === 'function'
       }
     )
   }
