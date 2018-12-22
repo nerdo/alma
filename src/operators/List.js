@@ -50,7 +50,7 @@ export class List extends Operator {
     }
 
     this.propose(
-      {name: 'addItems', context: { ids, resetOps}},
+      { name: 'addItems', context: { ids, resetOps } },
       { order, opNames: newOpNames }
     )
   }
