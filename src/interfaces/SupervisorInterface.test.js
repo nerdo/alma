@@ -1,7 +1,7 @@
 /* global describe, test, expect */
 import { setupCustomMatchers } from '../helpers/jest'
 import { SupervisorInterface } from './SupervisorInterface'
-import { Supervisor } from '../Supervisor'
+import { Supervisor } from '../core/Supervisor'
 
 setupCustomMatchers(expect)
 

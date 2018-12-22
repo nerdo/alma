@@ -1,6 +1,6 @@
 /* global describe, test, expect */
 import { Engine } from './Engine'
-import { TestPresenter } from './adapters/TestPresenter'
+import { TestPresenter } from '../adapters/TestPresenter'
 
 describe('Engine', () => {
   test('instantiation', () => {

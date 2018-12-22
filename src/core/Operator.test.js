@@ -1,6 +1,6 @@
 /* global describe, expect, test */
-import { TestEngine } from './helpers/TestEngine'
-import { Counter } from './operators/Counter'
+import { TestEngine } from '../helpers/TestEngine'
+import { Counter } from '../operators/Counter'
 import { Model } from './Model'
 
 describe('Operator', () => {

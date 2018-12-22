@@ -1,5 +1,5 @@
-import { setupCustomMatchers } from '../helpers/jest'
-import { OperatorInterface } from './OperatorInterface'
+import { setupCustomMatchers } from './jest'
+import { OperatorInterface } from '../interfaces/OperatorInterface'
 
 /**
  * Runs conformance tests on operator instances.
@@ -9,7 +9,7 @@ import { OperatorInterface } from './OperatorInterface'
  * @param {Function} test - jest test function.
  * @param {Function} expect  - jest expect function.
  */
-export function conformanceTests (instanceCreators, describe, test, expect) {
+export function operatorConformanceTests (instanceCreators, describe, test, expect) {
   setupCustomMatchers(expect)
 
   const table = Object.getOwnPropertyNames(instanceCreators)

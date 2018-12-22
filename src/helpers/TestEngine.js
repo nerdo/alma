@@ -1,5 +1,5 @@
 import { TestPresenter } from '../adapters/TestPresenter'
-import { Engine } from '../Engine'
+import { Engine } from '../core/Engine'
 
 export function TestEngine (opTree = {}, data = {}) {
   const engine = new Engine(new TestPresenter())

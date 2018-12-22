@@ -1,7 +1,7 @@
 /* global describe, test, expect */
 import { setupCustomMatchers } from '../helpers/jest'
 import { EngineInterface } from './EngineInterface'
-import { Engine } from '../Engine'
+import { Engine } from '../core/Engine'
 import { TestPresenter } from '../adapters/TestPresenter'
 
 setupCustomMatchers(expect)

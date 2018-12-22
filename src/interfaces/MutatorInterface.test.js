@@ -1,7 +1,7 @@
 /* global describe, test, expect */
-import { setupCustomMatchers } from '../../helpers/jest'
+import { setupCustomMatchers } from '../helpers/jest'
 import { MutatorInterface } from './MutatorInterface'
-import { NormalMutator } from '../../adapters/NormalMutator'
+import { NormalMutator } from '../adapters/NormalMutator'
 
 setupCustomMatchers(expect)
 

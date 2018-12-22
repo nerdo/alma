@@ -1,7 +1,7 @@
 /* global describe, test, expect */
 import { setupCustomMatchers } from '../helpers/jest'
 import { ModelInterface } from './ModelInterface'
-import { Model } from '../Model'
+import { Model } from '../core/Model'
 
 setupCustomMatchers(expect)
 

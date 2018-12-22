@@ -1,5 +1,5 @@
-import { NormalMutator } from './adapters/NormalMutator'
-import { workLeafNodes } from './functions/workLeafNodes'
+import { NormalMutator } from '../adapters/NormalMutator'
+import { workLeafNodes } from '../functions/workLeafNodes'
 
 /**
  * @type {MutatorInterface}

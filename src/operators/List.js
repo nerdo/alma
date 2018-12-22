@@ -1,4 +1,4 @@
-import { Operator } from '../Operator'
+import { Operator } from '../core/Operator'
 import { integerSequence } from '../helpers/integerSequence'
 import { next } from '../helpers/next'
 

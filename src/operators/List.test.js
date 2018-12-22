@@ -1,11 +1,11 @@
 /* global describe, test, expect */
-import { conformanceTests } from '../interfaces/OperatorInterface.conformanceTests'
+import { operatorConformanceTests } from '../helpers/operatorConformanceTests'
 import { List } from './List'
 import { Counter } from './Counter'
 import { TestEngine } from '../helpers/TestEngine'
 
 describe('List', () => {
-  conformanceTests(
+  operatorConformanceTests(
     {
       List: () => new List()
     },

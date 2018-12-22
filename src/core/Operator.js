@@ -1,5 +1,5 @@
-import { mount } from './functions/mount'
-import { NormalMutator } from './adapters/NormalMutator'
+import { mount } from '../functions/mount'
+import { NormalMutator } from '../adapters/NormalMutator'
 
 /**
  * @type {MutatorInterface}

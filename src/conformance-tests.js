@@ -1,1 +1,1 @@
-export { conformanceTests as operatorConformanceTests } from './interfaces/OperatorInterface.conformanceTests'
+export { operatorConformanceTests } from './helpers/operatorConformanceTests'
