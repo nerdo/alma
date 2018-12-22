@@ -8,7 +8,7 @@ const EMPTY_ARRAY = []
 export class List extends Operator {
   constructor () {
     super()
-    this.idSequence = integerSequence(1)
+    this.idSequence = integerSequence(1) // This should really get set after mounting, so the sequence # can be set to Number.max(id) + 1
     this.opMap = new WeakMap()
   }
 
@@ -19,8 +19,7 @@ export class List extends Operator {
   }
 
   clear () {
-    this.opMap = new Map()
-    action(this, this.model, clear)
+    this.propose('clear', {})
   }
 
   addItems (index, ops, resetOps = false) {
@@ -89,6 +88,8 @@ export class List extends Operator {
       if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') { return }
       this.model.set(this.getPath('order'), incoming.order)
       this.model.set(this.getPath('opNames'), incoming.opNames)
+    } else if (action.name === 'clear') {
+      this.model.set(this.getPath(), { order: [], items: {}, opNames: {} })
     }
   }
 
@@ -113,29 +114,14 @@ export class List extends Operator {
           }
           return item
         })
+    } else if (action.name === 'clear') {
+      this.opMap = new Map()
     }
   }
 }
 
 List.START = 0
 List.END = Number.MAX_SAFE_INTEGER
-
-export const clear = {
-  getProposal (op, model, { } = {}) {
-    return { order: [], items: {}, opNames: {} }
-  },
-  digest (op, model, incoming) {
-    if (typeof incoming.order !== 'undefined') {
-      model.set(op.getPath('order'), incoming.order)
-    }
-    if (typeof incoming.items !== 'undefined') {
-      model.set(op.getPath('items'), incoming.items)
-    }
-    if (typeof incoming.opNames !== 'undefined') {
-      model.set(op.getPath('opNames'), incoming.opNames)
-    }
-  }
-}
 
 export const moveItems = {
   getProposal (op, model, { index, ids } = {}) {
