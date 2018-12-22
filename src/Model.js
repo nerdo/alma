@@ -1,6 +1,9 @@
 import { NormalMutator } from './adapters/NormalMutator'
 import { workLeafNodes } from './functions/workLeafNodes'
 
+/**
+ * @type {MutatorInterface}
+ */
 const normalMutatorSingleton = new NormalMutator()
 
 /**

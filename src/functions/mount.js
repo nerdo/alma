@@ -1,5 +1,8 @@
 import { NormalMutator } from '../adapters/NormalMutator'
 
+/**
+ * @type {MutatorInterface}
+ */
 const normalMutator = new NormalMutator()
 
 /**

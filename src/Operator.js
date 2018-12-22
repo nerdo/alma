@@ -1,6 +1,9 @@
 import { mount } from './functions/mount'
 import { NormalMutator } from './adapters/NormalMutator'
 
+/**
+ * @type {MutatorInterface}
+ */
 const normalMutatorSingleton = new NormalMutator()
 
 /**
@@ -9,6 +12,16 @@ const normalMutatorSingleton = new NormalMutator()
  * @implements {OperatorInterface}
  */
 export class Operator {
+  /**
+   * Mounts an operator to the model.
+   *
+   * This will typically be:<pre><code>this.model = model
+   * this.path = path
+   * mount(this, this.model, this.path, parentOp) // mount helper function, imported from alma</code></pre>
+   * @param {ModelInterface} model - The model to mount the operator to.
+   * @param {*[]} path  - The path (list of keys) in the model data to mount the operator to.
+   * @param {OperatorInterface} [parentOp] - The op that is responsible for this operator.
+   */
   mount (model, path, parentOp) {
     /**
      * @type {ModelInterface}

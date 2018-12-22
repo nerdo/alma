@@ -2,7 +2,14 @@ import { Operator } from '../Operator'
 import { integerSequence } from '../helpers/integerSequence'
 import { next } from '../helpers/next'
 
+/**
+ * @type {Array}
+ */
 const EMPTY_ARRAY = []
+
+/**
+ * @type {Object}
+ */
 const EMPTY_OBJECT = {}
 
 /**

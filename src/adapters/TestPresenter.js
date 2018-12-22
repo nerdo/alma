@@ -4,6 +4,18 @@
  */
 export class TestPresenter {
   /**
+   * @ignore
+   */
+  constructor () {
+    /**
+     * The model data, passed through, for unit testing.
+     * @public
+     * @type {*}
+     */
+    this.state = void 0
+  }
+
+  /**
    * Gets a representation of the model.
    * @param {ModelInterface} model
    * @returns {*} A reprsentation of the model that the presenter understands.
