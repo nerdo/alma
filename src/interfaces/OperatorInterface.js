@@ -1,3 +1,6 @@
+/**
+ * @interface
+ */
 export class OperatorInterface {
   /**
    * Gets a unique name for all instances of the operation.
@@ -8,13 +11,11 @@ export class OperatorInterface {
   /**
    * Mounts an operator to the model.
    *
-   * This will typically be:<pre><code>
-   * this.model = model
+   * This will typically be:<pre><code>this.model = model
    * this.path = path
-   * mount(this, this.model, this.path, parentOp) // mount helper function, imported from alma
-   * </code></pre>
+   * mount(this, this.model, this.path, parentOp) // mount helper function, imported from alma</code></pre>
    * @param {ModelInterface} model - The model to mount the operator to.
-   * @param {*[]} path  - The path (list of keys) in the model data to mount the operator to.
+   * @param {string[]} path  - The path (list of keys) in the model data to mount the operator to.
    * @param {OperatorInterface} [parentOp] - The op that is responsible for this operator.
    */
   mount (model, path, parentOp) { throw new Error('Not Yet Implemented') }
@@ -27,7 +28,7 @@ export class OperatorInterface {
 
   /**
    * Removes an op that was nested in this one.
-   * @param {OperatorInterface} op - The operator to add.
+   * @param {OperatorInterface} op - The operator to remove.
    */
   removeNestedOp (op) { throw new Error('Not Yet Implemented') }
 
@@ -43,6 +44,7 @@ export class OperatorInterface {
    * This will typically be:<pre><code>return (this.path || []).concat(relative)</code></pre>
    * ...where this.path is the instance variable storing the operator's path.
    * @param  {...any} relative - Relative path to the target.
+   * @returns {string[]}
    */
   getPath (...relative) { throw new Error('Not Yet Implemented') }
 
@@ -65,6 +67,8 @@ export class OperatorInterface {
 
   /**
    * Optional. Called to allow the operator to automatically trigger actions after an action has been processed.
+   * @function
+   * @name OperatorInterface#nextAction
    */
   // nextAction () { throw new Error('Not Yet Implemented') // }
 }

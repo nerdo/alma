@@ -6,6 +6,7 @@ const normalMutatorSingleton = new NormalMutator()
 /**
  * A base class for operators.
  * @class
+ * @implements {OperatorInterface}
  */
 export class Operator {
   mount (model, path, parentOp) {
@@ -64,6 +65,7 @@ export class Operator {
    * This will typically be:<pre><code>return (this.path || []).concat(relative)</code></pre>
    * ...where this.path is the instance variable storing the operator's path.
    * @param  {...any} relative - Relative path to the target.
+   * @returns {string[]}
    */
   getPath (...relative) {
     return (this.path || []).concat(relative)
@@ -104,7 +106,7 @@ export class Operator {
   /**
    * Gets whether or not the path is on the operator's path.
    * @param {Array} path
-   * @return {boolean}
+   * @returns {boolean}
    */
   pathBelongsToOp (path) {
     return (this.path || [])
@@ -136,7 +138,7 @@ export class Operator {
   /**
    * Gets the slice of data that belongs to the operator.
    * @param {*} data The model data.
-   * @return {*}
+   * @returns {*}
    */
   getRelativeSlice (data) {
     return normalMutatorSingleton.get(data, this.getPath())
