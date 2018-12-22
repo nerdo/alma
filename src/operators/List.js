@@ -92,12 +92,12 @@ export class List extends Operator {
 
     if (action.name === 'addItems') {
       if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') { return }
-      this.model.set(this.getPath('order'), incoming.order)
-      this.model.set(this.getPath('opNames'), incoming.opNames)
+      this.setModelData(['order'], incoming.order)
+      this.setModelData(['opNames'], incoming.opNames)
     } else if (action.name === 'clear') {
       this.model.set(this.getPath(), { order: [], items: {}, opNames: {} })
     } else if (action.name === 'moveItems') {
-      this.model.set(this.getPath('order'), incoming.order)
+      this.setModelData(['order'], incoming.order)
     }
   }
 

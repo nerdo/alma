@@ -23,7 +23,7 @@ export class Counter extends Operator {
     const incoming = this.getRelativeSlice(data)
     if (typeof incoming === 'undefined') { return }
     if (typeof incoming.value !== 'undefined') {
-      this.model.set(this.getPath('value'), incoming.value)
+      this.setModelData(['value'], incoming.value)
     }
   }
 }
