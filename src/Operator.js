@@ -51,6 +51,14 @@ export class Operator {
   getPath (...relative) { return (this.path || []).concat(relative) }
 
   /**
+   * Gets the model this op is mounted in.
+   * @returns {ModelInterface}
+   */
+  getModel () {
+    return this.model
+  }
+
+  /**
    * Helper method for getting model data.
    * @param {*[]} relative  - The relative path (list of keys) to pull the value from.
    * @param {*} defaultValue - The value to return if the model data is undefined.

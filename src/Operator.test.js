@@ -1,19 +1,25 @@
 /* global describe, expect, test */
 import { TestEngine } from './helpers/TestEngine'
 import { Counter } from './operators/Counter'
+import { Model } from './Model'
 
 describe('Operator', () => {
-  describe('getModelData', () => {
-    test('getting default data', () => {
-      const counter = new Counter()
-      TestEngine.start({ counter })
+  test('getModel', () => {
+    const counter = new Counter()
+    TestEngine.start({ counter })
 
-      expect(counter.getModelData(['value'])).toBeUndefined()
+    expect(counter.getModel()).toBeInstanceOf(Model)
+  })
 
-      counter.reset()
+  test('getModelData', () => {
+    const counter = new Counter()
+    TestEngine.start({ counter })
 
-      expect(counter.getModelData(['value'])).toBe(0)
-    })
+    expect(counter.getModelData(['value'])).toBeUndefined()
+
+    counter.reset()
+
+    expect(counter.getModelData(['value'])).toBe(0)
   })
 
   test('setModelData', () => {
