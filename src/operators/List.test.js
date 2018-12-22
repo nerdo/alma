@@ -15,7 +15,7 @@ describe('List', () => {
   )
 
   describe('addItems', () => {
-    test('adds items to the list', () => {
+    test('adding items to a new list', () => {
       const list = new List()
       const engine = TestEngine.start({ list })
       const presenter = engine.getPresenter()
@@ -84,6 +84,30 @@ describe('List', () => {
         opNames: { [id1]: c1.getOpName(), [id2]: c2.getOpName(), [id3]: c3.getOpName(), [id4]: c4.getOpName(), [id6]: c6.getOpName(), [id6]: c6.getOpName() }
       } })
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4, c5, c6]))
+    })
+
+    test('adding items to an existing list', () => {
+      const data = {
+        'list': {
+          'order': [
+            1,
+            4,
+            3,
+            2,
+            5
+          ]
+        }
+      }
+      const list = new List()
+      const c = new Counter()
+
+      TestEngine.start({ list }, data)
+
+      list.addItems(List.END, [c])
+
+      const id = list.getIdFor(c)
+
+      expect(id).toBe(6)
     })
   })
 

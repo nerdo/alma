@@ -5,13 +5,23 @@ import { next } from '../helpers/next'
 const EMPTY_ARRAY = []
 
 export class List extends Operator {
-  constructor () {
-    super()
-    this.idSequence = integerSequence(1) // This should really get set after mounting, so the sequence # can be set to Number.max(id) + 1
-    this.opMap = new WeakMap()
-  }
-
   getOpName () { return 'List' }
+
+  mount (model, path, parentOp) {
+    const response = super.mount(model, path, parentOp)
+
+    // Find the highest id to use in the idSequence
+    const maxId = this
+      .getModelData(['order'], [])
+      .reduce((max, current) => Math.max(max, current), 0)
+
+    this.opMap = new Map()
+    this.idSequence = integerSequence(maxId + 1)
+
+    // TODO create instances of ops by using an opName to createOp() map
+
+    return response
+  }
 
   reset () {
     this.clear()
