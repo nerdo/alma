@@ -84,7 +84,7 @@ export class List extends Operator {
     return this.opMap.get(op)
   }
 
-  getItemById (findId) {
+  getOpById (findId) {
     return Array.from(this.opMap.entries())
       .filter(([op, id]) => id === findId)
       .map(([op]) => op)[0]
@@ -121,7 +121,7 @@ export class List extends Operator {
       const context = action.context
       context.ids
         .map(id => {
-          return { id, op: this.getItemById(id) }
+          return { id, op: this.getOpById(id) }
         })
         .filter(item => item)
         .map(item => {
