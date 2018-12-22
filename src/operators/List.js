@@ -134,6 +134,7 @@ export class List extends Operator {
         })
     } else if (action.name === 'clear') {
       this.opMap = new Map()
+      this.idSequence = integerSequence(1)
     }
   }
 }
