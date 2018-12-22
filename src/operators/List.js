@@ -39,11 +39,11 @@ export class List extends Operator {
         },
         { ids: [], opNames: {} }
       )
-    const order = this.model.get(this.getPath('order'), [])
+    const order = this.getModelData(['order'], [])
     const realIndex = Math.max(0, Math.min(order.length, index))
     order.splice(realIndex, 0, ...ids)
     const newOpNames = {
-      ...this.model.get(this.getPath('opNames'), {}),
+      ...this.getModelData(['opNames'], {}),
       ...opNames
     }
 
@@ -60,7 +60,7 @@ export class List extends Operator {
       .filter(op => op)
 
     // Remove IDs from order.
-    const order = this.model.get(this.getPath('order'), [])
+    const order = this.getModelData(['order'], [])
       .filter(id => !ids.includes(id))
 
     // Insert IDs into new location
