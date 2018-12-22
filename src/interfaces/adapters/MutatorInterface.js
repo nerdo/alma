@@ -1,3 +1,6 @@
+/**
+ * @interface
+ */
 export class MutatorInterface {
   /**
    * Gets a value from an object.

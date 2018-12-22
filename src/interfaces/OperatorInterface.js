@@ -66,9 +66,13 @@ export class OperatorInterface {
   consider (data, sourceOperator, action) { throw new Error('Not Yet Implemented') }
 
   /**
-   * Optional. Called to allow the operator to automatically trigger actions after an action has been processed.
+   * Optional. Called by an alma engine to allow the operator to post-process actions.
    * @function
    * @name OperatorInterface#nextAction
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
    */
-  // nextAction () { throw new Error('Not Yet Implemented') // }
+  // nextAction (sourceOperator, action) { throw new Error('Not Yet Implemented') // }
 }

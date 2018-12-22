@@ -1,5 +1,8 @@
 import { Operator } from '../Operator'
 
+/**
+ * @ignore
+ */
 export class Counter extends Operator {
   getOpName () {
     return 'Counter'
