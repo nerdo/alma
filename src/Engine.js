@@ -2,7 +2,7 @@ import { Supervisor } from './Supervisor'
 import { Model } from './Model'
 
 /**
- * A SAM engine.
+ * The core EngineInterface implementation.
  * @class
  * @implements {EngineInterface}
  */

@@ -1,3 +1,6 @@
+/**
+ * @interface
+ */
 export class ModelInterface {
   /**
    * Sets the supervisor.

@@ -3,6 +3,10 @@ import { workLeafNodes } from './functions/workLeafNodes'
 
 const normalMutatorSingleton = new NormalMutator()
 
+/**
+ * The core ModelInterface implementation.
+ * @implements {ModelInterface}
+ */
 export class Model {
   /**
    * Creates a new model.
@@ -11,7 +15,17 @@ export class Model {
    */
   constructor (data = {}, mutator = new NormalMutator()) {
     this.setMutator(mutator)
+
+    /**
+     * @private
+     * @type {Object}
+     */
     this.data = data
+
+    /**
+     * @private
+     * @type {Object}
+     */
     this.opTree = {}
   }
 

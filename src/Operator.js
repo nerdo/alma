@@ -17,7 +17,7 @@ export class Operator {
     this.model = model
 
     /**
-     * @type {string[]}
+     * @type {*[]}
      * @private
      */
     this.path = path
@@ -65,7 +65,7 @@ export class Operator {
    * This will typically be:<pre><code>return (this.path || []).concat(relative)</code></pre>
    * ...where this.path is the instance variable storing the operator's path.
    * @param  {...any} relative - Relative path to the target.
-   * @returns {string[]}
+   * @returns {*[]}
    */
   getPath (...relative) {
     return (this.path || []).concat(relative)

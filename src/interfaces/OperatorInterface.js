@@ -15,7 +15,7 @@ export class OperatorInterface {
    * this.path = path
    * mount(this, this.model, this.path, parentOp) // mount helper function, imported from alma</code></pre>
    * @param {ModelInterface} model - The model to mount the operator to.
-   * @param {string[]} path  - The path (list of keys) in the model data to mount the operator to.
+   * @param {*[]} path  - The path (list of keys) in the model data to mount the operator to.
    * @param {OperatorInterface} [parentOp] - The op that is responsible for this operator.
    */
   mount (model, path, parentOp) { throw new Error('Not Yet Implemented') }
@@ -44,7 +44,7 @@ export class OperatorInterface {
    * This will typically be:<pre><code>return (this.path || []).concat(relative)</code></pre>
    * ...where this.path is the instance variable storing the operator's path.
    * @param  {...any} relative - Relative path to the target.
-   * @returns {string[]}
+   * @returns {*[]}
    */
   getPath (...relative) { throw new Error('Not Yet Implemented') }
 
