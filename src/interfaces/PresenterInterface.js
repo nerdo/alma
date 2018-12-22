@@ -1,3 +1,6 @@
+/**
+ * @interface
+ */
 export class PresenterInterface {
   /**
    * Gets a representation of the model.

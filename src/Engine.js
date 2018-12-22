@@ -123,5 +123,7 @@ export class Engine {
 
 /**
  * @type {Object}
+ * @property {string} name - The name of the action.
+ * @property {Object} [context] - Contextual information for the action.
  */
 Engine.START_ACTION = { name: '$ENGINE-START$' }

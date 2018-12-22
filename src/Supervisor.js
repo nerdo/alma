@@ -1,4 +1,5 @@
 /**
+ * The core SupervisorInterface implementation.
  * @class
  * @implements {SupervisorInterface}
  */
