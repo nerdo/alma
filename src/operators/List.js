@@ -5,7 +5,9 @@ import { next } from '../helpers/next'
 const EMPTY_ARRAY = []
 
 export class List extends Operator {
-  getOpName () { return 'List' }
+  getOpName () {
+    return 'List'
+  }
 
   mount (model, path, parentOp) {
     const response = super.mount(model, path, parentOp)

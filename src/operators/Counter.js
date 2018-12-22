@@ -1,7 +1,9 @@
 import { Operator } from '../Operator'
 
 export class Counter extends Operator {
-  getOpName () { return 'Counter' }
+  getOpName () {
+    return 'Counter'
+  }
 
   reset () {
     this.setValue()
