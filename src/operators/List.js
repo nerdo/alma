@@ -1,5 +1,4 @@
 import { Operator } from '../Operator'
-import { action } from '../functions/action'
 import { integerSequence } from '../helpers/integerSequence'
 import { next } from '../helpers/next'
 
@@ -55,11 +54,18 @@ export class List extends Operator {
   }
 
   moveItems (ops, index) {
+    // Get list of IDs for ops.
     const ids = ops
       .map(op => this.getIdFor(op))
       .filter(op => op)
 
-    action(this, this.model, moveItems, { index, ids })
+    // Remove IDs from order.
+    const order = this.model.get(this.getPath('order'), [])
+      .filter(id => !ids.includes(id))
+
+    // Insert IDs into new location
+    order.splice(index, 0, ...ids)
+    this.propose('moveItems', { order })
   }
 
   getIdFor (op) {
@@ -90,6 +96,8 @@ export class List extends Operator {
       this.model.set(this.getPath('opNames'), incoming.opNames)
     } else if (action.name === 'clear') {
       this.model.set(this.getPath(), { order: [], items: {}, opNames: {} })
+    } else if (action.name === 'moveItems') {
+      this.model.set(this.getPath('order'), incoming.order)
     }
   }
 
@@ -122,16 +130,3 @@ export class List extends Operator {
 
 List.START = 0
 List.END = Number.MAX_SAFE_INTEGER
-
-export const moveItems = {
-  getProposal (op, model, { index, ids } = {}) {
-    const order = model.get(op.getPath('order'), [])
-      .filter(id => !ids.includes(id))
-    order.splice(index, 0, ...ids)
-    return { order }
-  },
-  digest (op, model, incoming) {
-    if (typeof incoming.order === 'undefined') { return }
-    model.set(op.getPath('order'), incoming.order)
-  }
-}
