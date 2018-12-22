@@ -1,4 +1,4 @@
-/* global describe, test, expect */
+/* global jest, describe, test, expect */
 import { workLeafNodes } from './workLeafNodes'
 
 describe('workLeafNodes', () => {
@@ -101,7 +101,6 @@ describe('workLeafNodes', () => {
 
     expect(() => workLeafNodes(tree, fn)).not.toThrow()
 
-    fn.mock.calls// ?
     expect(fn).not.toHaveBeenCalled()
   })
 })

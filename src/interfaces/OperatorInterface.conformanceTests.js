@@ -1,4 +1,3 @@
-/* global describe, test, expect */
 import { setupCustomMatchers } from '../helpers/jest'
 import { OperatorInterface } from './OperatorInterface'
 
