@@ -21,7 +21,7 @@ describe('workLeafNodes', () => {
   test('a flat tree', () => {
     const fn = jest.fn()
 
-    workLeafNodes({a: 1, b: 2, c: 3}, fn)
+    workLeafNodes({ a: 1, b: 2, c: 3 }, fn)
 
     expect(fn).toHaveBeenCalledTimes(3)
   })
@@ -30,7 +30,7 @@ describe('workLeafNodes', () => {
     const fn = jest.fn()
 
     const NotPlainObject = class {
-      constructor() {
+      constructor () {
         this.something = 1
         this.other = 2
         this.that = 3
@@ -101,7 +101,7 @@ describe('workLeafNodes', () => {
 
     expect(() => workLeafNodes(tree, fn)).not.toThrow()
 
-    fn.mock.calls//?
+    fn.mock.calls// ?
     expect(fn).not.toHaveBeenCalled()
   })
 })

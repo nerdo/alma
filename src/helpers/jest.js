@@ -1,4 +1,3 @@
-/* global jest */
 import { implementsInterface } from 'implements-interface'
 
 export function setupCustomMatchers (expect) {

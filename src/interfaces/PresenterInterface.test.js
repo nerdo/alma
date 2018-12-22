@@ -12,9 +12,9 @@ describe('PresenterInterface conformance of', () => {
     concreteImplementationName | newInstance
     ${'TestPresenter'}               | ${newPresenter}
   `('$concreteImplementationName', ({ newInstance }) => {
-      const presenter = newInstance()
-      expect(presenter).toImplement(PresenterInterface)
+  const presenter = newInstance()
+  expect(presenter).toImplement(PresenterInterface)
 
-      expect(() => presenter.render({})).not.toThrow()
-    })
+  expect(() => presenter.render({})).not.toThrow()
+})
 })

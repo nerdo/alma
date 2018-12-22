@@ -113,7 +113,7 @@ export class Model {
     this.supervisor.process(this, sourceOperator, action)
   }
 
-/**
+  /**
  * Calls nextAction on all operators.
  * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
  * @param {Object} action - The proposed action.

@@ -12,19 +12,19 @@ describe('SupervisorInterface conformance of', () => {
     concreteImplementationName | newInstance
     ${'Supervisor'}               | ${newSupervisor}
   `('$concreteImplementationName', ({ newInstance }) => {
-      const supervisor = newInstance()
-      expect(supervisor).toImplement(SupervisorInterface)
+  const supervisor = newInstance()
+  expect(supervisor).toImplement(SupervisorInterface)
 
-      let setPresenterResult
-      expect(() => setPresenterResult = supervisor.setPresenter(null)).not.toThrow()
-      expect(setPresenterResult).toBe(supervisor)
-      expect(supervisor.getPresenter()).toBe(null)
+  let setPresenterResult
+  expect(() => setPresenterResult = supervisor.setPresenter(null)).not.toThrow()
+  expect(setPresenterResult).toBe(supervisor)
+  expect(supervisor.getPresenter()).toBe(null)
 
-      let setNextActionDelegatesResult
-      const before = () => {}
-      const after = () => {}
-      expect(() => setNextActionDelegatesResult = supervisor.setNextActionDelegates(before, after)).not.toThrow()
-      expect(setNextActionDelegatesResult).toBe(supervisor)
-      expect(supervisor.getNextActionDelegates()).toEqual([before, after])
-    })
+  let setNextActionDelegatesResult
+  const before = () => {}
+  const after = () => {}
+  expect(() => setNextActionDelegatesResult = supervisor.setNextActionDelegates(before, after)).not.toThrow()
+  expect(setNextActionDelegatesResult).toBe(supervisor)
+  expect(supervisor.getNextActionDelegates()).toEqual([before, after])
+})
 })
