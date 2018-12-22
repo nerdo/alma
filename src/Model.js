@@ -5,6 +5,7 @@ const normalMutatorSingleton = new NormalMutator()
 
 /**
  * The core ModelInterface implementation.
+ * @class
  * @implements {ModelInterface}
  */
 export class Model {
@@ -14,7 +15,17 @@ export class Model {
    * @param {MutatorInterface} [mutator=new NormalMutator()] - The mutator that should be used to get and set data.
    */
   constructor (data = {}, mutator = new NormalMutator()) {
-    this.setMutator(mutator)
+    /**
+     * @private
+     * @type {MutatorInterface}
+     */
+    this.mutator = void 0
+
+    /**
+     * @private
+     * @type {SupervisorInterface}
+     */
+    this.supervisor = void 0
 
     /**
      * @private
@@ -27,6 +38,8 @@ export class Model {
      * @type {Object}
      */
     this.opTree = {}
+
+    this.setMutator(mutator)
   }
 
   /**

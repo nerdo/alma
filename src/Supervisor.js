@@ -1,4 +1,31 @@
+/**
+ * @class
+ * @implements {SupervisorInterface}
+ */
 export class Supervisor {
+  /**
+   * @ignore
+   */
+  constructor () {
+    /**
+     * @private
+     * @type {PresenterInterface}
+     */
+    this.presenter = void 0
+
+    /**
+     * @private
+     * @type {Function}
+     */
+    this.nextActionDelegateBefore = void 0
+
+    /**
+     * @private
+     * @type {Function}
+     */
+    this.nextActionDelegateAfter = void 0
+  }
+
   /**
    * Sets the presenter.
    * @param {PresenterInterface} presenter
