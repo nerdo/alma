@@ -59,9 +59,11 @@ export class ModelInterface {
    * Considers data for acceptance.
    * @param {*} data - The data to consider.
    * @param {OperatorInterface} sourceOperator - The operator that initiated the change.
-   * @param {string} - The action the data is coming from.
+   * @param {Object} action - The action the data is coming from.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
    */
-  consider (data, sourceOperator, actionName) { throw new Error('Not Yet Implemented') }
+  consider (data, sourceOperator, action) { throw new Error('Not Yet Implemented') }
 
   /**
    * Resets the data and all operators.

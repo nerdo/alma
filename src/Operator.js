@@ -108,17 +108,20 @@ export class Operator {
 
   /**
    * Proposes a change to the model.
-   * @param {string} actionName - the name of the action being proposed.
+   * @param {string|Object} action - the action being prooposed.
+   * @param {string} action.name - The name of the action being proposed.
+   * @param {Object} action.context - Contextual information for the action.
    * @param {*} data - The data to propose to the model.
    * @param {boolean} isDataRelative - Whether or not the data is relative to the current operator.
    */
-  propose (actionName, data, isDataRelative = true) {
+  propose (action, data, isDataRelative = true) {
+    const realAction = typeof action === 'string' ? { name: action } : action
     this.model.consider(
       isDataRelative
         ? this.getAbsoluteChange(data)
         : data,
       this,
-      actionName
+      realAction
     )
   }
 }

@@ -24,7 +24,10 @@ export class List extends Operator {
   }
 
   addItems (index, ops, resetOps = false) {
-    const args = ops
+    const {
+      ids,
+      opNames
+    } = ops
       .map(op => [op, next(this.idSequence)])
       .map(([ op, id, opName ]) => {
         this.opMap.set(op, id)
@@ -39,8 +42,19 @@ export class List extends Operator {
         },
         { ids: [], opNames: {} }
       )
+    const order = this.model.get(this.getPath('order'), [])
+    const realIndex = Math.max(0, Math.min(order.length, index))
+    order.splice(realIndex, 0, ...ids)
+    const newOpNames = {
+      ...this.model.get(this.getPath('opNames'), {}),
+      ...opNames
+    }
+    const $processor = {
+      name: 'addItems', args: { ids, resetOps }
+    }
 
-    action(this, this.model, addItems, { index, ...args, resetOps })
+    // TODO propose action with context
+    this.propose('addItems', { order, opNames: newOpNames })
   }
 
   moveItems (ops, index) {
@@ -72,7 +86,8 @@ export class List extends Operator {
   consider (data, sourceOperator, actionName) {
     const incoming = this.getRelativeSlice(data)
     if (typeof incoming === 'undefined') { return }
-
+    if (actionName === 'addItems') {
+    }
     // TODO refactor actions
     true
   }
