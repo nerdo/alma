@@ -4,19 +4,29 @@ import { NormalMutator } from './adapters/NormalMutator'
 const normalMutatorSingleton = new NormalMutator()
 
 /**
- * Base class for operators.
+ * A base class for operators.
  * @class
  */
 export class Operator {
   mount (model, path, parentOp) {
     /**
-     * @type {ModelInstance}
+     * @type {ModelInterface}
+     * @private
      */
     this.model = model
+
     /**
-     * @type {*[]}
+     * @type {string[]}
+     * @private
      */
     this.path = path
+
+    /**
+     * @type {Set<OperatorInterface>}
+     * @private
+     */
+    this.nestedOps = void 0
+
     mount(this, this.model, this.path, parentOp)
   }
 
@@ -48,7 +58,16 @@ export class Operator {
       : []
   }
 
-  getPath (...relative) { return (this.path || []).concat(relative) }
+  /**
+   * Gets the path to model data, relative to the operator's path.
+   *
+   * This will typically be:<pre><code>return (this.path || []).concat(relative)</code></pre>
+   * ...where this.path is the instance variable storing the operator's path.
+   * @param  {...any} relative - Relative path to the target.
+   */
+  getPath (...relative) {
+    return (this.path || []).concat(relative)
+  }
 
   /**
    * Gets the model this op is mounted in.
@@ -114,10 +133,10 @@ export class Operator {
     return change
   }
 
-  /*
+  /**
    * Gets the slice of data that belongs to the operator.
    * @param {*} data The model data.
-   * @returns {*}
+   * @return {*}
    */
   getRelativeSlice (data) {
     return normalMutatorSingleton.get(data, this.getPath())

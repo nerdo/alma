@@ -40,9 +40,7 @@ export class OperatorInterface {
   /**
    * Gets the path to model data, relative to the operator's path.
    *
-   * This will typically be:<pre><code>
-   * return (this.path || []).concat(relative)
-   * </code></pre>
+   * This will typically be:<pre><code>return (this.path || []).concat(relative)</code></pre>
    * ...where this.path is the instance variable storing the operator's path.
    * @param  {...any} relative - Relative path to the target.
    */
