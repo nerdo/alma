@@ -1,6 +1,5 @@
 import { mount } from './functions/mount'
 import { NormalMutator } from './adapters/NormalMutator'
-import { defaults } from './functions/defaults'
 
 const normalMutatorSingleton = new NormalMutator()
 
@@ -63,6 +62,16 @@ export class Operator {
       data = defaultValue
     }
     return data
+  }
+
+  /**
+   * Helper method for seting model data.
+   * @param {*[]} relative  - The relative path (list of keys) to set the value on.
+   * @param {*} value - The value to set.
+   */
+  setModelData (relative, value) {
+    if (!this.model) { return }
+    this.model.set(this.getPath([].concat(relative)), value)
   }
 
   /**

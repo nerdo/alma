@@ -16,6 +16,15 @@ describe('Operator', () => {
     })
   })
 
+  test('setModelData', () => {
+    const counter = new Counter()
+    TestEngine.start({ counter })
+
+    counter.setModelData(['value'], 5)
+
+    expect(counter.getModelData(['value'])).toBe(5)
+  })
+
   test('pathBelongsToOp', () => {
     const counter = new Counter()
     TestEngine.start({ foo: { bar: { counter } } })
