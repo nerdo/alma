@@ -31,7 +31,6 @@ export class List extends Operator {
       .map(op => [op, next(this.idSequence)])
       .map(([ op, id, opName ]) => {
         this.opMap.set(op, id)
-        // op.mount(this.model, this.getPath('items', id), this)
         return { id, opName: op.getOpName() }
       })
       .reduce(
@@ -49,12 +48,11 @@ export class List extends Operator {
       ...this.model.get(this.getPath('opNames'), {}),
       ...opNames
     }
-    const $processor = {
-      name: 'addItems', args: { ids, resetOps }
-    }
 
-    // TODO propose action with context
-    this.propose('addItems', { order, opNames: newOpNames })
+    this.propose(
+      {name: 'addItems', context: { ids, resetOps}},
+      { order, opNames: newOpNames }
+    )
   }
 
   moveItems (ops, index) {
@@ -83,21 +81,38 @@ export class List extends Operator {
     return this.getModelData(['opNames']) || EMPTY_ARRAY
   }
 
-  consider (data, sourceOperator, actionName) {
+  consider (data, sourceOperator, action) {
     const incoming = this.getRelativeSlice(data)
     if (typeof incoming === 'undefined') { return }
-    if (actionName === 'addItems') {
+
+    if (action.name === 'addItems') {
+      if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') { return }
+      this.model.set(this.getPath('order'), incoming.order)
+      this.model.set(this.getPath('opNames'), incoming.opNames)
     }
-    // TODO refactor actions
-    true
   }
 
-  nextAction (predicate) {
-    if (typeof predicate === 'undefined') { return }
-    if (predicate.proposal.$processor && this.pathBelongsToOp(predicate.path)) {
-      if (predicate.proposal.$processor.name === 'addItems') {
-        addItems.nextAction(this, this.model, predicate)
-      }
+  nextAction (sourceOperator, action) {
+    if (sourceOperator !== this) { return }
+
+    if (action.name === 'addItems') {
+      // Mount added operators.
+      const context = action.context
+      context.ids
+        .map(id => {
+          return { id, op: this.getItemById(id) }
+        })
+        .filter(item => item)
+        .map(item => {
+          item.op.mount(this.model, this.getPath('items', item.id), this)
+          return item
+        })
+        .map(item => {
+          if (context.resetOps) {
+            item.op.reset()
+          }
+          return item
+        })
     }
   }
 }
@@ -119,45 +134,6 @@ export const clear = {
     if (typeof incoming.opNames !== 'undefined') {
       model.set(op.getPath('opNames'), incoming.opNames)
     }
-  }
-}
-
-export const addItems = {
-  getProposal (op, model, { index, ids, opNames, resetOps } = {}) {
-    const order = model.get(op.getPath('order'), [])
-    const realIndex = Math.max(0, Math.min(order.length, index))
-    order.splice(realIndex, 0, ...ids)
-    const newOpNames = {
-      ...model.get(op.getPath('opNames'), {}),
-      ...opNames
-    }
-    const $processor = {
-      name: 'addItems', args: { ids, resetOps }
-    }
-    return { order, opNames: newOpNames, $processor }
-  },
-  digest (op, model, incoming) {
-    if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') { return }
-    model.set(op.getPath('order'), incoming.order)
-    model.set(op.getPath('opNames'), incoming.opNames)
-  },
-  nextAction (op, model, predicate) {
-    const args = predicate.proposal.$processor.args
-    args.ids
-      .map(id => {
-        return { id, op: op.getItemById(id) }
-      })
-      .filter(item => item)
-      .map(item => {
-        item.op.mount(op.model, op.getPath('items', item.id), op)
-        return item
-      })
-      .map(item => {
-        if (args.resetOps) {
-          item.op.reset()
-        }
-        return item
-      })
   }
 }
 

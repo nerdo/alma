@@ -29,9 +29,12 @@ export class SupervisorInterface {
   /**
    * Processes the model.
    * @param {ModelInterface} model
-   * @param {Object} predicate - The full proposal that was processed by the model.
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
    */
-  process (model, predicate) { throw new Error('Not Yet Implemented') }
+  process (model, sourceOperator, action) { throw new Error('Not Yet Implemented') }
 
   /**
    * Digests the model to be consumed by PresenterInterface.render().
@@ -42,7 +45,10 @@ export class SupervisorInterface {
   /**
    * Triggers actions after the model is digested.
    * @param {ModelInterface} model
-   * @param {Object} predicate - The full proposal that was processed by the model.
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
    */
-  nextAction (model, predicate) { throw new Error('Not Yet Implemented') }
+  nextAction (model, sourceOperator, action) { throw new Error('Not Yet Implemented') }
 }

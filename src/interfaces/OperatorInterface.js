@@ -58,10 +58,12 @@ export class OperatorInterface {
   /**
    * Considers data for acceptance.
    * @param {*} data - The data to consider.
-   * @param {OperatorInterface} sourceOperator - The operator that initiated the change.
-   * @param {string} - The action the data is coming from.
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
    */
-  consider (data, sourceOperator, actionName) { throw new Error('Not Yet Implemented') }
+  consider (data, sourceOperator, action) { throw new Error('Not Yet Implemented') }
 
   /**
    * Optional. Called to allow the operator to automatically trigger actions after an action has been processed.

@@ -19,7 +19,7 @@ export class Counter extends Operator {
     this.setValue(this.getModelData(['value'], 0) - 1)
   }
 
-  consider (data, sourceOperator, actionName) {
+  consider (data, sourceOperator, action) {
     const incoming = this.getRelativeSlice(data)
     if (typeof incoming === 'undefined') { return }
     if (typeof incoming.value !== 'undefined') {

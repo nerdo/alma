@@ -85,7 +85,7 @@ export class Engine {
    */
   start () {
     this.initialize()
-    this.supervisor.process(this.model)
+    this.supervisor.process(this.model, {name: '$ENGINE-START$'})
     return this
   }
 

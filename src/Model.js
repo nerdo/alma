@@ -103,26 +103,30 @@ export class Model {
   /**
    * Considers data for acceptance.
    * @param {*} data - The data to consider.
-   * @param {OperatorInterface} sourceOperator - The operator that initiated the change.
-   * @param {string} - The action the data is coming from.
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
    */
-  consider (data, sourceOperator, actionName) {
-    workLeafNodes(this.opTree, (path, op) => op.consider(data, sourceOperator, actionName))
-    // TODO
-    // const predicate = { path: op.getPath(), proposal }
-    // this.supervisor.process(model, predicate)
+  consider (data, sourceOperator, action) {
+    workLeafNodes(this.opTree, (path, op) => op.consider(data, sourceOperator, action))
+    this.supervisor.process(this, sourceOperator, action)
   }
 
-  /**
-   * Calls nextAction on all operators.
-   */
-  nextAction (predicate) {
+/**
+ * Calls nextAction on all operators.
+ * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+ * @param {Object} action - The proposed action.
+ * @param {string} action.name - The name of the action.
+ * @param {Object} [action.context] - Contextual information for the action.
+ */
+  nextAction (sourceOperator, action) {
     workLeafNodes(
       this.opTree,
       (path, op) => {
         if (!op.nextAction) { return }
-        op.nextAction(predicate)
-        op.getNestedOps().map(nested => nested.nextAction ? nested.nextAction(predicate) : null)
+        op.nextAction(sourceOperator, action)
+        op.getNestedOps().map(nested => nested.nextAction ? nested.nextAction(sourceOperator, action) : null)
       },
       (path, op) => {
         // Detect operators as leaf nodes by doing some pretty simple type checks on the OperatorInterface.

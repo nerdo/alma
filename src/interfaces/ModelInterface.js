@@ -58,8 +58,8 @@ export class ModelInterface {
   /**
    * Considers data for acceptance.
    * @param {*} data - The data to consider.
-   * @param {OperatorInterface} sourceOperator - The operator that initiated the change.
-   * @param {Object} action - The action the data is coming from.
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
    * @param {string} action.name - The name of the action.
    * @param {Object} [action.context] - Contextual information for the action.
    */
@@ -73,7 +73,10 @@ export class ModelInterface {
 
   /**
    * Calls nextAction on all operators.
-   * @param {Object} predicate - The full proposal that was processed by the model.
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
    */
-  nextAction (predicate) { throw new Error('Not Yet Implemented') }
+  nextAction (sourceOperator, action) { throw new Error('Not Yet Implemented') }
 }

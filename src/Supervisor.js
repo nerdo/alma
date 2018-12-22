@@ -40,11 +40,14 @@ export class Supervisor {
   /**
    * Processes the model.
    * @param {ModelInterface} model
-   * @param {Object} predicate - The full proposal that was processed by the model.
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
    */
-  process (model, predicate) {
+  process (model, sourceOperator, action) {
     this.digest(model)
-    this.nextAction(model, predicate)
+    this.nextAction(model, sourceOperator, action)
   }
 
   /**
@@ -59,20 +62,23 @@ export class Supervisor {
   /**
    * Triggers actions after the model is digested.
    * @param {ModelInterface} model
-   * @param {Object} predicate - The full proposal that was processed by the model.
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
    */
-  nextAction (model, predicate) {
+  nextAction (model, sourceOperator, action) {
     const [beforeOps, afterOps] = this.getNextActionDelegates()
 
     if (beforeOps) {
-      this.beforeOps(model, predicate)
+      beforeOps(model, sourceOperator, action)
     }
 
     // Allow operators to tap into next actions through the model.
-    model.nextAction(predicate)
+    model.nextAction(sourceOperator, action)
 
     if (afterOps) {
-      this.afterOps(model, predicate)
+      afterOps(model, sourceOperator, action)
     }
   }
 }
