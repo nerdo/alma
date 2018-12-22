@@ -113,7 +113,7 @@ export class List extends Operator {
         })
         .filter(item => item)
         .map(item => {
-          item.op.mount(this.model, this.getPath('items', item.id), this)
+          item.op.mount(this.getModel(), this.getPath('items', item.id), this)
           return item
         })
         .map(item => {
