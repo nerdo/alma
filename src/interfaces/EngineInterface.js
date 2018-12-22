@@ -1,3 +1,6 @@
+/**
+ * @interface
+ */
 export class EngineInterface {
   /**
    * Sets the presenter.

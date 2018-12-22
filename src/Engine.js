@@ -1,6 +1,11 @@
 import { Supervisor } from './Supervisor'
 import { Model } from './Model'
 
+/**
+ * A SAM engine.
+ * @class
+ * @implements {EngineInterface}
+ */
 export class Engine {
   /**
    * Creates an engine which wires together a presenter, supervisor, and model.
@@ -9,6 +14,24 @@ export class Engine {
    * @param {SupervisorInterface} [supervisor=new Supervisor()] - The supervisor the engine will be wired to.
    */
   constructor (presenter, model = new Model(), supervisor = new Supervisor()) {
+    /**
+     * @private
+     * @type {PresenterInterface}
+     */
+    this.presenter = void 0
+
+    /**
+     * @private
+     * @type {ModelInterface}
+     */
+    this.model = void 0
+
+    /**
+     * @private
+     * @type {SupervisorInterface}
+     */
+    this.supervisor = void 0
+
     this.setPresenter(presenter)
     this.setSupervisor(supervisor)
     this.setModel(model)
@@ -70,7 +93,7 @@ export class Engine {
 
   /**
    * Resets the engine.
-   * @param {Object} [data=undefined] - Data to reset the engine's model with.
+   * @param {Object} [data={}] - Data to reset the engine's model with.
    * @returns {EngineInterface} this
    */
   reset (data = {}) {
@@ -85,12 +108,20 @@ export class Engine {
    */
   start () {
     this.initialize()
-    this.supervisor.process(this.model, { name: '$ENGINE-START$' })
+    this.supervisor.process(this.model, Engine.START_ACTION)
     return this
   }
 
+  /**
+   * @private
+   */
   initialize () {
     this.supervisor.setPresenter(this.presenter)
     this.model.setSupervisor(this.supervisor)
   }
 }
+
+/**
+ * @type {Object}
+ */
+Engine.START_ACTION = { name: '$ENGINE-START$' }
