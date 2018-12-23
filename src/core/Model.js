@@ -108,7 +108,7 @@ export class Model {
    * @returns {ModelInterface} this
    */
   setOpTree (tree) {
-    workLeafNodes(tree, (path, op) => op.mount(this, path))
+    this.opTree = tree
     return this
   }
 
@@ -119,6 +119,16 @@ export class Model {
    */
   getOpTree (path) {
     return normalMutatorSingleton.get(this.opTree, path)
+  }
+
+  /**
+   * Mounts the operator tree into the current tree.
+   * @param {Object} tree - A tree with Operator instances representing the system.
+   * @returns {ModelInterface} this
+   */
+  mountOpTree (tree) {
+    workLeafNodes(tree, (path, op) => op.mount(this, path))
+    return this
   }
 
   /**

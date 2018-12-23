@@ -5,7 +5,7 @@ export function TestEngine (opTree = {}, data = {}) {
   const engine = new Engine(new TestPresenter())
   const model = engine.getModel()
   model.set([], data)
-  model.setOpTree(opTree)
+  model.mountOpTree(opTree)
   engine.start()
   return engine
 }

@@ -25,9 +25,9 @@ export function workLeafNodes (tree, callback, isLeaf = defaultIsLeaf) {
  * @param {Function} isLeaf - A function that test whether or not a node is a leaf node.
  */
 function recurse (tree, callback, path, isLeaf) {
-  if (typeof tree === 'undefined') {
-    return
-  }
+  // if (typeof tree === 'undefined') {
+  //   return
+  // }
 
   for (const key of Object.getOwnPropertyNames(tree).concat(Object.getOwnPropertySymbols(tree))) {
     const node = tree[key]

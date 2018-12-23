@@ -1,4 +1,3 @@
-import { mount } from '../functions/mount'
 import { NormalMutator } from '../adapters/NormalMutator'
 
 /**
@@ -36,7 +35,7 @@ export class Operator {
   }
 
   /**
-   * Mounts an operator to the model.
+   * Mounts an operator and any nested operators to the model.
    *
    * This will typically be:<pre><code>this.model = model
    * this.path = path
@@ -48,16 +47,32 @@ export class Operator {
   mount (model, path, parentOp) {
     this.model = model
     this.path = path
-    mount(this, this.model, this.path, parentOp)
+    if (parentOp) {
+      const relativePath = path.slice(parentOp.getPath().length)
+      parentOp.addNestedOp(this, relativePath)
+    } else {
+      model.setOpTree(normalMutatorSingleton.set(model.getOpTree(), this.path, this))
+    }
+
+    if (this.nestedOps) {
+      for (const [op, nestedPath] of this.nestedOps) {
+        op.mount(model, this.getPath(...(nestedPath || [])), this)
+      }
+    }
   }
 
   /**
    * Nests an operator within this one.
    * @param {OperatorInterface} op - The operator to add.
+   * @param {*[]} relativePath - Te path it should be mounted on, relative to the current op.
    */
-  addNestedOp (op) {
-    this.nestedOps = this.nestedOps || new Set()
-    this.nestedOps.add(op)
+  addNestedOp (op, relativePath) {
+    this.nestedOps = this.nestedOps || new Map()
+    this.nestedOps.set(op, relativePath)
+
+    if (this.model) {
+      op.mount(this.model, this.getPath(...(relativePath || [])))
+    }
   }
 
   /**
@@ -66,6 +81,7 @@ export class Operator {
    */
   removeNestedOp (op) {
     if (!this.nestedOps) { return }
+    // TODO call a lifecycle function, e.g. unmounting() on the op, if it exists.
     this.nestedOps.delete(op)
   }
 
@@ -75,7 +91,7 @@ export class Operator {
    */
   getNestedOps () {
     return this.nestedOps
-      ? Array.from(this.nestedOps)
+      ? Array.from(this.nestedOps.keys())
       : []
   }
 

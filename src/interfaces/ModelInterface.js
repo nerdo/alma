@@ -59,6 +59,13 @@ export class ModelInterface {
   getOpTree (path) { throw new Error('Not Yet Implemented') }
 
   /**
+   * Mounts the operator tree into the current tree.
+   * @param {Object} tree - A tree with Operator instances representing the system.
+   * @returns {ModelInterface} this
+   */
+  mountOpTree (tree) { throw new Error('Not Yet Implemented') }
+
+  /**
    * Considers data for acceptance.
    * @param {*} data - The data to consider.
    * @param {OperatorInterface} sourceOperator - The operator that proposed the action.

@@ -1,5 +1,7 @@
 import { setupCustomMatchers } from './jest'
 import { OperatorInterface } from '../interfaces/OperatorInterface'
+import { Counter } from '../operators/Counter'
+import { TestEngine } from './TestEngine'
 
 /**
  * Runs conformance tests on operator instances.
@@ -16,9 +18,90 @@ export function operatorConformanceTests (instanceCreators, describe, test, expe
     .map(name => [name, instanceCreators[name]])
 
   describe('OperatorInterface conformance of', () => {
-    test.each(table)('%s', (name, newInstance) => {
-      const op = newInstance()
-      expect(op).toImplement(OperatorInterface)
+    describe.each(table)('%s', (name, newInstance) => {
+      test('implementing OperatorInterface', () => {
+        const op = newInstance()
+        expect(op).toImplement(OperatorInterface)
+      })
+
+      describe('mounting a nested op', () => {
+        describe('before the parent op has been mounted', () => {
+          test('on an undefined path', () => {
+            const op = newInstance()
+            const counter = new Counter()
+
+            op.addNestedOp(counter, void 0)
+
+            TestEngine.start({ op })
+
+            // Mounting a nested op should result in it getting mounted in some subpath of the op.
+            expect(counter.getPath().length).toBeGreaterThanOrEqual(1)
+          })
+
+          test('on an empty path', () => {
+            const op = newInstance()
+            const counter = new Counter()
+
+            op.addNestedOp(counter, [])
+
+            TestEngine.start({ op })
+
+            // Mounting a nested op should result in it getting mounted in some subpath of the op.
+            expect(counter.getPath().length).toBeGreaterThanOrEqual(1)
+          })
+
+          test('on a defined path', () => {
+            const op = newInstance()
+            const counter = new Counter()
+
+            op.addNestedOp(counter, ['counter'])
+
+            TestEngine.start({ op })
+
+            // Mounting a nested op should result in it getting mounted in some subpath of the op.
+            expect(counter.getPath().length).toBeGreaterThanOrEqual(1)
+          })
+        })
+
+        describe('after the parent op has already been mounted', () => {
+          test('on an undefined path', () => {
+            const op = newInstance()
+            const counter = new Counter()
+
+            TestEngine.start({ op })
+
+            op.addNestedOp(counter, void 0)
+
+            counter.getPath()// ?
+            // Mounting a nested op should result in it getting mounted in some subpath of the op.
+            expect(counter.getPath().length).toBeGreaterThanOrEqual(1)
+          })
+
+          test('on an empty path', () => {
+            const op = newInstance()
+            const counter = new Counter()
+
+            TestEngine.start({ op })
+
+            op.addNestedOp(counter, [])
+
+            // Mounting a nested op should result in it getting mounted in some subpath of the op.
+            expect(counter.getPath().length).toBeGreaterThanOrEqual(1)
+          })
+
+          test('on a defined path', () => {
+            const op = newInstance()
+            const counter = new Counter()
+
+            TestEngine.start({ op })
+
+            op.addNestedOp(counter, ['counter'])
+
+            // Mounting a nested op should result in it getting mounted in some subpath of the op.
+            expect(counter.getPath().length).toBeGreaterThanOrEqual(1)
+          })
+        })
+      })
     })
   })
 }

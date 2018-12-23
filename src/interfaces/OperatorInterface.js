@@ -9,7 +9,7 @@ export class OperatorInterface {
   getOpName () { throw new Error('Not Yet Implemented') }
 
   /**
-   * Mounts an operator to the model.
+   * Mounts an operator and any nested operators to the model.
    *
    * This will typically be:<pre><code>this.model = model
    * this.path = path
@@ -23,8 +23,9 @@ export class OperatorInterface {
   /**
    * Nests an operator within this one.
    * @param {OperatorInterface} op - The operator to add.
+   * @param {*[]} relativePath - Te path it should be mounted on, relative to the current op.
    */
-  addNestedOp (op) { throw new Error('Not Yet Implemented') }
+  addNestedOp (op, relativePath) { throw new Error('Not Yet Implemented') }
 
   /**
    * Removes an op that was nested in this one.
