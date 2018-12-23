@@ -2,6 +2,7 @@
 import { TestEngine } from '../helpers/TestEngine'
 import { Counter } from '../operators/Counter'
 import { Model } from './Model'
+import { List } from '../operators/List'
 
 describe('Operator', () => {
   test('getModel', () => {
@@ -42,6 +43,15 @@ describe('Operator', () => {
     })
 
     test('nested ops', () => {
+      let counter, foo
+      const list = new List(
+        foo = new List(
+          counter = new Counter()
+        )
+      )
+      TestEngine.start({ list })
+
+      expect(counter.pathBelongsToOp(['list', 'items', list.getIdFor(foo), 'items', foo.getIdFor(counter)])).toBe(true)
     })
   })
 
