@@ -1,6 +1,7 @@
 import { Operator } from '../core/Operator'
 import { integerSequence } from '../helpers/integerSequence'
 import { next } from '../helpers/next'
+import { Engine } from '../core/Engine';
 
 /**
  * @type {Array}
@@ -18,9 +19,9 @@ const EMPTY_OBJECT = {}
  */
 export class List extends Operator {
   /**
-   * @ignore
+   *
    */
-  constructor () {
+  constructor (...ops) {
     super()
 
     /**
@@ -34,6 +35,12 @@ export class List extends Operator {
      * @type {Map<OperatorInterface,number>}
      */
     this.opMap = void 0
+
+    /**
+     * @private
+     * @type {OperatorInterface[]}
+     */
+    this.constructorOps = ops
   }
 
   /**
@@ -53,13 +60,8 @@ export class List extends Operator {
   mount (model, path, parentOp) {
     const response = super.mount(model, path, parentOp)
 
-    // Find the highest id to use in the idSequence
-    const maxId = this
-      .getModelData(['order'], [])
-      .reduce((max, current) => Math.max(max, current), 0)
-
-    this.opMap = new Map()
-    this.idSequence = integerSequence(maxId + 1)
+    this.opMap = this.opMap || new Map()
+    this.idSequence = this.idSequence || integerSequence(this.getMaxId() + 1)
 
     // TODO create instances of ops by using an opName to createOp() map
 
@@ -67,10 +69,14 @@ export class List extends Operator {
   }
 
   /**
-   * Resets the list by calling {@link clear}.
+   * Resets all items in the list.
    */
   reset () {
-    this.clear()
+    const items = this.getModelData(['items'], EMPTY_OBJECT)
+    const opNames = this.getOpNames()
+    const order = this.getOrder()
+
+    this.propose('reset', { items, opNames, order })
   }
 
   /**
@@ -184,10 +190,14 @@ export class List extends Operator {
    */
   consider (data, sourceOperator, action) {
     const incoming = this.getRelativeSlice(data)
-    if (typeof incoming === 'undefined') { return }
+    if (typeof incoming === 'undefined') {
+      return
+    }
 
     if (action.name === 'addItems') {
-      if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') { return }
+      if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') {
+        return
+      }
       this.setModelData(['order'], incoming.order)
       this.setModelData(['opNames'], incoming.opNames)
     } else if (action.name === 'clear') {
@@ -205,9 +215,23 @@ export class List extends Operator {
    * @param {Object} [action.context] - Contextual information for the action.
    */
   nextAction (sourceOperator, action) {
+    if (action === Engine.START_ACTION) {
+      // Add ops from the constructor.
+      if (this.constructorOps) {
+        const ops = this.constructorOps
+        delete this.constructorOps
+        this.addItems(List.END, ops)
+      }
+    }
+
     if (sourceOperator !== this) { return }
 
-    if (action.name === 'addItems') {
+    if (action.name === 'reset') {
+      for (const op of this.getNestedOps()) {
+        // op// ?
+        op.reset()
+      }
+    } else if (action.name === 'addItems') {
       // Mount added operators.
       const context = action.context
       context.ids
@@ -227,8 +251,20 @@ export class List extends Operator {
         })
     } else if (action.name === 'clear') {
       this.opMap = new Map()
+      // TODO unmount each op
       this.idSequence = integerSequence(1)
     }
+  }
+
+  /**
+   * Gets the maximum id in the current data.
+   * @private
+   * @returns {number}
+   */
+  getMaxId () {
+    // Find the highest id to use in the idSequence
+    return (this.getModelData(['order'], []) || [])
+      .reduce((max, current) => Math.max(max, current), 0)
   }
 }
 

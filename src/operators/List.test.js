@@ -14,6 +14,33 @@ describe('List', () => {
     expect
   )
 
+  describe('constructor', () => {
+    test('passing in ops', () => {
+      let c1, c2, c3
+      const list = new List(
+        c1 = new Counter(),
+        c2 = new Counter(),
+        c3 = new Counter()
+      )
+
+      const engine = TestEngine.start({ list })
+      const presenter = engine.getPresenter()
+
+      list.reset()
+
+      const id1 = list.getIdFor(c1)
+      expect(id1).toBeDefined()
+
+      const id2 = list.getIdFor(c2)
+      expect(id2).toBeDefined()
+
+      const id3 = list.getIdFor(c3)
+      expect(id3).toBeDefined()
+
+      expect(presenter.state).toMatchObject({ list: { order: [id1, id2, id3] } })
+    })
+  })
+
   describe('addItems', () => {
     test('adding items to a new list', () => {
       const list = new List()
