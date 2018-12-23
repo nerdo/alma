@@ -13,6 +13,29 @@ const normalMutatorSingleton = new NormalMutator()
  */
 export class Operator {
   /**
+   * @ignore
+   */
+  constructor () {
+    /**
+     * @type {ModelInterface}
+     * @private
+     */
+    this.model = void 0
+
+    /**
+     * @type {*[]}
+     * @private
+     */
+    this.path = void 0
+
+    /**
+     * @type {Set<OperatorInterface>}
+     * @private
+     */
+    this.nestedOps = void 0
+  }
+
+  /**
    * Mounts an operator to the model.
    *
    * This will typically be:<pre><code>this.model = model
@@ -23,24 +46,8 @@ export class Operator {
    * @param {OperatorInterface} [parentOp] - The op that is responsible for this operator.
    */
   mount (model, path, parentOp) {
-    /**
-     * @type {ModelInterface}
-     * @private
-     */
     this.model = model
-
-    /**
-     * @type {*[]}
-     * @private
-     */
     this.path = path
-
-    /**
-     * @type {Set<OperatorInterface>}
-     * @private
-     */
-    this.nestedOps = void 0
-
     mount(this, this.model, this.path, parentOp)
   }
 
