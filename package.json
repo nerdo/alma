@@ -1,12 +1,12 @@
 {
   "name": "alma",
   "version": "0.0.1",
-  "description": "A reusable implementation of the SAM pattern (sam.js.org).",
+  "description": "A class-based implementation of the SAM pattern (sam.js.org).",
   "main": "dist/alma.js",
   "module": "dist/alma.es.js",
   "scripts": {
     "test": "jest",
-    "build": "rollup -c && rollup -c conformance-tests.rollup.config.js && rollup -c ops.rollup.config.js",
+    "build": "rollup -c && esdoc",
     "start": "rollup -c -w",
     "prepublish": "npm run build"
   },

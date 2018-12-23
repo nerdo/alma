@@ -11,5 +11,11 @@
         {
             "name": "esdoc-standard-plugin"
         }
-    ]
+    ],
+    "brand": {
+        "title": "Alma",
+        "description": "A class-based implementation of the SAM pattern (sam.js.org).",
+        "repository": "https://github.com/nerdo/alma.git",
+        "author": "Dannel Albert"
+    }
 }
