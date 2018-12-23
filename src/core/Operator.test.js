@@ -31,13 +31,18 @@ describe('Operator', () => {
     expect(counter.getModelData(['value'])).toBe(5)
   })
 
-  test('pathBelongsToOp', () => {
-    const counter = new Counter()
-    TestEngine.start({ foo: { bar: { counter } } })
+  describe('pathBelongsToOp', () => {
+    test('plain object path to op', () => {
+      const counter = new Counter()
+      TestEngine.start({ foo: { bar: { counter } } })
 
-    expect(counter.pathBelongsToOp(['foo', 'bar', 'counter'])).toBe(true)
-    expect(counter.pathBelongsToOp(['foo', 'bar', 'counter', 'anything'])).toBe(true)
-    expect(counter.pathBelongsToOp(['foo', 'bar', 'anything'])).toBe(false)
+      expect(counter.pathBelongsToOp(['foo', 'bar', 'counter'])).toBe(true)
+      expect(counter.pathBelongsToOp(['foo', 'bar', 'counter', 'anything'])).toBe(true)
+      expect(counter.pathBelongsToOp(['foo', 'bar', 'anything'])).toBe(false)
+    })
+
+    test('nested ops', () => {
+    })
   })
 
   describe('getAbsoluteChange', () => {
