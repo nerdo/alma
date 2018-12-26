@@ -1,7 +1,7 @@
 import { Operator } from '../core/Operator'
 import { integerSequence } from '../helpers/integerSequence'
 import { next } from '../helpers/next'
-import { Engine } from '../core/Engine';
+import { Engine } from '../core/Engine'
 
 /**
  * @type {Array}
@@ -76,6 +76,7 @@ export class List extends Operator {
     const opNames = this.getOpNames()
     const order = this.getOrder()
 
+    items// ?
     this.propose('reset', { items, opNames, order })
   }
 
@@ -194,7 +195,11 @@ export class List extends Operator {
       return
     }
 
-    if (action.name === 'addItems') {
+    if (action.name === 'reset') {
+      this.setModelData(['order'], incoming.order)
+      this.setModelData(['items'], incoming.items)
+      this.setModelData(['opNames'], incoming.opNames)
+    } else if (action.name === 'addItems') {
       if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') {
         return
       }

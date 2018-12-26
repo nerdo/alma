@@ -1,5 +1,5 @@
 import { NormalMutator } from '../adapters/NormalMutator'
-import { workLeafNodes } from '../functions/workLeafNodes'
+import { traverse, defaultGetChildren } from '../functions/traverse'
 
 /**
  * @type {MutatorInterface}
@@ -127,7 +127,16 @@ export class Model {
    * @returns {ModelInterface} this
    */
   mountOpTree (tree) {
-    workLeafNodes(tree, (path, op) => op.mount(this, path))
+    traverseOpTree(
+      tree,
+      (node, path) => {
+        if (!isOp(node)) {
+          return
+        }
+        node.mount(this, path)
+      }
+    )
+    // workLeafNodes(tree, (path, op) => op.mount(this, path))
     return this
   }
 
@@ -137,7 +146,16 @@ export class Model {
    */
   reset (data = {}) {
     this.data = data
-    workLeafNodes(this.opTree, (path, op) => op.reset())
+    // workLeafNodes(this.opTree, (path, op) => op.reset())
+    traverseOpTree(
+      this.opTree,
+      (node, path) => {
+        if (!isOp(node)) {
+          return
+        }
+        node.reset()
+      }
+    )
   }
 
   /**
@@ -149,7 +167,16 @@ export class Model {
    * @param {Object} [action.context] - Contextual information for the action.
    */
   consider (data, sourceOperator, action) {
-    workLeafNodes(this.opTree, (path, op) => op.consider(data, sourceOperator, action))
+    // workLeafNodes(this.opTree, (path, op) => op.consider(data, sourceOperator, action))
+    traverseOpTree(
+      this.opTree,
+      (node, path) => {
+        if (!isOp(node)) {
+          return
+        }
+        node.consider(data, sourceOperator, action)
+      }
+    )
     this.supervisor.process(this, sourceOperator, action)
   }
 
@@ -161,20 +188,53 @@ export class Model {
  * @param {Object} [action.context] - Contextual information for the action.
  */
   nextAction (sourceOperator, action) {
-    workLeafNodes(
+    traverseOpTree(
       this.opTree,
-      (path, op) => {
-        if (!op.nextAction) { return }
-        op.nextAction(sourceOperator, action)
-        op.getNestedOps().map(nested => nested.nextAction ? nested.nextAction(sourceOperator, action) : null)
-      },
-      (path, op) => {
-        // Detect operators as leaf nodes by doing some pretty simple type checks on the OperatorInterface.
-        return op &&
-          typeof op.mount === 'function' &&
-          typeof op.getPath === 'function' &&
-          typeof op.getModelData === 'function'
+      (node, path) => {
+        if (!isOp(node)) {
+          return
+        }
+        if (typeof node.nextAction !== 'function') {
+          return
+        }
+        node.nextAction(sourceOperator, action)
       }
     )
   }
+}
+
+/**
+ * Traverses the op tree.
+ * @private
+ * @param {*} tree - The tree to traverse.
+ * @param {Function} callback - The tree traversal callback function.
+ */
+function traverseOpTree (tree, callback) {
+  traverse(
+    tree,
+    callback,
+    (node, path) => {
+      return defaultGetChildren(node, path)
+        .concat(
+          isOp(node)
+            ? node
+              .getNestedOps()
+              .reduce((ops, current) => ops.concat({ path: node.getPath(), node }), [])
+            : []
+        )
+    }
+  )
+}
+
+/**
+ * Returns whether or not a variable is an operator.
+ * @private
+ * @param {*} subject - The subject being tested.
+ * @returns {boolean}
+ */
+function isOp (subject) {
+  return subject &&
+    typeof subject.mount === 'function' &&
+    typeof subject.getPath === 'function' &&
+    typeof subject.getModelData === 'function'
 }
