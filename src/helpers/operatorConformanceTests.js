@@ -72,7 +72,6 @@ export function operatorConformanceTests (instanceCreators, describe, test, expe
 
             op.addNestedOp(counter, void 0)
 
-            counter.getPath()// ?
             // Mounting a nested op should result in it getting mounted in some subpath of the op.
             expect(counter.getPath().length).toBeGreaterThanOrEqual(1)
           })

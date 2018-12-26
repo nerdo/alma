@@ -76,7 +76,6 @@ export class List extends Operator {
     const opNames = this.getOpNames()
     const order = this.getOrder()
 
-    items// ?
     this.propose('reset', { items, opNames, order })
   }
 
