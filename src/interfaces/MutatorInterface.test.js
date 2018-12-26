@@ -143,5 +143,62 @@ describe('MutatorInterface conformance of', () => {
       })
     })
   })
+
+  describe('delete', () => {
+    test('the top level path', () => {
+      const obj = {
+        a: true,
+        b: false
+      }
+      const gs = newInstance()
+
+      const result = gs.delete(obj, [])
+
+      expect(result).not.toBeDefined()
+    })
+
+    test('an undefined path', () => {
+      const obj = {
+        a: true,
+        b: false
+      }
+      const original = { ...obj }
+      const gs = newInstance()
+
+      const result = gs.delete(obj, ['doe', 'dear'])
+
+      expect(result).toEqual(original)
+    })
+
+    test('an abritrary path', () => {
+      const obj = {
+        foo: {
+          bar: 1,
+          a: 2,
+          3: {
+            hello: 'world'
+          }
+        }
+      }
+      const gs = newInstance()
+
+      const result = gs.delete(obj, ['foo', 3])
+
+      expect(result).not.toMatchObject({
+        foo: {
+          bar: 1,
+          a: 2,
+          3: void 0
+        }
+      })
+
+      expect(result).toMatchObject({
+        foo: {
+          bar: 1,
+          a: 2
+        }
+      })
+    })
+  })
 })
 })

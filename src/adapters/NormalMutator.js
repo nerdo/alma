@@ -61,4 +61,32 @@ export class NormalMutator {
 
     return obj
   }
+
+  /**
+   * Deletes a property from an object.
+   * @param {Object} obj - The object to set the value on.
+   * @param {*[]} path  - The path (list of keys) of the property to delete.
+   * @returns {Object} an object with the property deleted.
+   */
+  delete (obj, path) {
+    let container = obj
+    const arrayPath = path ? [].concat(path) : []
+    if (arrayPath.length === 0) {
+      return
+    }
+    const lastKey = arrayPath.pop()
+
+    while (arrayPath.length > 0) {
+      const key = arrayPath.shift()
+      let nextContainer = container[key]
+      if (typeof nextContainer === 'undefined' || !(nextContainer instanceof Object)) {
+        return obj
+      }
+      container = nextContainer
+    }
+
+    delete container[lastKey]
+
+    return obj
+  }
 }

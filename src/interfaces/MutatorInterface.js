@@ -19,4 +19,12 @@ export class MutatorInterface {
    * @returns {Object} an object with the value set.
    */
   set (obj, path, value) { throw new Error('Not Yet Implemented') }
+
+  /**
+   * Deletes a property from an object.
+   * @param {Object} obj - The object to set the value on.
+   * @param {*[]} path  - The path (list of keys) of the property to delete.
+   * @returns {Object} an object with the property deleted.
+   */
+  delete (obj, path) { throw new Error('Not Yet Implemented') }
 }
