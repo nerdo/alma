@@ -16,17 +16,23 @@ export class Counter extends Operator {
     this.propose('setValue', { value })
   }
 
+  getValue () {
+    return this.getModelData(['value'], 0)
+  }
+
   increment () {
-    this.setValue(this.getModelData(['value'], 0) + 1)
+    this.setValue(this.getValue() + 1)
   }
 
   decrement () {
-    this.setValue(this.getModelData(['value'], 0) - 1)
+    this.setValue(this.getValue() - 1)
   }
 
   consider (data, sourceOperator, action) {
     const incoming = this.getRelativeSlice(data)
-    if (typeof incoming === 'undefined') { return }
+    if (typeof incoming === 'undefined') {
+      return
+    }
     if (typeof incoming.value !== 'undefined') {
       this.setModelData(['value'], incoming.value)
     }

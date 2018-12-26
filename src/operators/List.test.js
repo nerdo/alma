@@ -336,12 +336,91 @@ describe('List', () => {
     expect(Object.keys(presenter.state.list.items).length).toBe(0)
   })
 
-  describe('getItem', () => {
+  describe('getOpById', () => {
+    test('getting an operator by id', () => {
+      let c1, c2
+      const list = new List(
+        c1 = new Counter(),
+        c2 = new Counter()
+      )
+
+      TestEngine.start({ list })
+
+      const id1 = list.getIdFor(c1)
+      expect(id1).toBeDefined()
+
+      const id2 = list.getIdFor(c2)
+      expect(id2).toBeDefined()
+
+      const result = list.getOpById(id1)
+      expect(result).toBe(c1)
+    })
   })
 
-  describe('getItems', () => {
+  describe('getOps', () => {
+    test('getting all operators within a list', () => {
+      let c1, c2
+      const list = new List(
+        c1 = new Counter(),
+        c2 = new Counter()
+      )
+
+      TestEngine.start({ list })
+
+      const result = list.getOps()
+
+      expect(result).toEqual([c1, c2])
+    })
   })
 
-  describe('mounting a list from data', () => {
+  describe('mounting a list with existing data', () => {
+    test('mounting', () => {
+      const data = {
+        list:
+        {
+          items:
+          {
+            '1': { value: 1 },
+            '2': { value: -1 },
+            '3':
+            {
+              items: { '1': { value: 5 } },
+              opNames: { '1': 'Counter' },
+              order: [1]
+            }
+          },
+          opNames: { '1': 'Counter', '2': 'Counter', '3': 'List' },
+          order: [1, 2, 3]
+        }
+      }
+
+      let c1, c2, c3, nestedList
+      const list = new List()
+      list.setOpCreators({
+        Counter: () => new Counter(),
+        List: () => (new List()).setOpCreators(list.getOpCreators())
+      })
+
+      TestEngine.start({ list }, data)
+
+      c1 = list.getOpById(1)
+      expect(c1).toBeInstanceOf(Counter)
+
+      c2 = list.getOpById(2)
+      expect(c2).toBeInstanceOf(Counter)
+
+      nestedList = list.getOpById(3)
+      expect(nestedList).toBeInstanceOf(List)
+
+      c3 = nestedList.getOpById(1)
+      expect(c3).toBeInstanceOf(Counter)
+
+      expect(c1.getValue()).toBe(1)
+      expect(c2.getValue()).toBe(-1)
+      expect(c3.getValue()).toBe(5)
+
+      expect(() => { c3.increment() }).not.toThrow()
+      expect(c3.getValue()).toBe(6)
+    })
   })
 })

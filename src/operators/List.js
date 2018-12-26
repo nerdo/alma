@@ -41,6 +41,30 @@ export class List extends Operator {
      * @type {OperatorInterface[]}
      */
     this.constructorOps = ops
+
+    /**
+     * @private
+     * @type {Object}
+     */
+    this.opCreators = void 0
+  }
+
+  /**
+   * Sets op creators.
+   * @param {Object.<string, function>} opCreators - A map of op names and functions that return new instances of ops.
+   * @returns {List} this
+   */
+  setOpCreators (opCreators) {
+    this.opCreators = opCreators
+    return this
+  }
+
+  /**
+   * Gets op creators.
+   * @returns {Object.<string, function>} - A map of op names and functions that return new instances of ops.
+   */
+  getOpCreators () {
+    return this.opCreators
   }
 
   /**
@@ -63,7 +87,24 @@ export class List extends Operator {
     this.opMap = this.opMap || new Map()
     this.idSequence = this.idSequence || integerSequence(this.getMaxId() + 1)
 
-    // TODO create instances of ops by using an opName to createOp() map
+    // Create instances of ops with opCreators.
+    if (this.opCreators) {
+      const ops = this.getModelData(['order'], [])
+        .map(id => [id, this.getModelData(['opNames', `${id}`])])
+        .map(([id, opName]) => {
+          const opCreator = this.opCreators[opName]
+          if (typeof opCreator !== 'function') {
+            return [id]
+          }
+          return [id, opCreator()]
+        })
+        .filter(([, op]) => op)
+
+      for (const [id, op] of ops) {
+        this.opMap.set(op, id)
+        op.mount(this.getModel(), this.getPath('items', id), this)
+      }
+    }
 
     return response
   }
@@ -196,6 +237,16 @@ export class List extends Operator {
   }
 
   /**
+   * Gets all ops in the list, in order.
+   * @returns {[OperatorInterface]}
+   */
+  getOps () {
+    return this.getModelData(['order'], [])
+      .map(id => this.getOpById(id))
+      .filter(op => op)
+  }
+
+  /**
    * Gets the order of items in the list as an array of operator IDs.
    * @returns {number[]}
    */
@@ -266,7 +317,6 @@ export class List extends Operator {
 
     if (action.name === 'reset') {
       for (const op of this.getNestedOps()) {
-        // op// ?
         op.reset()
       }
     } else if (action.name === 'addItems') {
