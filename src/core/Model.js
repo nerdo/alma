@@ -136,7 +136,6 @@ export class Model {
         node.mount(this, path)
       }
     )
-    // workLeafNodes(tree, (path, op) => op.mount(this, path))
     return this
   }
 
@@ -146,7 +145,6 @@ export class Model {
    */
   reset (data = {}) {
     this.data = data
-    // workLeafNodes(this.opTree, (path, op) => op.reset())
     traverseOpTree(
       this.opTree,
       (node, path) => {
@@ -167,7 +165,6 @@ export class Model {
    * @param {Object} [action.context] - Contextual information for the action.
    */
   consider (data, sourceOperator, action) {
-    // workLeafNodes(this.opTree, (path, op) => op.consider(data, sourceOperator, action))
     traverseOpTree(
       this.opTree,
       (node, path) => {
