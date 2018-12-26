@@ -72,8 +72,15 @@ export class Operator {
       return
     }
 
-    this.model.setOpTree(normalMutatorSingleton.set(this.model.getOpTree(), this.path, void 0))
-    this.setModelData([], void 0)
+    // Unmount nested children first.
+    if (this.nestedOps) {
+      for (const [op] of this.nestedOps) {
+        op.unmount()
+      }
+    }
+
+    this.model.setOpTree(normalMutatorSingleton.delete(this.model.getOpTree(), this.path))
+    this.deleteModelData([])
     this.path = void 0
     this.model = void 0
   }
@@ -121,7 +128,8 @@ export class Operator {
    * @returns {*[]}
    */
   getPath (...relative) {
-    return (this.path || []).concat(relative)
+    return (this.path || [])
+      .concat(relative)
   }
 
   /**
@@ -138,7 +146,9 @@ export class Operator {
    * @param {*} defaultValue - The value to return if the model data is undefined.
    */
   getModelData (relative, defaultValue = void 0) {
-    if (!this.model) { return void 0 }
+    if (!this.model) {
+      return void 0
+    }
     let data = this.model.get(this.getPath(...relative))
     if (typeof data === 'undefined') {
       data = defaultValue
@@ -152,8 +162,21 @@ export class Operator {
    * @param {*} value - The value to set.
    */
   setModelData (relative, value) {
-    if (!this.model) { return }
+    if (!this.model) {
+      return
+    }
     this.model.set(this.getPath(...[].concat(relative)), value)
+  }
+
+  /**
+   * Helper method for deleting model data.
+   * @param {*[]} relative  - The relative path (list of keys) to set the value on.
+   */
+  deleteModelData (relative) {
+    if (!this.model) {
+      return
+    }
+    this.model.delete(this.getPath(...[].concat(relative)))
   }
 
   /**

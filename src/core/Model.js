@@ -95,10 +95,20 @@ export class Model {
    * Sets a value in the model data.
    * @param {*[]} path  - The path (list of keys) to set the value on.
    * @param {*} value - The value to set in the model data.
-   * @returns {Object} the model data with the value set.
+   * @returns {Object} the model with the value set.
    */
   set (path, value) {
     this.data = this.mutator.set(this.data, path, value)
+    return this
+  }
+
+  /**
+   * Deletes a property from an object.
+   * @param {*[]} path  - The path (list of keys) of the property to delete.
+   * @returns {Object} the model with the property deleted.
+   */
+  delete (path) {
+    this.data = this.mutator.delete(this.data, path)
     return this
   }
 

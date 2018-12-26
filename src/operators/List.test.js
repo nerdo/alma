@@ -38,6 +38,41 @@ describe('List', () => {
       expect(id3).toBeDefined()
 
       expect(presenter.state).toMatchObject({ list: { order: [id1, id2, id3] } })
+      expect(Object.keys(presenter.state.list.items).length).toBe(3)
+    })
+
+    test('passing nested ops into the constructor', () => {
+      let c1, c2, c3, nestedList
+      const list = new List(
+        c1 = new Counter(),
+        c2 = new Counter(),
+        nestedList = new List(
+          c3 = new Counter()
+        )
+      )
+
+      const engine = TestEngine.start({ list })
+      const presenter = engine.getPresenter()
+
+      list.reset()
+
+      const id1 = list.getIdFor(c1)
+      expect(id1).toBeDefined()
+
+      const id2 = list.getIdFor(c2)
+      expect(id2).toBeDefined()
+
+      const nestedListId = list.getIdFor(nestedList)
+      expect(nestedListId).toBeDefined()
+
+      const id3 = nestedList.getIdFor(c3)
+      expect(id3).toBeDefined()
+
+      expect(presenter.state).toMatchObject({ list: { order: [id1, id2, nestedListId] } })
+      expect(Object.keys(presenter.state.list.items).length).toBe(3)
+
+      expect(presenter.state.list.items[nestedListId]).toMatchObject({ order: [id3] })
+      expect(Object.keys(presenter.state.list.items[nestedListId].items).length).toBe(1)
     })
 
     test('adding items after construction is the same as passing ops into the constructor', () => {
@@ -63,6 +98,7 @@ describe('List', () => {
       expect(l1id3).toBeDefined()
 
       expect(presenter1.state).toMatchObject({ list: { order: [l1id1, l1id2, l1id3] } })
+      expect(Object.keys(presenter1.state.list.items).length).toBe(3)
 
       const l2c1 = new Counter()
       const l2c2 = new Counter()
@@ -85,6 +121,7 @@ describe('List', () => {
       expect(l2id3).toBeDefined()
 
       expect(presenter2.state).toMatchObject({ list: { order: [l2id1, l2id2, l2id3] } })
+      expect(Object.keys(presenter2.state.list.items).length).toBe(3)
 
       expect(l1id1).toBe(l2id1)
       expect(l1id2).toBe(l2id2)
@@ -256,6 +293,47 @@ describe('List', () => {
     expect(presenter.state.list.items[id3]).toBeDefined()
     expect(presenter.state.list.items[id5]).toBeDefined()
     expect(presenter.state).toMatchObject({ list: { order: [id2, id3, id5] } })
+  })
+
+  test('clear', () => {
+    let c1, c2, c3, nestedList
+    const list = new List(
+      c1 = new Counter(),
+      c2 = new Counter(),
+      nestedList = new List(
+        c3 = new Counter()
+      )
+    )
+
+    const engine = TestEngine.start({ list })
+    const presenter = engine.getPresenter()
+
+    list.reset()
+
+    const id1 = list.getIdFor(c1)
+    expect(id1).toBeDefined()
+
+    const id2 = list.getIdFor(c2)
+    expect(id2).toBeDefined()
+
+    const nestedListId = list.getIdFor(nestedList)
+    expect(nestedListId).toBeDefined()
+
+    const id3 = nestedList.getIdFor(c3)
+    expect(id3).toBeDefined()
+
+    expect(presenter.state).toMatchObject({ list: { order: [id1, id2, nestedListId] } })
+    expect(presenter.state.list.items).toBeDefined()
+    expect(Object.keys(presenter.state.list.items).length).toBe(3)
+
+    list.clear()
+
+    expect(() => c1.increment()).toThrow()
+    expect(() => c2.increment()).toThrow()
+    expect(() => nestedList.addItems(List.END, []))
+    expect(() => c3.increment()).toThrow()
+    expect(presenter.state.list.items).toBeDefined()
+    expect(Object.keys(presenter.state.list.items).length).toBe(0)
   })
 
   describe('getItem', () => {

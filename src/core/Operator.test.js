@@ -32,6 +32,20 @@ describe('Operator', () => {
     expect(counter.getModelData(['value'])).toBe(5)
   })
 
+  test('deleteModelData', () => {
+    const counter = new Counter()
+    TestEngine.start({ counter })
+    counter.reset()
+
+    counter.deleteModelData(['value'])
+
+    const data = counter.getModelData([])
+    expect(data).toBeDefined()
+    expect(data).toBeInstanceOf(Object)
+    expect(data.value).not.toBeDefined()
+    expect(data).not.toMatchObject({ value: void 0 })
+  })
+
   describe('pathBelongsToOp', () => {
     test('plain object path to op', () => {
       const counter = new Counter()

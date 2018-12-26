@@ -6,12 +6,12 @@ import { Engine } from '../core/Engine'
 /**
  * @type {Array}
  */
-const EMPTY_ARRAY = []
+const EMPTY_ARRAY = Object.freeze([])
 
 /**
  * @type {Object}
  */
-const EMPTY_OBJECT = {}
+const EMPTY_OBJECT = Object.freeze({})
 
 /**
  * A generic List operator.
@@ -72,7 +72,7 @@ export class List extends Operator {
    * Resets all items in the list.
    */
   reset () {
-    const items = this.getModelData(['items'], EMPTY_OBJECT)
+    const items = this.getModelData(['items'], {})
     const opNames = this.getOpNames()
     const order = this.getOrder()
 
@@ -221,7 +221,7 @@ export class List extends Operator {
    */
   consider (data, sourceOperator, action) {
     const incoming = this.getRelativeSlice(data)
-    if (typeof incoming === 'undefined') {
+    if (sourceOperator !== this || typeof incoming === 'undefined') {
       return
     }
 
@@ -294,8 +294,11 @@ export class List extends Operator {
         op.unmount()
       }
     } else if (action.name === 'clear') {
+      for (const op of this.opMap.keys()) {
+        op.unmount()
+      }
+
       this.opMap = new Map()
-      // TODO unmount each op
       this.idSequence = integerSequence(1)
     }
   }

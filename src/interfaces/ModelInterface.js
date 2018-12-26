@@ -45,6 +45,13 @@ export class ModelInterface {
   set (path, value) { throw new Error('Not Yet Implemented') }
 
   /**
+   * Deletes a property from an object.
+   * @param {*[]} path  - The path (list of keys) of the property to delete.
+   * @returns {Object} an object with the property deleted.
+   */
+  delete (path) { throw new Error('Not Yet Implemented') }
+
+  /**
    * Sets the operator tree.
    * @param {Object} tree - A tree with Operator instances representing the system.
    * @returns {ModelInterface} this
