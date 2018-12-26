@@ -5,7 +5,7 @@
   "main": "dist/alma.js",
   "module": "dist/alma.es.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest && standard",
     "build": "rollup -c && esdoc",
     "start": "rollup -c -w",
     "prepublish": "npm run build"
