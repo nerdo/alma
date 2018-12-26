@@ -252,6 +252,9 @@ describe('List', () => {
     expect(Object.keys(list.getOpNames())).not.toContainEqual(`${id4}`)
     expect(presenter.state.list.items[id1]).toBeUndefined()
     expect(presenter.state.list.items[id4]).toBeUndefined()
+    expect(presenter.state.list.items[id2]).toBeDefined()
+    expect(presenter.state.list.items[id3]).toBeDefined()
+    expect(presenter.state.list.items[id5]).toBeDefined()
     expect(presenter.state).toMatchObject({ list: { order: [id2, id3, id5] } })
   })
 
