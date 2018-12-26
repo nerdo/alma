@@ -48,8 +48,5 @@
   },
   "standard": {
     "parser": "babel-eslint"
-  },
-  "dependencies": {
-    "is-plain-object": "^2.0.4"
   }
 }
