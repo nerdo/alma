@@ -11,7 +11,7 @@
  *  The default (defaultGetChildren) function returns the children for non-scalar nodes.
  */
 export function traverse (tree, callback, getChildren = defaultGetChildren) {
-  recurse(tree, callback, [], getChildren)
+  recurse(tree, callback, [], getChildren, new WeakMap())
 }
 
 /**
@@ -35,7 +35,7 @@ export function defaultGetChildren (node, path) {
   return children
 }
 
-function recurse (tree, callback, path, getChildren) {
+function recurse (tree, callback, path, getChildren, recursed) {
   if (typeof tree === 'undefined' || tree === null) {
     return
   }
@@ -51,10 +51,18 @@ function recurse (tree, callback, path, getChildren) {
     const currentPath = path.concat(key)
     process(node, currentPath, callback)
     children = children.concat(getChildren(node, currentPath))
+
+    // Set flag that node was recursed to avoid cycles.
+    if (!recursed.get(node) && !isScalar(node)) {
+      recursed.set(node, true)
+    }
   }
 
+  // Only recurse on nodes that haven't already been processed.
   for (const child of children) {
-    recurse(child.node, callback, child.path, getChildren)
+    if (!recursed.get(child.node)) {
+      recurse(child.node, callback, child.path, getChildren, recursed)
+    }
   }
 }
 
