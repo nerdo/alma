@@ -14,8 +14,8 @@ describe('List', () => {
     expect
   )
 
-  describe('constructor', () => {
-    test('passing in ops', () => {
+  describe('creating a new list', () => {
+    test('passing ops into the constructor', () => {
       let c1, c2, c3
       const list = new List(
         c1 = new Counter(),
@@ -38,6 +38,57 @@ describe('List', () => {
       expect(id3).toBeDefined()
 
       expect(presenter.state).toMatchObject({ list: { order: [id1, id2, id3] } })
+    })
+
+    test('adding items after construction is the same as passing ops into the constructor', () => {
+      let l1c1, l1c2, l1c3
+      const list1 = new List(
+        l1c1 = new Counter(),
+        l1c2 = new Counter(),
+        l1c3 = new Counter()
+      )
+
+      const engine1 = TestEngine.start({ list: list1 })
+      const presenter1 = engine1.getPresenter()
+
+      list1.reset()
+
+      const l1id1 = list1.getIdFor(l1c1)
+      expect(l1id1).toBeDefined()
+
+      const l1id2 = list1.getIdFor(l1c2)
+      expect(l1id2).toBeDefined()
+
+      const l1id3 = list1.getIdFor(l1c3)
+      expect(l1id3).toBeDefined()
+
+      expect(presenter1.state).toMatchObject({ list: { order: [l1id1, l1id2, l1id3] } })
+
+      const l2c1 = new Counter()
+      const l2c2 = new Counter()
+      const l2c3 = new Counter()
+      const list2 = new List()
+
+      const engine2 = TestEngine.start({ list: list2 })
+      const presenter2 = engine2.getPresenter()
+
+      list2.reset()
+      list2.addItems(List.END, [l2c1, l2c2, l2c3], true)
+
+      const l2id1 = list2.getIdFor(l2c1)
+      expect(l2id1).toBeDefined()
+
+      const l2id2 = list2.getIdFor(l2c2)
+      expect(l2id2).toBeDefined()
+
+      const l2id3 = list2.getIdFor(l2c3)
+      expect(l2id3).toBeDefined()
+
+      expect(presenter2.state).toMatchObject({ list: { order: [l2id1, l2id2, l2id3] } })
+
+      expect(l1id1).toBe(l2id1)
+      expect(l1id2).toBe(l2id2)
+      expect(l1id3).toBe(l2id3)
     })
   })
 
