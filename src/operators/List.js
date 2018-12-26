@@ -19,7 +19,8 @@ const EMPTY_OBJECT = Object.freeze({})
  */
 export class List extends Operator {
   /**
-   *
+   * Creates a List of operators.
+   * @param  {...OperatorInterface} ops - The iniial set of operators in the list.
    */
   constructor (...ops) {
     super()
