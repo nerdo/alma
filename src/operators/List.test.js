@@ -222,7 +222,37 @@ describe('List', () => {
     })
   })
 
-  describe('deleteItems', () => {
+  test('deleteItems', () => {
+    let c1, c2, c3, c4, c5
+    const list = new List(
+      c1 = new Counter(),
+      c2 = new Counter(),
+      c3 = new Counter(),
+      c4 = new Counter(),
+      c5 = new Counter()
+    )
+
+    const engine = TestEngine.start({ list })
+    const presenter = engine.getPresenter()
+
+    list.reset()
+    list.deleteItems([c1, c4])
+
+    const id1 = list.getIdFor(c1)
+    const id2 = list.getIdFor(c2)
+    const id3 = list.getIdFor(c3)
+    const id4 = list.getIdFor(c4)
+    const id5 = list.getIdFor(c5)
+
+    expect(() => c1.increment()).toThrow()
+    expect(() => c4.increment()).toThrow()
+    expect(presenter.state.list.order).not.toContainEqual(id1)
+    expect(presenter.state.list.order).not.toContainEqual(id4)
+    expect(Object.keys(list.getOpNames())).not.toContainEqual(`${id1}`)
+    expect(Object.keys(list.getOpNames())).not.toContainEqual(`${id4}`)
+    expect(presenter.state.list.items[id1]).toBeUndefined()
+    expect(presenter.state.list.items[id4]).toBeUndefined()
+    expect(presenter.state).toMatchObject({ list: { order: [id2, id3, id5] } })
   })
 
   describe('getItem', () => {

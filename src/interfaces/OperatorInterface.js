@@ -21,6 +21,14 @@ export class OperatorInterface {
   mount (model, path, parentOp) { throw new Error('Not Yet Implemented') }
 
   /**
+   * Unmounts an operator and any nested operators from the model.
+   * After this function call is completed:
+   *  The operator should no longer be in the optree at its specified path.
+   *  The operators data should no longer be present in the model.
+   */
+  unmount () { throw new Error('Not Yet Implemented') }
+
+  /**
    * Nests an operator within this one.
    * @param {OperatorInterface} op - The operator to add.
    * @param {*[]} relativePath - Te path it should be mounted on, relative to the current op.

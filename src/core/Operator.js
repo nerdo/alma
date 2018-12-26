@@ -62,6 +62,23 @@ export class Operator {
   }
 
   /**
+   * Unmounts an operator and any nested operators from the model.
+   * After this function call is completed:
+   *  The operator should no longer be in the optree at its specified path.
+   *  The operators data should no longer be present in the model.
+   */
+  unmount () {
+    if (!this.model) {
+      return
+    }
+
+    this.model.setOpTree(normalMutatorSingleton.set(this.model.getOpTree(), this.path, void 0))
+    this.setModelData([], void 0)
+    this.path = void 0
+    this.model = void 0
+  }
+
+  /**
    * Nests an operator within this one.
    * @param {OperatorInterface} op - The operator to add.
    * @param {*[]} relativePath - Te path it should be mounted on, relative to the current op.
@@ -136,7 +153,7 @@ export class Operator {
    */
   setModelData (relative, value) {
     if (!this.model) { return }
-    this.model.set(this.getPath([].concat(relative)), value)
+    this.model.set(this.getPath(...[].concat(relative)), value)
   }
 
   /**

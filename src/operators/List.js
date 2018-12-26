@@ -125,6 +125,37 @@ export class List extends Operator {
   }
 
   /**
+   * Deletes the operators from the list.
+   * @param {OperatorInterface} ops
+   */
+  deleteItems (ops) {
+    const { ids, deletingOps } = ops
+      .map(op => [this.getIdFor(op), op])
+      .filter(([id]) => id)
+      .reduce(
+        (container, current) => {
+          container.ids.push(current[0])
+          container.deletingOps.push(current[1])
+          return container
+        },
+        { ids: [], deletingOps: [] }
+      )
+
+    const order = this.getModelData(['order'], [])
+      .filter(id => !ids.includes(id))
+
+    const opNames = { ...this.getModelData(['opNames'], {}) }
+    for (const id of ids) {
+      delete opNames[id]
+    }
+
+    this.propose(
+      { name: 'deleteItems', context: { ops: deletingOps } },
+      { order, opNames }
+    )
+  }
+
+  /**
    * Moves operators in the list.
    * @param {OperatorInterface[]} ops - The operators to move.
    * @param {number} index - The index in the list to move the operators to.
@@ -133,7 +164,7 @@ export class List extends Operator {
     // Get list of IDs for ops.
     const ids = ops
       .map(op => this.getIdFor(op))
-      .filter(op => op)
+      .filter(id => id)
 
     // Remove IDs from order.
     const order = this.getModelData(['order'], [])
@@ -204,6 +235,9 @@ export class List extends Operator {
       }
       this.setModelData(['order'], incoming.order)
       this.setModelData(['opNames'], incoming.opNames)
+    } else if (action.name === 'deleteItems') {
+      this.setModelData(['order'], incoming.order)
+      this.setModelData(['opNames'], incoming.opNames)
     } else if (action.name === 'clear') {
       this.model.set(this.getPath(), { order: [], items: {}, opNames: {} })
     } else if (action.name === 'moveItems') {
@@ -253,6 +287,12 @@ export class List extends Operator {
           }
           return item
         })
+    } else if (action.name === 'deleteItems') {
+      // Unmount deleted operators.
+      const context = action.context
+      for (const op of context.ops) {
+        op.unmount()
+      }
     } else if (action.name === 'clear') {
       this.opMap = new Map()
       // TODO unmount each op
