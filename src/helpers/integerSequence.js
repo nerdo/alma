@@ -5,16 +5,16 @@
  * @param {boolean} [startOverWhenMaxIntegerIsReached=true]
  */
 export function * integerSequence (startingAt = 0, startOverWhenMaxIntegerIsReached = true) {
-  let id = startingAt
+  let integer = startingAt
   while (true) {
-    if (id === Number.MAX_SAFE_INTEGER) {
+    if (integer === Number.MAX_SAFE_INTEGER) {
       if (startOverWhenMaxIntegerIsReached) {
-        id = startingAt
+        integer = startingAt
       } else {
         throw new Error('Number.MAX_SAFE_INTEGER reached!')
       }
     }
 
-    yield id++
+    yield integer++
   }
 }
