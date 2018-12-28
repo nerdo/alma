@@ -88,7 +88,7 @@ export class Operator {
   /**
    * Nests an operator within this one.
    * @param {OperatorInterface} op - The operator to add.
-   * @param {*[]} relativePath - Te path it should be mounted on, relative to the current op.
+   * @param {*[]} relativePath - The path it should be mounted on, relative to the current op.
    */
   addNestedOp (op, relativePath) {
     this.nestedOps = this.nestedOps || new Map()
@@ -105,7 +105,7 @@ export class Operator {
    */
   removeNestedOp (op) {
     if (!this.nestedOps) { return }
-    // TODO call a lifecycle function, e.g. unmounting() on the op, if it exists.
+    op.unmount()
     this.nestedOps.delete(op)
   }
 
@@ -185,12 +185,14 @@ export class Operator {
    * @returns {boolean}
    */
   pathBelongsToOp (path) {
-    return (this.path || [])
-      .map((part, index) => `${part}` === `${path[index]}`)
-      .reduce(
-        (result, current) => result && current,
-        true
-      )
+    return this.path
+      ? this.path
+        .map((part, index) => `${part}` === `${path[index]}`)
+        .reduce(
+          (result, current) => result && current,
+          true
+        )
+      : false
   }
 
   /**

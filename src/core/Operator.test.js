@@ -56,16 +56,55 @@ describe('Operator', () => {
       expect(counter.pathBelongsToOp(['foo', 'bar', 'anything'])).toBe(false)
     })
 
-    test('nested ops', () => {
-      let counter, foo
-      const list = new List(
-        foo = new List(
-          counter = new Counter()
+    describe('nested ops', () => {
+      test('addNestedOp (implicit)', () => {
+        let counter, foo
+        const list = new List(
+          foo = new List(
+            counter = new Counter()
+          ),
+          new Counter()
         )
-      )
-      TestEngine.start({ list })
+        TestEngine.start({ list })
 
-      expect(counter.pathBelongsToOp(['list', 'items', list.getIdFor(foo), 'items', foo.getIdFor(counter)])).toBe(true)
+        const fooId = list.getIdFor(foo)
+        const counterId = foo.getIdFor(counter)
+        expect(counter.pathBelongsToOp(['list', 'items', fooId, 'items', counterId])).toBe(true)
+      })
+
+      test('unmount', () => {
+        let counter, foo
+        const list = new List(
+          foo = new List(
+            counter = new Counter()
+          ),
+          new Counter()
+        )
+
+        TestEngine.start({ list })
+        foo.unmount()
+
+        const fooId = list.getIdFor(foo)
+        const counterId = foo.getIdFor(counter)
+        expect(counter.pathBelongsToOp(['list', 'items', fooId, 'items', counterId])).toBe(false)
+      })
+
+      test('removeNestedOp', () => {
+        let counter, foo
+        const list = new List(
+          foo = new List(
+            counter = new Counter()
+          ),
+          new Counter()
+        )
+
+        TestEngine.start({ list })
+        foo.removeNestedOp(counter)
+
+        const fooId = list.getIdFor(foo)
+        const counterId = foo.getIdFor(counter)
+        expect(counter.pathBelongsToOp(['list', 'items', fooId, 'items', counterId])).toBe(false)
+      })
     })
   })
 
