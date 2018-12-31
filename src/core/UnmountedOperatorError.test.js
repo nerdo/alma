@@ -1,6 +1,6 @@
 /* global describe, test, expect */
 import { UnmountedOperatorError } from './UnmountedOperatorError'
-import { Counter } from '../operators/Counter';
+import { Counter } from '../operators/Counter'
 
 describe('UnmountedOperatorError', () => {
   test('something that is not an operator', () => {
