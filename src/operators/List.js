@@ -134,10 +134,11 @@ export class List extends Operator {
    * @param {OperatorInterface[]} ops - The operators to add.
    * @param {Object} context - Context about the items that will be available in postProcess.
    * @param {boolean} [context.resetOps=false] - Whether or not to reset the newly added operators.
-   * @param {number[]} [context.ids=RESERVED] - Reserved. Will be the list of IDs that were added.
+   * @param {number[]} context.ids - Reserved. Will be an array of IDs that were added.
    */
   addItems (index, ops, context = { resetOps: false }) {
-    context.resetOps = context.resetOps || false
+    const alteredContext = { ...context }
+    alteredContext.resetOps = alteredContext.resetOps || false
     const {
       ids,
       opNames
@@ -164,7 +165,7 @@ export class List extends Operator {
     }
 
     this.propose(
-      { name: 'addItems', context: { ids, ...context } },
+      { name: 'addItems', context: { ids, ...alteredContext } },
       { order, opNames: newOpNames }
     )
   }
