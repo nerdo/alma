@@ -24,7 +24,7 @@ export class SupervisorInterface {
   setNextActionDelegates (before, after) { throw new Error('Not Yet Implemented') }
 
   /**
-   * Gets the function(s) called when postProcess is invokekd.
+   * Gets the function(s) called when postProcess is invoked.
    * @returns {[Function, Function]} - A tuple of the before and after delegate functions.
    */
   getNextActionDelegates () { throw new Error('Not Yet Implemented') }
