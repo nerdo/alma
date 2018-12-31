@@ -111,7 +111,7 @@ describe('List', () => {
       const presenter2 = engine2.getPresenter()
 
       list2.reset()
-      list2.addItems(List.END, [l2c1, l2c2, l2c3], true)
+      list2.addItems(List.END, [l2c1, l2c2, l2c3], { resetOps: true })
 
       const l2id1 = list2.getIdFor(l2c1)
       expect(l2id1).toBeDefined()
@@ -143,7 +143,7 @@ describe('List', () => {
 
       const c1 = new Counter()
       const c2 = new Counter()
-      list.addItems(List.END, [c1, c2], true)
+      list.addItems(List.END, [c1, c2], { resetOps: true })
 
       let id1
       expect(() => { id1 = list.getIdFor(c1) }).not.toThrow()
@@ -161,7 +161,7 @@ describe('List', () => {
       // Try to add items in the middle...
       const c3 = new Counter()
       const c4 = new Counter()
-      list.addItems(1, [c3, c4], true)
+      list.addItems(1, [c3, c4], { resetOps: true })
 
       let id3
       expect(() => { id3 = list.getIdFor(c3) }).not.toThrow()
@@ -177,7 +177,7 @@ describe('List', () => {
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4]))
 
       const c5 = new Counter()
-      list.addItems(List.END, [c5], true)
+      list.addItems(List.END, [c5], { resetOps: true })
 
       let id5
       expect(() => { id5 = list.getIdFor(c5) }).not.toThrow()
@@ -190,7 +190,7 @@ describe('List', () => {
       expect(list.getNestedOps()).toEqual(expect.arrayContaining([c1, c2, c3, c4, c5]))
 
       const c6 = new Counter()
-      list.addItems(-1, [c6], true)
+      list.addItems(-1, [c6], { resetOps: true })
 
       let id6
       expect(() => { id6 = list.getIdFor(c6) }).not.toThrow()
@@ -241,7 +241,7 @@ describe('List', () => {
       const presenter = engine.getPresenter()
 
       list.reset()
-      list.addItems(List.END, [c1, c2, c3, c4, c5], true)
+      list.addItems(List.END, [c1, c2, c3, c4, c5], { resetOps: true })
 
       const originalItems = presenter.state.list.items
 
