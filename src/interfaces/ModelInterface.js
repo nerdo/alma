@@ -89,11 +89,11 @@ export class ModelInterface {
   reset (data = {}) { throw new Error('Not Yet Implemented') }
 
   /**
-   * Calls nextAction on all operators.
+   * Calls postProcess on all operators.
    * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
    * @param {Object} action - The proposed action.
    * @param {string} action.name - The name of the action.
    * @param {Object} [action.context] - Contextual information for the action.
    */
-  nextAction (sourceOperator, action) { throw new Error('Not Yet Implemented') }
+  postProcess (sourceOperator, action) { throw new Error('Not Yet Implemented') }
 }

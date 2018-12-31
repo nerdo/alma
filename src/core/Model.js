@@ -188,23 +188,23 @@ export class Model {
   }
 
   /**
- * Calls nextAction on all operators.
+ * Calls postProcess on all operators.
  * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
  * @param {Object} action - The proposed action.
  * @param {string} action.name - The name of the action.
  * @param {Object} [action.context] - Contextual information for the action.
  */
-  nextAction (sourceOperator, action) {
+  postProcess (sourceOperator, action) {
     traverseOpTree(
       this.opTree,
       (node, path) => {
         if (!isOp(node)) {
           return
         }
-        if (typeof node.nextAction !== 'function') {
+        if (typeof node.postProcess !== 'function') {
           return
         }
-        node.nextAction(sourceOperator, action)
+        node.postProcess(sourceOperator, action)
       }
     )
   }

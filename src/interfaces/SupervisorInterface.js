@@ -16,7 +16,7 @@ export class SupervisorInterface {
   getPresenter () { throw new Error('Not Yet Implemented') }
 
   /**
-   * Sets the function called when nextAction is invoked.
+   * Sets the function called when postProcess is invoked.
    * @param {Function} before - Called before operator next actions.
    * @param {Function} after - Called after operator next actions.
    * @returns {SupervisorInterface} this
@@ -24,7 +24,7 @@ export class SupervisorInterface {
   setNextActionDelegates (before, after) { throw new Error('Not Yet Implemented') }
 
   /**
-   * Gets the function(s) called when nextAction is invokekd.
+   * Gets the function(s) called when postProcess is invokekd.
    * @returns {[Function, Function]} - A tuple of the before and after delegate functions.
    */
   getNextActionDelegates () { throw new Error('Not Yet Implemented') }
@@ -53,5 +53,5 @@ export class SupervisorInterface {
    * @param {string} action.name - The name of the action.
    * @param {Object} [action.context] - Contextual information for the action.
    */
-  nextAction (model, sourceOperator, action) { throw new Error('Not Yet Implemented') }
+  postProcess (model, sourceOperator, action) { throw new Error('Not Yet Implemented') }
 }

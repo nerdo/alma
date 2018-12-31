@@ -77,11 +77,11 @@ export class OperatorInterface {
   /**
    * Optional. Called by an alma engine to allow the operator to post-process actions.
    * @function
-   * @name OperatorInterface#nextAction
+   * @name OperatorInterface#postProcess
    * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
    * @param {Object} action - The proposed action.
    * @param {string} action.name - The name of the action.
    * @param {Object} [action.context] - Contextual information for the action.
    */
-  // nextAction (sourceOperator, action) { throw new Error('Not Yet Implemented') // }
+  // postProcess (sourceOperator, action) { throw new Error('Not Yet Implemented') // }
 }

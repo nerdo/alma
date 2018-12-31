@@ -304,7 +304,7 @@ export class List extends Operator {
    * @param {string} action.name - The name of the action.
    * @param {Object} [action.context] - Contextual information for the action.
    */
-  nextAction (sourceOperator, action) {
+  postProcess (sourceOperator, action) {
     if (action.name === Engine.START_ACTION.name) {
       // Add ops from the constructor.
       if (this.constructorOps) {
