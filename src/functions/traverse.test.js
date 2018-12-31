@@ -151,13 +151,15 @@ describe('traverse', () => {
     traverse(
       tree,
       fn,
-      (node, path) => {
-        return defaultGetChildren(node, path)
-          .concat(
-            node instanceof Container
-              ? [{ path: path.concat('nested'), node: node.getNested() }]
-              : []
-          )
+      {
+        getChildren (node, path) {
+          return defaultGetChildren(node, path)
+            .concat(
+              node instanceof Container
+                ? [{ path: path.concat('nested'), node: node.getNested() }]
+                : []
+            )
+        }
       }
     )
 

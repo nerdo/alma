@@ -3,14 +3,15 @@
  * @param {*} tree - The tree to traverse.
  * @param {*} callback - The callback function. It is called as:
  *  callback({*} node, {*[]} path - List of keys to get to the node)
- * @param {Function} [getChildren] - A function that returns children for a node. It is called as:
+ * @param {Object} [options] - Options for tree traversal.
+ * @param {Function} [options.getChildren] - A function that returns children for a node. It is called as:
  *  getChildren({*} node, {*[]} path - List of keys to get to the node)
  *  ...and it should return an array of objects with the keys:
  *  {*} node - The child node.
  *  {*[]} path - List of keys to get to the node
  *  The default (defaultGetChildren) function returns the children for non-scalar nodes.
  */
-export function traverse (tree, callback, getChildren = defaultGetChildren) {
+export function traverse (tree, callback, { getChildren = defaultGetChildren } = {}) {
   recurse(tree, callback, [], getChildren, new WeakMap())
 }
 

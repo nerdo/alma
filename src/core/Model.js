@@ -220,15 +220,17 @@ function traverseOpTree (tree, callback) {
   traverse(
     tree,
     callback,
-    (node, path) => {
-      return defaultGetChildren(node, path)
-        .concat(
-          isOp(node)
-            ? node
-              .getNestedOps()
-              .reduce((ops, current) => ops.concat({ path: node.getPath(), node }), [])
-            : []
-        )
+    {
+      getChildren (node, path) {
+        return defaultGetChildren(node, path)
+          .concat(
+            isOp(node)
+              ? node
+                .getNestedOps()
+                .reduce((ops, current) => ops.concat({ path: node.getPath(), node }), [])
+              : []
+          )
+      }
     }
   )
 }
