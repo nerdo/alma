@@ -149,7 +149,7 @@ export class Operator {
    */
   getModelData (relative, defaultValue = void 0) {
     if (!this.model) {
-      throw new UnmountedOperatorError()
+      throw new UnmountedOperatorError(this)
     }
     let data = this.model.get(this.getPath(...relative))
     if (typeof data === 'undefined') {
@@ -166,7 +166,7 @@ export class Operator {
    */
   setModelData (relative, value) {
     if (!this.model) {
-      throw new UnmountedOperatorError()
+      throw new UnmountedOperatorError(this)
     }
     this.model.set(this.getPath(...[].concat(relative)), value)
   }
@@ -178,7 +178,7 @@ export class Operator {
    */
   deleteModelData (relative) {
     if (!this.model) {
-      throw new UnmountedOperatorError()
+      throw new UnmountedOperatorError(this)
     }
     this.model.delete(this.getPath(...[].concat(relative)))
   }
@@ -237,7 +237,7 @@ export class Operator {
    */
   propose (action, data, isDataRelative = true) {
     if (!this.model) {
-      throw new UnmountedOperatorError()
+      throw new UnmountedOperatorError(this)
     }
     const realAction = typeof action === 'string' ? { name: action } : action
     this.model.consider(

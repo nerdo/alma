@@ -1,5 +1,5 @@
 export class UnmountedOperatorError extends Error {
-  constructor (message = 'Unmounted Operator') {
-    super(message)
+  constructor (op) {
+    super(`Unmounted Operator: ${op.getOpName()}.`)
   }
 }
