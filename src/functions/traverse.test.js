@@ -120,6 +120,53 @@ describe('traverse', () => {
       // the tree depths (levels) are traversed in the order we expect...
       expect(levelOrder).toEqual([0, 1, 2, 3])
     })
+
+    test('leaf to root order', () => {
+      const nodes = []
+      const paths = []
+      const levels = {}
+      const levelOrder = []
+      const fn = jest.fn((node, path) => {
+        nodes.push(node)
+        paths.push(path)
+
+        const level = path.length
+        if (!levels[level]) {
+          levels[level] = true
+          levelOrder.push(level)
+        }
+      })
+      const tree = {
+        a: 1,
+        b: {
+          foo: true
+        },
+        c: {
+          nested: {
+            nice: true,
+            enabled: false
+          }
+        }
+      }
+
+      traverse(tree, fn, { traverseLeavesFirst: true })
+
+      expect(fn).toHaveBeenCalledTimes(8)
+      expect(nodes.length).toBe(8)
+      expect(paths.length).toBe(8)
+      expect(paths).toContainEqual([])
+      expect(paths).toContainEqual(['a'])
+      expect(paths).toContainEqual(['b'])
+      expect(paths).toContainEqual(['c'])
+      expect(paths).toContainEqual(['b', 'foo'])
+      expect(paths).toContainEqual(['c', 'nested'])
+      expect(paths).toContainEqual(['c', 'nested', 'nice'])
+      expect(paths).toContainEqual(['c', 'nested', 'enabled'])
+
+      // Traversal order. Since iterating an object has no defined order, the best we can do is make sure that
+      // the tree depths (levels) are traversed in the order we expect...
+      expect(levelOrder).toEqual([2, 3, 1, 0])
+    })
   })
 
   test('a custom getChildren function', () => {

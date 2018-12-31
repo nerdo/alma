@@ -10,9 +10,16 @@
  *  {*} node - The child node.
  *  {*[]} path - List of keys to get to the node
  *  The default (defaultGetChildren) function returns the children for non-scalar nodes.
+ * @param {boolean} [options.traverseLeavesFirst=false]
  */
-export function traverse (tree, callback, { getChildren = defaultGetChildren } = {}) {
-  recurse(tree, callback, [], getChildren, new WeakMap())
+export function traverse (
+  tree,
+  callback,
+  {
+    getChildren = defaultGetChildren,
+    traverseLeavesFirst = false
+  } = {}) {
+  recurse(tree, callback, [], getChildren, traverseLeavesFirst, new WeakMap())
 }
 
 /**
@@ -36,34 +43,50 @@ export function defaultGetChildren (node, path) {
   return children
 }
 
-function recurse (tree, callback, path, getChildren, recursed) {
+function recurse (tree, callback, path, getChildren, traverseLeavesFirst, recursed) {
   if (typeof tree === 'undefined' || tree === null) {
     return
   }
 
-  process(tree, path, callback)
+  const isTreeScalar = isScalar(tree)
 
-  if (isScalar(tree)) {
-    return
+  if (!traverseLeavesFirst) {
+    process(tree, path, callback)
   }
 
   let children = []
-  for (const [key, node] of Object.entries(tree)) {
-    const currentPath = path.concat(key)
-    process(node, currentPath, callback)
-    children = children.concat(getChildren(node, currentPath))
 
-    // Set flag that node was recursed to avoid cycles.
-    if (!recursed.get(node) && !isScalar(node)) {
-      recursed.set(node, true)
+  if (!isTreeScalar) {
+    for (const [key, node] of Object.entries(tree)) {
+      const currentPath = path.concat(key)
+      if (!traverseLeavesFirst) {
+        process(node, currentPath, callback)
+      }
+
+      children = children.concat(getChildren(node, currentPath))
+
+      // Set flag that node was recursed to avoid cycles.
+      if (!recursed.get(node) && !isScalar(node)) {
+        recursed.set(node, true)
+      }
     }
   }
 
   // Only recurse on nodes that haven't already been processed.
   for (const child of children) {
     if (!recursed.get(child.node)) {
-      recurse(child.node, callback, child.path, getChildren, recursed)
+      recurse(child.node, callback, child.path, getChildren, traverseLeavesFirst, recursed)
     }
+  }
+
+  if (traverseLeavesFirst) {
+    if (!isTreeScalar) {
+      for (const [key, node] of Object.entries(tree)) {
+        process(node, path.concat(key), callback)
+      }
+    }
+
+    process(tree, path, callback)
   }
 }
 
