@@ -5,12 +5,11 @@ import resolve from 'rollup-plugin-node-resolve'
 import pkg from './package.json'
 
 const plugins = [
-  babel({
-    exclude: 'node_modules/**',
-    runtimeHelpers: true
-  }),
   resolve(),
-  commonjs()
+  commonjs(),
+  babel({
+    exclude: 'node_modules/**'
+  })
 ]
 
 export default [
