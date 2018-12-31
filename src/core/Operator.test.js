@@ -1,8 +1,9 @@
-/* global describe, expect, test */
+/* global jest, describe, expect, test */
 import { TestEngine } from '../helpers/TestEngine'
 import { Counter } from '../operators/Counter'
 import { Model } from './Model'
 import { List } from '../operators/List'
+import { UnmountedOperatorError } from './UnmountedOperatorError'
 
 describe('Operator', () => {
   test('getModel', () => {
@@ -12,38 +13,71 @@ describe('Operator', () => {
     expect(counter.getModel()).toBeInstanceOf(Model)
   })
 
-  test('getModelData', () => {
-    const counter = new Counter()
-    TestEngine.start({ counter })
+  describe('getModelData', () => {
+    test('an unmounted operator', () => {
+      const counter = new Counter()
+      expect(() => counter.getModelData(['value'])).toThrowError(UnmountedOperatorError)
+    })
 
-    expect(counter.getModelData(['value'])).toBeUndefined()
+    test('after resetting an operator that sets a defined value', () => {
+      const counter = new Counter()
+      TestEngine.start({ counter })
 
-    counter.reset()
+      expect(counter.getModelData(['value'])).toBeUndefined()
 
-    expect(counter.getModelData(['value'])).toBe(0)
+      counter.reset()
+
+      expect(counter.getModelData(['value'])).toBe(0)
+    })
   })
 
-  test('setModelData', () => {
-    const counter = new Counter()
-    TestEngine.start({ counter })
+  describe('setModelData', () => {
+    test('an unmounted operator', () => {
+      const counter = new Counter()
+      expect(() => counter.setModelData(['value'], 5)).toThrowError(UnmountedOperatorError)
+    })
 
-    counter.setModelData(['value'], 5)
+    test('setting valid model data', () => {
+      const counter = new Counter()
+      TestEngine.start({ counter })
 
-    expect(counter.getModelData(['value'])).toBe(5)
+      counter.setModelData(['value'], 5)
+
+      expect(counter.getModelData(['value'])).toBe(5)
+    })
   })
 
-  test('deleteModelData', () => {
-    const counter = new Counter()
-    TestEngine.start({ counter })
-    counter.reset()
+  describe('deleteModelData', () => {
+    test('an unmounted operator', () => {
+      const counter = new Counter()
+      expect(() => counter.deleteModelData(['value'])).toThrowError(UnmountedOperatorError)
+    })
 
-    counter.deleteModelData(['value'])
+    test('deleting existing model data', () => {
+      const counter = new Counter()
+      TestEngine.start({ counter })
+      counter.reset()
 
-    const data = counter.getModelData([])
-    expect(data).toBeDefined()
-    expect(data).toBeInstanceOf(Object)
-    expect(data.value).not.toBeDefined()
-    expect(data).not.toMatchObject({ value: void 0 })
+      expect(counter.getModelData(['value'])).toBeDefined()
+
+      counter.deleteModelData(['value'])
+
+      const data = counter.getModelData([])
+      expect(data).toBeDefined()
+      expect(data).toBeInstanceOf(Object)
+      expect(data.value).not.toBeDefined()
+      expect(data).not.toMatchObject({ value: void 0 })
+    })
+  })
+
+  describe('propose', () => {
+    test('an unmounted operator', () => {
+      const counter = new Counter()
+      counter.propose = jest.fn(counter.propose)
+
+      expect(() => counter.setValue(0)).toThrowError(UnmountedOperatorError)
+      expect(counter.propose).toHaveBeenCalled()
+    })
   })
 
   describe('pathBelongsToOp', () => {

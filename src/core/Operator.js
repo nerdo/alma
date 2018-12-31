@@ -1,4 +1,5 @@
 import { NormalMutator } from '../adapters/NormalMutator'
+import { UnmountedOperatorError } from './UnmountedOperatorError'
 
 /**
  * @type {MutatorInterface}
@@ -144,10 +145,11 @@ export class Operator {
    * Helper method for getting model data.
    * @param {*[]} relative  - The relative path (list of keys) to pull the value from.
    * @param {*} defaultValue - The value to return if the model data is undefined.
+   * @throws {UnmountedOperatorError}
    */
   getModelData (relative, defaultValue = void 0) {
     if (!this.model) {
-      return void 0
+      throw new UnmountedOperatorError()
     }
     let data = this.model.get(this.getPath(...relative))
     if (typeof data === 'undefined') {
@@ -160,10 +162,11 @@ export class Operator {
    * Helper method for seting model data.
    * @param {*[]} relative  - The relative path (list of keys) to set the value on.
    * @param {*} value - The value to set.
+   * @throws {UnmountedOperatorError}
    */
   setModelData (relative, value) {
     if (!this.model) {
-      return
+      throw new UnmountedOperatorError()
     }
     this.model.set(this.getPath(...[].concat(relative)), value)
   }
@@ -171,10 +174,11 @@ export class Operator {
   /**
    * Helper method for deleting model data.
    * @param {*[]} relative  - The relative path (list of keys) to set the value on.
+   * @throws {UnmountedOperatorError}
    */
   deleteModelData (relative) {
     if (!this.model) {
-      return
+      throw new UnmountedOperatorError()
     }
     this.model.delete(this.getPath(...[].concat(relative)))
   }
@@ -229,8 +233,12 @@ export class Operator {
    * @param {Object} action.context - Contextual information for the action.
    * @param {*} data - The data to propose to the model.
    * @param {boolean} isDataRelative - Whether or not the data is relative to the current operator.
+   * @throws {UnmountedOperatorError}
    */
   propose (action, data, isDataRelative = true) {
+    if (!this.model) {
+      throw new UnmountedOperatorError()
+    }
     const realAction = typeof action === 'string' ? { name: action } : action
     this.model.consider(
       isDataRelative

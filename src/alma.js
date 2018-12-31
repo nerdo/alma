@@ -1,3 +1,4 @@
+export * from './core/UnmountedOperatorError'
 export * from './core/Engine'
 export * from './core/Model'
 export * from './core/Supervisor'
