@@ -26,6 +26,8 @@ describe('List', () => {
       const engine = TestEngine.start({ list })
       const presenter = engine.getPresenter()
 
+      expect(list.getNestedOps().length).toBe(3)
+
       list.reset()
 
       const id1 = list.getIdFor(c1)
