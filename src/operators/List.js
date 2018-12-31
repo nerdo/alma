@@ -305,7 +305,7 @@ export class List extends Operator {
    * @param {Object} [action.context] - Contextual information for the action.
    */
   nextAction (sourceOperator, action) {
-    if (action === Engine.START_ACTION) {
+    if (action.name === Engine.START_ACTION.name) {
       // Add ops from the constructor.
       if (this.constructorOps) {
         const ops = this.constructorOps
