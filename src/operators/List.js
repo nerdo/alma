@@ -285,17 +285,54 @@ export class List extends Operator {
       this.setModelData(['order'], incoming.order)
       this.setModelData(['items'], incoming.items)
       this.setModelData(['opNames'], incoming.opNames)
+
+      // Reset nested ops.
+      for (const op of this.getNestedOps()) {
+        op.reset()
+      }
     } else if (action.name === 'addItems') {
       if (typeof incoming.order === 'undefined' || typeof incoming.opNames === 'undefined') {
         return
       }
       this.setModelData(['order'], incoming.order)
       this.setModelData(['opNames'], incoming.opNames)
+
+      // Mount added operators.
+      const context = action.context
+      context.ids
+        .map(id => {
+          return { id, op: this.getOpById(id) }
+        })
+        .filter(item => item)
+        .map(item => {
+          item.op.mount(this.getModel(), this.getPath('items', item.id), this)
+          return item
+        })
+        .map(item => {
+          if (context.resetOps) {
+            item.op.reset()
+          }
+          return item
+        })
     } else if (action.name === 'deleteItems') {
       this.setModelData(['order'], incoming.order)
       this.setModelData(['opNames'], incoming.opNames)
+
+      // Unmount deleted operators.
+      const context = action.context
+      for (const op of context.ops) {
+        op.unmount()
+      }
     } else if (action.name === 'clear') {
-      this.model.set(this.getPath(), { order: [], items: {}, opNames: {} })
+      this.setModelData([], { order: [], items: {}, opNames: {} })
+
+      // Unmount ops and reset the op map and id sequences.
+      for (const op of this.opMap.keys()) {
+        op.unmount()
+      }
+
+      this.opMap = new Map()
+      this.idSequence = integerSequence(1)
     } else if (action.name === 'moveItems') {
       this.setModelData(['order'], incoming.order)
     }
@@ -316,45 +353,6 @@ export class List extends Operator {
         delete this.constructorOps
         this.addItems(List.END, ops)
       }
-    }
-
-    if (sourceOperator !== this) { return }
-
-    if (action.name === 'reset') {
-      for (const op of this.getNestedOps()) {
-        op.reset()
-      }
-    } else if (action.name === 'addItems') {
-      // Mount added operators.
-      const context = action.context
-      context.ids
-        .map(id => {
-          return { id, op: this.getOpById(id) }
-        })
-        .filter(item => item)
-        .map(item => {
-          item.op.mount(this.getModel(), this.getPath('items', item.id), this)
-          return item
-        })
-        .map(item => {
-          if (context.resetOps) {
-            item.op.reset()
-          }
-          return item
-        })
-    } else if (action.name === 'deleteItems') {
-      // Unmount deleted operators.
-      const context = action.context
-      for (const op of context.ops) {
-        op.unmount()
-      }
-    } else if (action.name === 'clear') {
-      for (const op of this.opMap.keys()) {
-        op.unmount()
-      }
-
-      this.opMap = new Map()
-      this.idSequence = integerSequence(1)
     }
   }
 
