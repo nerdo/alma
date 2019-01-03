@@ -9,7 +9,7 @@ export class Counter extends Operator {
   }
 
   reset () {
-    this.setValue()
+    this.setValue(this.getValue())
   }
 
   setValue (value = 0) {
