@@ -31,24 +31,6 @@ export default [
     plugins
   },
 
-  // Useful, but not required operators.
-  {
-    input: 'src/ops.js',
-    output: [
-      {
-        file: 'dist/ops.js',
-        format: 'cjs',
-        sourcemap: true
-      },
-      {
-        file: 'dist/ops.es.js',
-        format: 'es',
-        sourcemap: true
-      }
-    ],
-    plugins
-  },
-
   // Testing conveniences.
   {
     input: 'src/testing.js',
