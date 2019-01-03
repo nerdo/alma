@@ -36,6 +36,15 @@ export class Operator {
   }
 
   /**
+   * Resets the operator.
+   *
+   * This will typically call all actions with default parameters and call reset on any nested operators.
+   */
+  reset () {
+    // Empty implementation, making reset() optional to implement.
+  }
+
+  /**
    * Mounts an operator and any nested operators to the model.
    *
    * This will typically be:<pre><code>this.model = model
