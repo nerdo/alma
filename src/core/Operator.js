@@ -17,6 +17,11 @@ const cachedSelectors = new WeakMap()
 const cachedIntentions = new WeakMap()
 
 /**
+ * @type {Object}
+ */
+const EMPTY_OBJECT = Object.freeze({})
+
+/**
  * A base class for operators.
  * @class
  * @implements {OperatorInterface}
@@ -286,7 +291,7 @@ export class Operator {
    * @returns {Object.<string, Function>}
    */
   makeSelectors (...functions) {
-    if (!cachedSelectors.has(this)) {
+    if (!cachedSelectors.has(this) && functions.length) {
       const selectors = {}
 
       for (const f of functions) {
@@ -296,7 +301,7 @@ export class Operator {
       cachedSelectors.set(this, selectors)
     }
 
-    return cachedSelectors.get(this)
+    return cachedSelectors.get(this) || EMPTY_OBJECT
   }
 
   /**
@@ -305,7 +310,7 @@ export class Operator {
    * @returns {Object.<string, Function>}
    */
   makeIntentions (...functions) {
-    if (!cachedIntentions.has(this)) {
+    if (!cachedIntentions.has(this) && functions.length) {
       const intentions = {}
 
       for (const f of functions) {
@@ -315,6 +320,6 @@ export class Operator {
       cachedIntentions.set(this, intentions)
     }
 
-    return cachedIntentions.get(this)
+    return cachedIntentions.get(this) || EMPTY_OBJECT
   }
 }
