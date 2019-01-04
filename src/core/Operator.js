@@ -71,6 +71,14 @@ export class Operator {
   }
 
   /**
+   * Gets an object containing "intentions" (functions) which try to perform actions on the op.
+   * @returns {Object.<string, Function>}
+   */
+  getIntentions () {
+    return this.makeIntentions()
+  }
+
+  /**
    * Resets the operator.
    *
    * This will typically call all actions with default parameters and call reset on any nested operators.

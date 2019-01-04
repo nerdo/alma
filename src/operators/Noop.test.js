@@ -21,4 +21,9 @@ describe('Noop', () => {
     const noop = new Noop()
     expect(noop.getSelectors()).toBeInstanceOf(Object)
   })
+
+  test('getIntentions', () => {
+    const noop = new Noop()
+    expect(noop.getIntentions()).toBeInstanceOf(Object)
+  })
 })
