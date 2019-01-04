@@ -187,13 +187,17 @@ export class Model {
     this.supervisor.process(this, sourceOperator, action)
   }
 
+  getInteractorTree () {
+
+  }
+
   /**
- * Calls postProcess on all operators.
- * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
- * @param {Object} action - The proposed action.
- * @param {string} action.name - The name of the action.
- * @param {Object} [action.context] - Contextual information for the action.
- */
+   * Calls postProcess on all operators.
+   * @param {OperatorInterface} sourceOperator - The operator that proposed the action.
+   * @param {Object} action - The proposed action.
+   * @param {string} action.name - The name of the action.
+   * @param {Object} [action.context] - Contextual information for the action.
+   */
   postProcess (sourceOperator, action) {
     traverseOpTree(
       this.opTree,
