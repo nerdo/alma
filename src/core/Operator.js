@@ -46,6 +46,18 @@ export class Operator {
   }
 
   /**
+   * Gets a unique name for all instances of the operation.
+   * @returns {string}
+   */
+  getOpName () {
+    const opNameKey = Symbol.for('getOpName')
+    if (!this[opNameKey]) {
+      this[opNameKey] = Object.getPrototypeOf(this).constructor.name
+    }
+    return this[opNameKey]
+  }
+
+  /**
    * Resets the operator.
    *
    * This will typically call all actions with default parameters and call reset on any nested operators.

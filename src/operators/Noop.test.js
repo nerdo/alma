@@ -11,4 +11,9 @@ describe('Noop', () => {
     test,
     expect
   )
+
+  test('getOpName', () => {
+    const noop = new Noop()
+    expect(noop.getOpName()).toBe('Noop')
+  })
 })
