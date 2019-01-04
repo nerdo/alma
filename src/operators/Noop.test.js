@@ -26,4 +26,9 @@ describe('Noop', () => {
     const noop = new Noop()
     expect(noop.getIntentions()).toBeInstanceOf(Object)
   })
+
+  test('reset', () => {
+    const noop = new Noop()
+    expect(() => noop.reset()).not.toThrow()
+  })
 })
