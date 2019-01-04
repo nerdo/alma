@@ -77,6 +77,31 @@ export class List extends Operator {
   }
 
   /**
+   * Gets an object containing selectors (functions) that retrieve data from the op.
+   * @returns {Object.<string, Function>}
+   */
+  getSelectors () {
+    return this.makeSelectors(
+      this.getIdFor,
+      this.getOpById,
+      this.getMaxId,
+      this.getOpCreators,
+      this.getOpNames
+    )
+  }
+
+  /**
+   * Gets an object containing "intentions" (functions) which try to perform actions on the op.
+   * @returns {Object.<string, Function>}
+   */
+  getIntentions () {
+    return this.makeIntentions(
+      this.setOpCreators,
+      this.addItems
+    )
+  }
+
+  /**
    * Mounts the list to the model.
    * @param {ModelInterface} model - The model to mount the operator to.
    * @param {*[]} path  - The path (list of keys) in the model data to mount the operator to.

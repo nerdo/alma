@@ -75,6 +75,18 @@ export class OperatorInterface {
   consider (data, sourceOperator, action) { throw new Error('Not Yet Implemented') }
 
   /**
+   * Gets an object containing selectors (functions) that retrieve data from the op.
+   * @returns {Object.<string, Function>}
+   */
+  getSelectors () { throw new Error('Not Yet Implemented') }
+
+  /**
+   * Gets an object containing "intentions" (functions) which try to perform actions on the op.
+   * @returns {Object.<string, Function>}
+   */
+  getIntentions () { throw new Error('Not Yet Implemented') }
+
+  /**
    * Optional. Called by an alma engine to allow the operator to post-process actions.
    * @function
    * @name OperatorInterface#postProcess

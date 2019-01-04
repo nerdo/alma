@@ -1,5 +1,6 @@
 /* global jest, describe, expect, test */
 import { TestEngine } from '../helpers/TestEngine'
+import { Noop } from '../operators/Noop'
 import { Counter } from '../operators/Counter'
 import { Model } from './Model'
 import { List } from '../operators/List'
@@ -226,6 +227,103 @@ describe('Operator', () => {
       const slice = counter.getRelativeSlice(data)
 
       expect(slice).toMatchObject({ value: 5 })
+    })
+  })
+
+  describe('makeSelectors', () => {
+    test('no selectors', () => {
+      const noop = new Noop()
+      let selectors1
+      expect(() => { selectors1 = noop.makeSelectors() }).not.toThrow()
+      expect(selectors1).toBeInstanceOf(Object)
+      expect(Object.keys(selectors1).length).toBe(0)
+
+      const selectors2 = noop.makeSelectors()
+      expect(selectors1).toBe(selectors2)
+    })
+
+    test('some selectors', () => {
+      // Note: In order to get the function to be named properly, we wrap the mocks with functions.
+      const mockFoo = jest.fn()
+      const mockBar = jest.fn()
+      const foo = () => mockFoo()
+      const bar = () => mockBar()
+
+      const noop = new Noop()
+
+      let selectors
+      expect(() => { selectors = noop.makeSelectors(foo, bar) }).not.toThrow()
+      expect(selectors).toBeInstanceOf(Object)
+
+      // We should be getting an object memoized by the instance.
+      let selectors2
+      expect(() => { selectors2 = noop.makeSelectors('this', 'is', 'irrelevant') }).not.toThrow()
+      expect(selectors).toBe(selectors2)
+
+      const selectorNames = Object.keys(selectors)
+      expect(selectorNames.length).toBe(2)
+      expect(selectorNames).toEqual(expect.arrayContaining(['foo', 'bar']))
+
+      expect(selectors.foo).toBeInstanceOf(Function)
+      expect(selectors.bar).toBeInstanceOf(Function)
+
+      expect(mockFoo).not.toHaveBeenCalled()
+      expect(mockBar).not.toHaveBeenCalled()
+
+      selectors.foo()
+      expect(mockFoo).toHaveBeenCalled()
+
+      selectors.bar()
+      expect(mockBar).toHaveBeenCalled()
+    })
+  })
+
+  describe('makeIntentions', () => {
+    test('no intentions', () => {
+      const noop = new Noop()
+
+      let intentions1
+      expect(() => { intentions1 = noop.makeIntentions() }).not.toThrow()
+      expect(intentions1).toBeInstanceOf(Object)
+      expect(Object.keys(intentions1).length).toBe(0)
+
+      const intentions2 = noop.makeIntentions()
+      expect(intentions1).toBe(intentions2)
+    })
+
+    test('some intentions', () => {
+      // Note: In order to get the function to be named properly, we wrap the mocks with functions.
+      const mockFoo = jest.fn()
+      const mockBar = jest.fn()
+      const foo = () => mockFoo()
+      const bar = () => mockBar()
+
+      const noop = new Noop()
+
+      let intentions
+      expect(() => { intentions = noop.makeIntentions(foo, bar) }).not.toThrow()
+      expect(intentions).toBeInstanceOf(Object)
+
+      // We should be getting an object memoized by the instance.
+      let intentions2
+      expect(() => { intentions2 = noop.makeIntentions('this', 'is', 'irrelevant') }).not.toThrow()
+      expect(intentions).toBe(intentions2)
+
+      const intentionNames = Object.keys(intentions)
+      expect(intentionNames.length).toBe(2)
+      expect(intentionNames).toEqual(expect.arrayContaining(['foo', 'bar']))
+
+      expect(intentions.foo).toBeInstanceOf(Function)
+      expect(intentions.bar).toBeInstanceOf(Function)
+
+      expect(mockFoo).not.toHaveBeenCalled()
+      expect(mockBar).not.toHaveBeenCalled()
+
+      intentions.foo()
+      expect(mockFoo).toHaveBeenCalled()
+
+      intentions.bar()
+      expect(mockBar).toHaveBeenCalled()
     })
   })
 })

@@ -7,6 +7,16 @@ import { UnmountedOperatorError } from './UnmountedOperatorError'
 const normalMutatorSingleton = new NormalMutator()
 
 /**
+ * @type {WeakMap}
+ */
+const cachedSelectors = new WeakMap()
+
+/**
+ * @type {WeakMap}
+ */
+const cachedIntentions = new WeakMap()
+
+/**
  * A base class for operators.
  * @class
  * @implements {OperatorInterface}
@@ -256,5 +266,43 @@ export class Operator {
       this,
       realAction
     )
+  }
+
+  /**
+   * Makes and returns an object containing selectors.
+   * @param  {...Function} functions - Selector functions.
+   * @returns {Object.<string, Function>}
+   */
+  makeSelectors (...functions) {
+    if (!cachedSelectors.has(this)) {
+      const selectors = {}
+
+      for (const f of functions) {
+        selectors[f.name] = (...args) => Reflect.apply(f, this, args)
+      }
+
+      cachedSelectors.set(this, selectors)
+    }
+
+    return cachedSelectors.get(this)
+  }
+
+  /**
+   * Makes and returns an object containing intentions.
+   * @param  {...Function} functions - Intention functions.
+   * @returns {Object.<string, Function>}
+   */
+  makeIntentions (...functions) {
+    if (!cachedIntentions.has(this)) {
+      const intentions = {}
+
+      for (const f of functions) {
+        intentions[f.name] = (...args) => Reflect.apply(f, this, args)
+      }
+
+      cachedIntentions.set(this, intentions)
+    }
+
+    return cachedIntentions.get(this)
   }
 }

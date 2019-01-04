@@ -13,6 +13,42 @@ describe('Counter', () => {
     expect
   )
 
+  test('getSelectors', () => {
+    const counter = new Counter()
+    TestEngine.start({ counter })
+
+    let selectors
+    expect(() => { selectors = counter.getSelectors() }).not.toThrow()
+    expect(selectors).toBeInstanceOf(Object)
+
+    const selectorNames = Object.keys(selectors)
+    expect(selectorNames.sort()).toEqual(['getValue'].sort())
+
+    // Sanity check making sure the selectors are wired properly.
+    counter.setValue(4)
+    expect(selectors.getValue()).toBe(4)
+  })
+
+  test('getIntentions', () => {
+    const counter = new Counter()
+    TestEngine.start({ counter })
+
+    let intentions
+    expect(() => { intentions = counter.getIntentions() }).not.toThrow()
+    expect(intentions).toBeInstanceOf(Object)
+
+    const intentionNames = Object.keys(intentions)
+    expect(intentionNames.sort()).toEqual([
+      'setValue',
+      'increment',
+      'decrement'
+    ].sort())
+
+    // Sanity check making sure the intentions are wired properly.
+    intentions.setValue(3)
+    expect(counter.getValue()).toBe(3)
+  })
+
   test('setValue', () => {
     const counter = new Counter()
     const engine = TestEngine.start({ counter })

@@ -14,6 +14,54 @@ describe('List', () => {
     expect
   )
 
+  test('getSelectors', () => {
+    let c1
+    const list = new List(
+      c1 = new Counter()
+    )
+    TestEngine.start({ list })
+
+    let selectors
+    expect(() => { selectors = list.getSelectors() }).not.toThrow()
+    expect(selectors).toBeInstanceOf(Object)
+
+    const selectorNames = Object.keys(selectors)
+    expect(selectorNames.sort()).toEqual([
+      'getIdFor',
+      'getOpById',
+      'getMaxId',
+      'getOpCreators',
+      'getOpNames'
+    ].sort())
+
+    // Sanity check making sure the selectors are wired properly.
+    const id1 = list.getIdFor(c1)
+    expect(selectors.getIdFor(c1)).toBe(id1)
+  })
+
+  test('getIntentions', () => {
+    let c1
+    const list = new List(
+      c1 = new Counter()
+    )
+    TestEngine.start({ list })
+
+    let intentions
+    expect(() => { intentions = list.getIntentions() }).not.toThrow()
+    expect(intentions).toBeInstanceOf(Object)
+
+    const intentionNames = Object.keys(intentions)
+    expect(intentionNames.sort()).toEqual([
+      'setOpCreators',
+      'addItems'
+    ].sort())
+
+    // Sanity check making sure the intentions are wired properly.
+    const c2 = new Counter()
+    intentions.addItems(List.END, [c2])
+    expect(list.getIdFor(c2)).toBeDefined()
+  })
+
   describe('creating a new list', () => {
     test('passing ops into the constructor', () => {
       let c1, c2, c3

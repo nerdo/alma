@@ -12,6 +12,20 @@ export class Counter extends Operator {
     this.setValue(this.getValue())
   }
 
+  getSelectors () {
+    return this.makeSelectors(
+      this.getValue
+    )
+  }
+
+  getIntentions () {
+    return this.makeIntentions(
+      this.setValue,
+      this.increment,
+      this.decrement
+    )
+  }
+
   setValue (value = 0) {
     this.propose('setValue', { value })
   }
