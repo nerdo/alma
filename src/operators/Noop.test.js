@@ -16,4 +16,9 @@ describe('Noop', () => {
     const noop = new Noop()
     expect(noop.getOpName()).toBe('Noop')
   })
+
+  test('getSelectors', () => {
+    const noop = new Noop()
+    expect(noop.getSelectors()).toBeInstanceOf(Object)
+  })
 })

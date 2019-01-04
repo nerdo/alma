@@ -5,9 +5,6 @@ import { Operator } from '../core/Operator'
  * @ignore
  */
 export class Noop extends Operator {
-  getSelectors () {
-  }
-
   getIntentions () {
     return this.makeIntentions()
   }

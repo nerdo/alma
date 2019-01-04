@@ -63,6 +63,14 @@ export class Operator {
   }
 
   /**
+   * Gets an object containing selectors (functions) that retrieve data from the op.
+   * @returns {Object.<string, Function>}
+   */
+  getSelectors () {
+    return this.makeSelectors()
+  }
+
+  /**
    * Resets the operator.
    *
    * This will typically call all actions with default parameters and call reset on any nested operators.
